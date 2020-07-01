@@ -21,7 +21,7 @@
           false -> partlyCon.(:span)
         end
         %>
-      <%= end %>
+      <% end %>
     </li>
   <% end %>
 </ul>
