@@ -1,22 +1,27 @@
 <section class="phx-hero" style="background-color: <%= getMonthColor(@month)%>">
-  <h1><%= 
-  case assigns[:isIndex] do 
-    true -> "Текущий месяц" 
-    _ -> ""
-  end
-  %> <%= formatMonth(@month) %></h1>
+  <h1>
+    <%=
+    case assigns[:isIndex] do
+      true -> "Текущий месяц "
+      _ -> ""
+    end
+    %>
+    <%= formatMonth(@month) %>
+    <div> Дней в <%= @year %> - <%= @days %> </div>
+  </h1>
 </section>
 <ul>
   <%= for month <- 1..12  do %>
     <li>
-      <%=
-      partlyCon = &content_tag(&1, formatMonth(month))
-      case month == @month do
-        true -> partlyCon.(:strong) 
-        false -> partlyCon.(:span) 
-      end
-      %>
-      <span> </span><%= link "more", to: Routes.page_path(@conn, :month, month) %>
+      <%= link to: Routes.page_path(@conn, :month, month) do %>
+        <%=
+        partlyCon = &content_tag(&1, formatMonth(month))
+        case month == @month do
+          true -> partlyCon.(:strong)
+          false -> partlyCon.(:span)
+        end
+        %>
+      <%= end %>
     </li>
   <% end %>
 </ul>
