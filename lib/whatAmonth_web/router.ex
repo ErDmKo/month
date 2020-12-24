@@ -16,8 +16,14 @@ defmodule WhatAmonthWeb.Router do
   scope "/", WhatAmonthWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
-    get "/:id", PageController, :month
+    get "/", MainPageController, :index
+  end
+
+  scope "/month", WhatAmonthWeb do
+    pipe_through :browser
+
+    get "/", MonthPageController, :index
+    get "/:id", MonthPageController, :month
   end
 
   # Other scopes may use custom stacks.

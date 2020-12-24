@@ -13,7 +13,7 @@
 <ul>
   <%= for month <- 1..12  do %>
     <li>
-      <%= link to: Routes.page_path(@conn, :month, month) do %>
+      <%= link to: Routes.month_page_path(@conn, :month, month) do %>
         <%=
         partlyCon = &content_tag(&1, formatMonth(month))
         case month == @month do

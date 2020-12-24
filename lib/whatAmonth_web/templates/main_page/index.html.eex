@@ -1,0 +1,58 @@
+<article class="page">
+    <header class="page__header">
+        <h1 class="page__headline">Eroshenko Dmitry</h1>
+        <h3 class="page__sub">Programmer</h5>
+    </header>
+    <hr class="avatar"/>
+    <section class="address">
+        <address class="address__item">
+            <h4>If you have any questions or comments don't hesitate to email me</h4>
+            <ul class="address__list">
+                <li>
+                    <span class="address__title">Email:</span>
+                    <a 
+                        class="address__ancor"
+                        href="mailto:erdmko@gmail.com"
+                        target="_blank">
+                            erdmko@gmail.com
+                    </a>
+                </li>
+                <li>
+                    <span class="address__title">Telegram:</span> 
+                    <a 
+                        class="address__ancor"
+                        href="https://t.me/erdmko"
+                        target="_blank">
+                            @erdmko
+                    </a>
+                </li>
+            </ul>
+        </address>
+        <address class="address__item">
+            <h4>Or you can send me some money just for fun!</h4>
+            <ul class="address__list">
+                <li>
+                    <span class="address__title">Eth:</span> 
+                    <a 
+                        class="address__ancor"
+                        href="https://etherscan.io/address/0xB2D7Bc25533671eF57DF31248AC14C4D3aAB4477">
+                            0xB2D7Bc25533671eF57DF31248AC14C4D3aAB4477
+                    </a></li>
+                <li>
+                    <span class="address__title">Paypal:</span>
+                    <a 
+                        class="address__ancor"
+                        href="https://paypal.me/erdmko"
+                        target="_blank">
+                            erdmko
+                    </a>
+                </li>
+            </ul>
+        </address>
+    </section>
+    <section>
+        <address class="address__form">
+            <iframe src="https://money.yandex.ru/quickpay/shop-widget?writer=seller&targets=%D0%97%D0%B0%20%D1%81%D0%B0%D0%B9%D1%82&targets-hint=&default-sum=10&button-text=14&hint=&successURL=&quickpay=shop&account=410012326580968" width="320" height="222" frameborder="0" allowtransparency="true" scrolling="no"></iframe>
+        </address>
+    </section>
+</article>

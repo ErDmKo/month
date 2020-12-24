@@ -22,7 +22,7 @@ defmodule WhatAmonthWeb.Endpoint do
     at: "/",
     from: :whatAmonth,
     gzip: false,
-    only: ~w(css fonts images js favicon.ico robots.txt)
+    only: ~w(css img js favicon.ico robots.txt browserconfig.xml site.webmanifest)
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.

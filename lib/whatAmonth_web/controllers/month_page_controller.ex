@@ -1,4 +1,4 @@
-defmodule WhatAmonthWeb.PageController do
+defmodule WhatAmonthWeb.MonthPageController do
   use WhatAmonthWeb, :controller
   use Timex
 

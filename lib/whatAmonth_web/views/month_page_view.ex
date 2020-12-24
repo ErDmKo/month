@@ -1,4 +1,4 @@
-defmodule WhatAmonthWeb.PageView do
+defmodule WhatAmonthWeb.MonthPageView do
   use WhatAmonthWeb, :view
   @colors [
     "#2287c9", # 1
