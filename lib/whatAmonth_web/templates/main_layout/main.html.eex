@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="preconnect" href="https://mc.yandex.ru" crossorigin>
+        <link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Poiret+One|Roboto&display=swap"/>
         <link 
             rel="apple-touch-icon"
             sizes="180x180"
@@ -34,17 +37,17 @@
         <meta name="theme-color" content="#ffffff">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title><%= title(@conn.assigns) %></title>
-        <link href="https://fonts.googleapis.com/css?family=Poiret+One|Roboto" rel="stylesheet">
         <meta charset="utf-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
         <meta name="description" content="<%= description(@conn.assigns) %>"/>
-        <title>Main page</title>
+        <link media="print" onload="this.onload=null;this.removeAttribute('media');" href="https://fonts.googleapis.com/css?family=Poiret+One|Roboto&display=swap" rel="stylesheet">
     </head>
     <body>
         <%= @inner_content %>
         <!-- Yandex.Metrika counter -->
         <script type="text/javascript" >
             (function (d, w, c) {
+                setTimeout(function() {
                 (w[c] = w[c] || []).push(function() {
                     try {
                         w.yaCounter53149972 = new Ya.Metrika({
@@ -66,9 +69,12 @@
                 if (w.opera == "[object Opera]") {
                     d.addEventListener("DOMContentLoaded", f, false);
                 } else { f(); }
+                }, 100);
             })(document, window, "yandex_metrika_callbacks");
         </script>
-        <noscript><div><img src="https://mc.yandex.ru/watch/53149972" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+        <noscript>
+            <link href="https://fonts.googleapis.com/css?family=Poiret+One|Roboto" rel="stylesheet" />
+            <div><img src="https://mc.yandex.ru/watch/53149972" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
         <!-- /Yandex.Metrika counter -->
     </body>
 </html>
