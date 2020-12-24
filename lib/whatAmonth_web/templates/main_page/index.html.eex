@@ -28,6 +28,42 @@
                             @erdmko
                     </a>
                 </li>
+                <li>
+                    <a
+                        class="address__ancor"
+                        rel="noopener noreferrer"
+                        href="https://github.com/ErDmKo"
+                        target="_blank">
+                        <span class="address__title">Github</span>
+                    </a>
+                </li>
+                <li>
+                    <a
+                        class="address__ancor"
+                        rel="noopener noreferrer"
+                        href="https://www.linkedin.com/in/erdmko/"
+                        target="_blank">
+                        <span class="address__title">LinkedIn</span>
+                    </a>
+                </li>
+                <li>
+                    <a
+                        class="address__ancor"
+                        rel="noopener noreferrer"
+                        href="https://zen.yandex.ru/id/5a8ed6eddcaf8e23b97cf564"
+                        target="_blank">
+                        <span class="address__title">Zen</span>
+                    </a>
+                </li>
+                <li>
+                    <a
+                        class="address__ancor"
+                        rel="noopener noreferrer"
+                        href="https://twitter.com/ErDmKo"
+                        target="_blank">
+                        <span class="address__title">twitter</span>
+                    </a>
+                </li>
             </ul>
         </address>
         <address class="address__item">
@@ -40,15 +76,6 @@
                         rel="noopener noreferrer"
                         href="https://etherscan.io/address/0xB2D7Bc25533671eF57DF31248AC14C4D3aAB4477">
                             0xB2D7Bc25533671eF57DF31248AC14C4D3aAB4477
-                    </a></li>
-                <li>
-                    <span class="address__title">Paypal:</span>
-                    <a 
-                        class="address__ancor"
-                        rel="noopener noreferrer"
-                        href="https://paypal.me/erdmko"
-                        target="_blank">
-                            erdmko
                     </a>
                 </li>
             </ul>
