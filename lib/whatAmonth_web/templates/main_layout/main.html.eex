@@ -4,6 +4,7 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link rel="preconnect" href="https://mc.yandex.ru" crossorigin>
         <link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Poiret+One|Roboto&display=swap"/>
+        <link type="image/x-icon" rel="shortcut icon" href="/favicon.ico">
         <link 
             rel="apple-touch-icon"
             sizes="180x180"
