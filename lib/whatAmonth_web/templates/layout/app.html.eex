@@ -13,7 +13,7 @@
       <section class="container">
         <nav role="navigation">
           <ul>
-            <li><a href="/">Текущий месяц</a></li>
+            <li><a href="/"><%= toRootButton(@conn.assigns) %></a></li>
           </ul>
         </nav>
       </section>

@@ -19,6 +19,11 @@ defmodule WhatAmonthWeb.Router do
     get "/", MainPageController, :index
   end
 
+  scope "/base64", WhatAmonthWeb do
+    pipe_through :browser
+    get "/", Base64PageController, :index
+  end
+
   scope "/month", WhatAmonthWeb do
     pipe_through :browser
 

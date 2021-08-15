@@ -1,0 +1,17 @@
+<section class="phx-hero" style="background-color: #daf">
+    <h1>Online base 64 convertor</h1>
+    <%= with %{:text => text} <- @conn.assigns do %>
+        <h3>Result</h3> 
+        <h2>"<span><%= text %></span>"</h2>
+    <% else _ -> %> 
+    <% end %>
+</section>
+<section>
+<%= form_for @conn, Routes.base64_page_path(@conn, :index), [method: "get"], fn f -> %>
+    <%= text_input f, :encodeQuery, class: "form-control", placeholder: "Encode/Decode" %>
+    <div class="inline-margin">
+        <%= submit "Encode", [name: "action", value: "encode"] %>
+        <%= submit "Decode", [name: "action", value: "decode"] %>
+    </div>
+<% end %>
+</section>

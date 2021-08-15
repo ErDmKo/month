@@ -14,6 +14,14 @@ defmodule WhatAmonthWeb.LayoutView do
     "Номера месяцев в году"
   end
 
+  def description(%{:description => desc}) do
+    ~s/#{desc}/
+  end
+
+  def title(%{:title => title}) do
+    ~s/#{title}/
+  end
+
   def title(%{:isIndex => true}) do
     ~s/Какой месяц сейчас?/
   end
@@ -24,5 +32,13 @@ defmodule WhatAmonthWeb.LayoutView do
 
   def title(_a) do
     "Какой номер у месяца"
+  end
+
+  def toRootButton(%{:rootButtonText => buttonText}) do
+    ~s/#{buttonText}/
+  end
+
+  def toRootButton(_a) do
+    "Текущий месяц"
   end
 end
