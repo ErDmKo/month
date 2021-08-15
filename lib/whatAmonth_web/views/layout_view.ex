@@ -10,13 +10,14 @@ defmodule WhatAmonthWeb.LayoutView do
     ~s/Номер месяца #{getTitle(month)} в году/
   end
 
+  def description(%{:description => desc}) do
+    ~s/#{desc}/
+  end
+
   def description(_a) do
     "Номера месяцев в году"
   end
 
-  def description(%{:description => desc}) do
-    ~s/#{desc}/
-  end
 
   def title(%{:title => title}) do
     ~s/#{title}/
