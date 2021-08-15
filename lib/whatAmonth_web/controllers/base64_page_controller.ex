@@ -19,19 +19,25 @@ defmodule WhatAmonthWeb.Base64PageController do
     }
   end 
 
-  def index(conn, %{"action" => "decode", "encodeQuery" => query}) when byte_size(query) > 0 do
-    ctx = getCtx(query)
-    ctx = with {:ok, result} <- Base.decode64(query) do
-      Map.put(ctx, :text, result)
-    else
-      _ -> Map.put(ctx, :text, "Error")
+  def index(conn, %{"action" => "decode", "encodeQuery" => query})
+    when byte_size(query) > 0
+    and byte_size(query) < 1000
+    do
+      ctx = getCtx(query)
+      ctx = with {:ok, result} <- Base.decode64(query) do
+        Map.put(ctx, :text, result)
+      else
+        _ -> Map.put(ctx, :text, "Error")
 
-    end
+      end
 
-    render(conn, "base64.html", ctx)
+      render(conn, "base64.html", ctx)
   end
 
-  def index(conn, %{"action" => "encode", "encodeQuery" => query}) when byte_size(query) > 0 do
+  def index(conn, %{"action" => "encode", "encodeQuery" => query})
+   when byte_size(query) > 0
+   and byte_size(query) < 1000
+   do
     ctx = getCtx(query)
     ctx = Map.put(ctx, :text, Base.encode64(query))
     render(conn, "base64.html", ctx)

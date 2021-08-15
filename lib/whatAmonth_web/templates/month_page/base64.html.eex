@@ -2,7 +2,7 @@
     <h1>Online base 64 convertor</h1>
     <%= with %{:text => text} <- @conn.assigns do %>
         <h3>Result</h3> 
-        <h2>"<span><%= text %></span>"</h2>
+        <h2>"<span class="nowrap"><%= text %></span>"</h2>
     <% else _ -> %> 
     <% end %>
 </section>
