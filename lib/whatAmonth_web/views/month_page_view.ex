@@ -17,5 +17,4 @@ defmodule WhatAmonthWeb.MonthPageView do
   def getMonthColor(month) when is_number(month) do
     Enum.at(@colors, month, "#fff")
   end
-
 end
