@@ -1,12 +1,12 @@
 <article class="page">
     <header class="page__header">
         <h1 class="page__headline">Eroshenko Dmitry</h1>
-        <h2 class="page__sub">Programmer</h2>
+        <h2 class="page__sub">👨‍💻 Programmer</h2>
     </header>
     <hr class="avatar"/>
     <section class="address">
         <address class="address__item">
-            <h3 class="address__header">If you have any questions or comments don't hesitate to email me</h3>
+            <h3 class="address__header">📝 If you have any questions or comments don't hesitate to email me</h3>
             <ul class="address__list">
                 <li>
                     <span class="address__title">Email:</span>
@@ -67,7 +67,21 @@
             </ul>
         </address>
         <address class="address__item">
-            <h3 class="address__header">Or you can send me some money just for fun!</h3>
+            <h3 class="address__header"> 🛠 Some awesome online tools</h3>
+            <ul class="address__list">
+                <li>
+                    <span class="address__title">Base64 ecoder/decoder:</span> 
+                    <a 
+                        class="address__ancor"
+                        rel="noopener noreferrer"
+                        href="/base64">
+                            Base64
+                    </a>
+                </li>
+            </ul>
+        </address>
+        <address class="address__item">
+            <h3 class="address__header">💸 Or you can send me some money just for fun!</h3>
             <ul class="address__list">
                 <li>
                     <span class="address__title">Eth:</span> 
