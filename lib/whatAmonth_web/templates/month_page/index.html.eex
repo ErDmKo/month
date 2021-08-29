@@ -2,11 +2,11 @@
   <h1>
     <%=
     case assigns[:isIndex] do
-      true -> "Текущий месяц "
+      true -> "Текущий месяц - "
       _ -> ""
     end
     %>
-    <%= formatMonth(@month) %>
+    <%= formatMonth(@month, @year) %>
     <div> Дней в <%= @year %> - <%= @days %> </div>
   </h1>
 </section>
@@ -15,7 +15,7 @@
     <li>
       <%= link to: Routes.month_page_path(@conn, :month, month) do %>
         <%=
-        partlyCon = &content_tag(&1, formatMonth(month))
+        partlyCon = &content_tag(&1, formatMonth(month, @year))
         case month == @month do
           true -> partlyCon.(:strong)
           false -> partlyCon.(:span)

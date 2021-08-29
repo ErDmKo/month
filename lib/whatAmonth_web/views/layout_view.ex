@@ -6,8 +6,8 @@ defmodule WhatAmonthWeb.LayoutView do
     ~s/Номера месяцев в году/
   end
 
-  def description(%{:month => month}) do
-    ~s/Номер месяца #{getTitle(month)} в году/
+  def description(%{:month => month, :year => year}) do
+    ~s/Номер месяца #{getTitle(month, year)} в году/
   end
 
   def description(%{:description => desc}) do
@@ -27,8 +27,8 @@ defmodule WhatAmonthWeb.LayoutView do
     ~s/Какой месяц сейчас?/
   end
 
-  def title(%{:month => month}) do
-    ~s/Какой номер месяца y #{getTitle(month)}?/
+  def title(%{:month => month, :year => year}) do
+    ~s/Какой номер месяца y #{getTitle(month, year)}?/
   end
 
   def title(_a) do
