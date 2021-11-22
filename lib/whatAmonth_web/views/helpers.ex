@@ -1,5 +1,4 @@
 defmodule WhatAmonthWeb.TemplateHelpers do
-  import WhatAmonthWeb.Gettext
 
   @months [
     "январь", # 1
