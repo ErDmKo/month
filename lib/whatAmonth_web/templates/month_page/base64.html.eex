@@ -10,8 +10,8 @@
 <%= form_for @conn, Routes.base64_page_path(@conn, :index), [method: "get"], fn f -> %>
     <%= text_input f, :encodeQuery, class: "form-control", placeholder: "Encode/Decode" %>
     <div class="inline-margin">
-        <%= submit "Encode", [name: "action", value: "encode"] %>
-        <%= submit "Decode", [name: "action", value: "decode"] %>
+        <%= submit "Encode", [name: "action", value: "encode", id: "encode"] %>
+        <%= submit "Decode", [name: "action", value: "decode", id: "decode"] %>
     </div>
 <% end %>
 </section>

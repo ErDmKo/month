@@ -1,12 +1,11 @@
 defmodule WhatAmonthWeb.TestPageController do
-  import Logger
   use WhatAmonthWeb, :controller
 
   plug :put_view, WhatAmonthWeb.MonthPageView
 
   defp processChunk(conn, list) do
     conn = Plug.Conn.send_chunked(conn, 200)
-    Enum.reduce_while(Enum.with_index(list), conn, fn ({chunk, index}, conn) ->
+    Enum.reduce_while(Enum.with_index(list), conn, fn ({chunk}, conn) ->
         :timer.sleep(500);
         case Plug.Conn.chunk(conn, chunk) do
           {:ok, conn} -> {:cont, conn}
