@@ -1,5 +1,5 @@
 <section class="phx-hero" style="background-color: #daf">
-    <h1>Online base 64 convertor</h1>
+    <h1 id="header">Online base 64 convertor</h1>
     <%= with %{:text => text} <- @conn.assigns do %>
         <h3>Result</h3> 
         <h2>"<span class="nowrap"><%= text %></span>"</h2>
@@ -14,4 +14,11 @@
         <%= submit "Decode", [name: "action", value: "decode", id: "decode"] %>
     </div>
 <% end %>
+<script>
+    document.addEventListener('click', function(e) {
+        if (e.target && e.target.id) {
+            gtag('event', e.target.id);
+        }
+    });
+</script>
 </section>
