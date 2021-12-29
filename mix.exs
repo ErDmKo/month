@@ -33,14 +33,15 @@ defmodule WhatAmonth.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.5.3"},
-      {:phoenix_html, "~> 2.11"},
-      {:timex, "~> 3.6"},
-      {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:telemetry_metrics, "~> 0.4"},
-      {:telemetry_poller, "~> 0.4"},
+      {:phoenix, "~> 1.6"},
+      {:phoenix_html, "~> 3.1"},
+      {:timex, "~> 3.7"},
+      {:phoenix_live_reload, "~> 1.3", only: :dev},
+      {:telemetry_metrics, "~> 0.6"},
+      {:telemetry_poller, "~> 0.5"},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+      {:esbuild, "~> 0.2", runtime: Mix.env() == :dev},
     ]
   end
 
@@ -52,7 +53,8 @@ defmodule WhatAmonth.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      setup: ["deps.get"]
+      setup: ["deps.get"],
+      "assets.deploy": ["esbuild default --minify", "phx.digest"]
     ]
   end
 end

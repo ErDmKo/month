@@ -29,6 +29,11 @@ defmodule WhatAmonthWeb.Router do
     get "/", Base64PageController, :index
   end
 
+  scope "/random", WhatAmonthWeb do
+    pipe_through :browser
+    get "/", RandomPageController, :index
+  end
+
   scope "/month", WhatAmonthWeb do
     pipe_through :browser
 

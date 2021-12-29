@@ -1,5 +1,5 @@
 <article class="page">
-    <header class="page__header">
+    <header class="page__header js-header">
         <h1 class="page__headline">Eroshenko Dmitry</h1>
         <h2 class="page__sub">👨‍💻 Programmer</h2>
     </header>
@@ -76,6 +76,15 @@
                         rel="noopener noreferrer"
                         href="/base64">
                             Base64
+                    </a>
+                </li>
+                <li>
+                    <span class="address__title">Random generator:</span> 
+                    <a 
+                        class="address__ancor"
+                        rel="noopener noreferrer"
+                        href="/random">
+                            Random
                     </a>
                 </li>
             </ul>
