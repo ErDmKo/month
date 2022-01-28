@@ -43,7 +43,11 @@ const initCanvas = (ctx: Window, tag: Element) => {
     });
     tag.prepend(canvas);
     //tag.appendChild(canvas);
-    const rect =  canvas.getBoundingClientRect();
+    const rectRaw = canvas.getBoundingClientRect();
+    const rect = ctx.Object.assign(rectRaw, {
+        width: rectRaw.width * 2,
+        height: rectRaw.height * 2
+    });
     ctx.Object.assign(canvas, {
         width: rect.width,
         height: rect.height

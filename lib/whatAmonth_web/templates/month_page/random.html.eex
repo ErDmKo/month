@@ -1,0 +1,8 @@
+<section class="phx-hero" style="background-color: #daf">
+    <h1 id="header">Random generator</h1>
+    <%= with %{:random => text} <- @conn.assigns do %>
+        <h3>Result</h3> 
+        <h2>"<span class="nowrap"><%= text %></span>"</h2>
+    <% else _ -> %> 
+    <% end %>
+</section>

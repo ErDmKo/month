@@ -47,7 +47,6 @@ export const drawSnowflakeInner = (
         const xpos = step * i;
         const len = width / (1.1 * (i + 1));
         canvasCtx.save()
-        //canvasCtx.fillStyle = "red";
 
         canvasCtx.translate(height/no - 1, xpos);
         canvasCtx.rotate(45 * Math.PI / 180);
