@@ -8,85 +8,34 @@
         <address class="address__item">
             <h3 class="address__header">📝 If you have any questions or comments don't hesitate to email me</h3>
             <ul class="address__list">
+                <%= for address <- @links do %>
                 <li>
-                    <span class="address__title">Email:</span>
+                    <span class="address__title"><%= address.name %></span>
                     <a 
                         class="address__ancor"
                         rel="noopener noreferrer"
-                        href="mailto:erdmko@gmail.com"
+                        href="<%= address.href %>"
                         target="_blank">
-                            erdmko@gmail.com
+                            <%= address.text %>
                     </a>
                 </li>
-                <li>
-                    <span class="address__title">Telegram:</span> 
-                    <a 
-                        class="address__ancor"
-                        rel="noopener noreferrer"
-                        href="https://t.me/erdmko"
-                        target="_blank">
-                            @erdmko
-                    </a>
-                </li>
-                <li>
-                    <a
-                        class="address__ancor"
-                        rel="noopener noreferrer"
-                        href="https://github.com/ErDmKo"
-                        target="_blank">
-                        <span class="address__title">Github</span>
-                    </a>
-                </li>
-                <li>
-                    <a
-                        class="address__ancor"
-                        rel="noopener noreferrer"
-                        href="https://www.linkedin.com/in/erdmko/"
-                        target="_blank">
-                        <span class="address__title">LinkedIn</span>
-                    </a>
-                </li>
-                <li>
-                    <a
-                        class="address__ancor"
-                        rel="noopener noreferrer"
-                        href="https://zen.yandex.ru/id/5a8ed6eddcaf8e23b97cf564"
-                        target="_blank">
-                        <span class="address__title">Zen</span>
-                    </a>
-                </li>
-                <li>
-                    <a
-                        class="address__ancor"
-                        rel="noopener noreferrer"
-                        href="https://twitter.com/ErDmKo"
-                        target="_blank">
-                        <span class="address__title">twitter</span>
-                    </a>
-                </li>
+                <% end %>
             </ul>
         </address>
         <address class="address__item">
             <h3 class="address__header"> 🛠 Some awesome online tools</h3>
             <ul class="address__list">
+                <%= for tool <- @tools do %>
                 <li>
-                    <span class="address__title">Base64 ecoder/decoder:</span> 
+                    <span class="address__title"><%= tool.name %></span> 
                     <a 
                         class="address__ancor"
                         rel="noopener noreferrer"
-                        href="/base64">
-                            Base64
+                        href="<%= tool.href %>">
+                            <%= tool.text %>
                     </a>
                 </li>
-                <li>
-                    <span class="address__title">Random generator:</span> 
-                    <a 
-                        class="address__ancor"
-                        rel="noopener noreferrer"
-                        href="/random">
-                            Random
-                    </a>
-                </li>
+                <% end %>
             </ul>
         </address>
         <address class="address__item">

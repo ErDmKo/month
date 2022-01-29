@@ -1,0 +1,25 @@
+---
+- hosts: web
+  name: git pull
+  vars:
+    install_dirr: '/opt/month'
+  remote_user: root
+  tasks:
+  - name: pull
+    ansible.builtin.git:
+      repo: 'git@github.com:ErDmKo/month.erdmko.de.git'
+      dest: '{{ install_dirr }}'
+      version: 'master'
+  - name: assets
+    ansible.builtin.shell: mix assets.deploy
+    args:
+      chdir: "{{ install_dirr }}"
+  - name: digest
+    ansible.builtin.shell: mix phx.digest
+    args:
+      chdir: '{{ install_dirr }}'
+  - name: clean
+    ansible.builtin.shell: mix phx.digest.clean
+    args:
+      chdir: '{{ install_dirr }}'
+    

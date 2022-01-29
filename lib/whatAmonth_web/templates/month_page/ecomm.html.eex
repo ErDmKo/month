@@ -1,0 +1,19 @@
+<section class="phx-hero" style="background-color: #daf">
+    <h1 id="header">Ecomm page</h1>
+    <h3>DOGECOIN to NFT!!!</h3> 
+    <h2>Buy</h2>
+    <script>
+        window.addEventListener('load', () => {
+            gtag('event', 'view_item_list', {
+                'items': [{
+                    'name': 'Triblend Android T-Shirt',
+                    'id': '12345',
+                    'price': '15.25',
+                    'brand': 'Google',
+                    'category': 'Apparel',
+                    'variant': 'Gray'
+                }]
+            });
+        });
+    </script>
+</section>
