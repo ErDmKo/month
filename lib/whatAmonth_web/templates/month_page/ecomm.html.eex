@@ -1,19 +1,60 @@
 <section class="phx-hero" style="background-color: #daf">
     <h1 id="header">Ecomm page</h1>
-    <h3>DOGECOIN to NFT!!!</h3> 
-    <h2>Buy</h2>
+    <h4>Cart</h4>
+    <div style="word-break: break-word;" id=cart></div>
+    <h4>Actions</h4>
+    <button id="add">Add to cart</button>
+    <button id="remove">Remove from cart</button>
+    <button id="buy">Buy</button>
     <script>
         window.addEventListener('load', () => {
+            const product = {
+                item_id: 'SKU_12345',
+                item_name: 'jeggings',
+                'name': 'Triblend Android T-Shirt',
+                'id': '12345',
+                'price': '15.25',
+                'brand': 'Google',
+                'category': 'Apparel',
+                'variant': 'Gray'
+            };
+            const goods = [];
+            const cartBlock = document.querySelector('#cart');
             gtag('event', 'view_item_list', {
-                'items': [{
-                    'name': 'Triblend Android T-Shirt',
-                    'id': '12345',
-                    'price': '15.25',
-                    'brand': 'Google',
-                    'category': 'Apparel',
-                    'variant': 'Gray'
-                }]
+                'items': [product]
             });
+            const update = () => {
+                cartBlock.innerText = JSON.stringify(goods, 2, null);
+            }
+            update();
+            document.querySelector('#add')
+                .addEventListener('click', () => {
+                    goods.push(product);
+                    gtag('event', 'add_to_cart', {
+                        currency: 'USD',
+                        'items': [product],
+                        value: 7.77
+                    });
+                    update();
+                });
+            document.querySelector('#remove')
+                .addEventListener('click', () => {
+                    gtag('event', 'remove_from_cart', {
+                        currency: 'USD',
+                        'items': goods,
+                        value: 7.77
+                    });
+                    goods.splice(0, 1);
+                    update();
+                });
+            document.querySelector('#buy')
+                .addEventListener('click', () => {
+                    gtag('event', 'purchase', {
+                        currency: 'USD',
+                        'items': goods,
+                        transaction_id: 'T_12345',
+                    });
+                });
         });
     </script>
 </section>
