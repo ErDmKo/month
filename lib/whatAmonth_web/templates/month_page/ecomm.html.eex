@@ -16,6 +16,7 @@
                 'price': '15.25',
                 'brand': 'Google',
                 'category': 'Apparel',
+                'coupon': 'covid19',
                 'variant': 'Gray'
             };
             const goods = [];
