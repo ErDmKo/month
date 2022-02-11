@@ -1,5 +1,5 @@
 import { animateSnowflake, drawSnowflake, initSnowflake } from "./snowflake";
-import { bindArgs, randomRange } from "./utils";
+import { bindArg, bindArgs, randomRange } from "./utils";
 declare global {
     interface Window {
         Object: typeof Object
@@ -15,8 +15,8 @@ const draw = (
 ) => {
     canvasCtx.clearRect(0, 0, rect.width, rect.height);
     snowflakes.forEach((snowflake) => {
-        snowflake(animateSnowflake(frame));
-        snowflake(drawSnowflake(canvasCtx));
+        snowflake(animateSnowflake);
+        snowflake(bindArg(canvasCtx, drawSnowflake));
     });
     frame = frame + 1;
     ctx.requestAnimationFrame(bindArgs([
@@ -68,5 +68,5 @@ const initCanvas = (ctx: Window, tag: Element) => {
 
 window.addEventListener('load', () => {
     const tags = document.querySelectorAll('.js-header');
-    window.Array.from(tags).forEach(initCanvas.bind(null, window));
+    window.Array.from(tags).forEach(bindArg(window, initCanvas));
 });

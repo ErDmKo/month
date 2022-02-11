@@ -9,12 +9,6 @@ type SnowflakeState = {
     subSlides?: number
     rotation?: boolean
 }
-const curry2 = (fn) => {
-    return (a) => (b) => fn(a, b);
-};
-const cont = curry2((obj, fn) => {
-    return fn(obj);
-});
 
 const randomazeSnowflake = (state: SnowflakeState) => {
     const {position: [x]} = state;
@@ -33,7 +27,7 @@ export const initSnowflake = (state: SnowflakeState) => {
     if (initPos) {
         state.curentPosition = initPos;
     }
-    return cont(state);
+    return (fn: (s: SnowflakeState) => SnowflakeState) => fn(state);
 }
 
 export const drawSnowflakeInner = (
@@ -59,7 +53,7 @@ export const drawSnowflakeInner = (
     }
 }
 
-export const drawSnowflake = curry2((
+export const drawSnowflake = (
     canvasCtx: CanvasRenderingContext2D,
     state: SnowflakeState
 ) => {
@@ -87,9 +81,9 @@ export const drawSnowflake = curry2((
         drawSnowflakeInner(canvasCtx, rootLength, width, subSlides);
         canvasCtx.restore()
     }
-});
+};
 
-export const animateSnowflake = curry2((frame: number, state: SnowflakeState) => {
+export const animateSnowflake = (state: SnowflakeState) => {
     const {
         position: [maxX, maxY],
         curentPosition: [x, y],
@@ -110,4 +104,4 @@ export const animateSnowflake = curry2((frame: number, state: SnowflakeState) =>
         (y + (slides/width/2) + randomWindY) % (maxY + (len * 2))
     ];
     state.angle = snowflakeAngle + ( (state.rotation ? 1 : -1) * len / 10000);
-})
+}
