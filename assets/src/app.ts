@@ -1,4 +1,4 @@
-import { animateSnowflake, drawSnowflake, initSnowflake } from "./snowflake";
+import { animateSnowflake, drawSnowflake, initSnowflake, SnowFlakeInstance } from "./snowflake";
 import { bindArg, bindArgs, randomRange } from "./utils";
 declare global {
     interface Window {
@@ -9,22 +9,19 @@ declare global {
 const draw = (
     ctx: Window,
     canvasCtx: CanvasRenderingContext2D,
-    snowflakes: any[],
+    snowflakes: SnowFlakeInstance[],
     rect: {width: number, height: number},
-    frame: number = 0
 ) => {
     canvasCtx.clearRect(0, 0, rect.width, rect.height);
     snowflakes.forEach((snowflake) => {
         snowflake(animateSnowflake);
         snowflake(bindArg(canvasCtx, drawSnowflake));
     });
-    frame = frame + 1;
     ctx.requestAnimationFrame(bindArgs([
         ctx,
         canvasCtx,
         snowflakes,
         rect,
-        frame
     ], draw));
 };
 const initCanvas = (ctx: Window, tag: Element) => {
@@ -41,8 +38,7 @@ const initCanvas = (ctx: Window, tag: Element) => {
     ctx.Object.assign(htmlElement.style, {
         position: 'relative'
     });
-    tag.prepend(canvas);
-    //tag.appendChild(canvas);
+    tag.appendChild(canvas);
     const rectRaw = canvas.getBoundingClientRect();
     const rect = ctx.Object.assign(rectRaw, {
         width: rectRaw.width * 2,

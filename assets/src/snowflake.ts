@@ -20,14 +20,16 @@ const randomazeSnowflake = (state: SnowflakeState) => {
     state.rotation = randomRange(0, 1) >= 0.5 ? true : false;
     return state;
 }
+export type SnowFlakeInstance =
+    <R> (fn: (s: SnowflakeState) => R) => R
 
-export const initSnowflake = (state: SnowflakeState) => {
+export const initSnowflake = (state: SnowflakeState): SnowFlakeInstance => {
     const initPos = state.curentPosition;
     randomazeSnowflake(state)
     if (initPos) {
         state.curentPosition = initPos;
     }
-    return (fn: (s: SnowflakeState) => SnowflakeState) => fn(state);
+    return <R>(fn: (s: SnowflakeState) => R) => fn(state);
 }
 
 export const drawSnowflakeInner = (
