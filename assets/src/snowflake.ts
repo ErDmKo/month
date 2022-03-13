@@ -67,13 +67,13 @@ export const drawSnowflake = (
         size: [width, rootLength]
     } = state;
 
-    const step = 360 / slides;
+    const step = (360 / slides) * Math.PI / 180;
+    canvasCtx.save();
+    canvasCtx.translate(centerX, centerY);
+    canvasCtx.rotate(snowflakeAngle);
     for (let i = 0; i < slides; i++) {
-        canvasCtx.save();
         canvasCtx.fillStyle = "rgba(255,255,255,0.3)";
-        canvasCtx.translate(centerX, centerY);
-        const angle = step * i * Math.PI / 180;
-        canvasCtx.rotate(angle + snowflakeAngle);
+        canvasCtx.rotate(step);
         canvasCtx.fillRect(
             -(width / 2),
             0,
@@ -81,8 +81,8 @@ export const drawSnowflake = (
             rootLength
         );
         drawSnowflakeInner(canvasCtx, rootLength, width, subSlides);
-        canvasCtx.restore()
     }
+    canvasCtx.restore()
 };
 
 export const animateSnowflake = (state: SnowflakeState) => {
@@ -93,17 +93,15 @@ export const animateSnowflake = (state: SnowflakeState) => {
         slides,
         size: [width, len]
     } = state;
-    const randomWindX = 0;
-    const randomWindY = 0;
     if (
-        (x + randomWindX) > maxX || 
-        (y + (slides/width) + randomWindY) >= (maxY + (len * 2))
+        x > maxX ||
+        y + (slides/width) >= maxY + (len * 2)
     ) {
         return randomazeSnowflake(state);
-    } 
+    }
     state.curentPosition = [
-        (x + randomWindX) % maxX,
-        (y + (slides/width/2) + randomWindY) % (maxY + (len * 2))
+        x,
+        y + ( slides/width/2 )
     ];
     state.angle = snowflakeAngle + ( (state.rotation ? 1 : -1) * len / 10000);
 }
