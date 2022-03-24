@@ -56,11 +56,20 @@ const inlineBlock = {
     display: 'inline-block',
     margin: '5px'
 }
-const phoneStyleMap: Record<string, any> = {
-    "KeyS": inlineBlock,
-    "KeyA": inlineBlock,
-    "KeyD": inlineBlock
+const block = {
+    display: 'block',
+    margin: '5px auto'
 }
+const smallButton = {
+    padding: '5px',
+}
+const phoneStyleMap = (ctx: Window): Record<string, any> => ({
+    "Space": ctx.Object.assign({}, smallButton, block),
+    "KeyE": ctx.Object.assign({}, smallButton, block),
+    "KeyS": ctx.Object.assign({}, inlineBlock, smallButton),
+    "KeyA": ctx.Object.assign({}, inlineBlock, smallButton),
+    "KeyD": ctx.Object.assign({}, inlineBlock, smallButton)
+})
 
 const addPhoneControls = (
     ctx: Window,
@@ -77,11 +86,13 @@ const addPhoneControls = (
         left: '0',
         right: '0',
     });
+    const styles = phoneStyleMap(ctx);
     phoneControlsMap.forEach(([key, name]) => {
-        const elem = ctx.document.createElement('div');
+        const elem = ctx.document.createElement('button');
         elem.innerText = name;
-        if (phoneStyleMap[key]) {
-            ctx.Object.assign(elem.style, phoneStyleMap[key]);
+        const style = styles[key]
+        if (style) {
+            ctx.Object.assign(elem.style, style);
         }
         elem.addEventListener('click', keyHandlers[key], {passive: true});
         controls.appendChild(elem);
