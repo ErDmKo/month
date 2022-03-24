@@ -1,3 +1,7 @@
+<script
+    async
+    src="<%= Routes.static_path(@conn, "/assets/app.js") %>">
+</script>
 <section class="phx-hero" style="background-color: #daf">
     <h1 id="header">Random generator</h1>
     <%= with %{:random => text} <- @conn.assigns do %>
@@ -5,4 +9,5 @@
         <h2>"<span class="nowrap"><%= text %></span>"</h2>
     <% else _ -> %> 
     <% end %>
+    <div class="js-tetris"></div>
 </section>

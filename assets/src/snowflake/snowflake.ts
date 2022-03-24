@@ -1,35 +1,44 @@
-import { randomRange } from "./utils";
+import { cont, randomRange } from "@src/utils";
 
 type SnowflakeState = {
     position: [x: number, y: number]
-    curentPosition?: [x: number, y: number],
-    angle?: number,
-    size?: [width: number, len: number]
-    slides?: number
+    curentPosition: [x: number, y: number],
+    angle: number,
+    size: [width: number, len: number]
+    slides: number
     subSlides?: number
     rotation?: boolean
 }
+type PartialState = Partial<SnowflakeState>;
+type MinimumState = Pick<SnowflakeState, 'position' | 'curentPosition'>;
 
-const randomazeSnowflake = (state: SnowflakeState) => {
+const randomazeSnowflake = (
+    ctx: Window,
+    state: PartialState & MinimumState
+): SnowflakeState => {
     const {position: [x]} = state;
-    state.curentPosition = [randomRange(0, x), -100];
-    state.size = [randomRange(1, 4), randomRange(10, 70)];
-    state.slides = Math.round(randomRange(3, 10));
-    state.angle = Math.round(randomRange(0, 360));
-    state.subSlides = randomRange(1, state.slides);
-    state.rotation = randomRange(0, 1) >= 0.5 ? true : false;
-    return state;
+    state.curentPosition = [randomRange(ctx, 0, x), -100];
+    state.size = [randomRange(ctx, 1, 4), randomRange(ctx, 10, 70)];
+    state.slides = Math.round(randomRange(ctx, 3, 10));
+    state.angle = Math.round(randomRange(ctx, 0, 360));
+    state.subSlides = randomRange(ctx, 1, state.slides);
+    state.rotation = randomRange(ctx, 0, 1) >= 0.5 ? true : false;
+    return state as SnowflakeState;
 }
 export type SnowFlakeInstance =
     <R> (fn: (s: SnowflakeState) => R) => R
 
-export const initSnowflake = (state: SnowflakeState): SnowFlakeInstance => {
+export const initSnowflake = (
+    ctx: Window,
+    state: MinimumState
+): SnowFlakeInstance => {
     const initPos = state.curentPosition;
-    randomazeSnowflake(state)
+    const inputState = state as Partial<SnowflakeState> & MinimumState;
+    const newState = randomazeSnowflake(ctx, inputState)
     if (initPos) {
         state.curentPosition = initPos;
     }
-    return <R>(fn: (s: SnowflakeState) => R) => fn(state);
+    return cont(newState);
 }
 
 export const drawSnowflakeInner = (
@@ -85,7 +94,7 @@ export const drawSnowflake = (
     canvasCtx.restore()
 };
 
-export const animateSnowflake = (state: SnowflakeState) => {
+export const animateSnowflake = (ctx: Window, state: SnowflakeState) => {
     const {
         position: [maxX, maxY],
         curentPosition: [x, y],
@@ -97,7 +106,7 @@ export const animateSnowflake = (state: SnowflakeState) => {
         x > maxX ||
         y + (slides/width) >= maxY + (len * 2)
     ) {
-        return randomazeSnowflake(state);
+        return randomazeSnowflake(ctx, state);
     }
     state.curentPosition = [
         x,
