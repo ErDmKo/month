@@ -62,6 +62,7 @@ const block = {
 }
 const smallButton = {
     padding: '5px',
+    touchAction: 'manipulation'
 }
 const phoneStyleMap = (ctx: Window): Record<string, any> => ({
     "Space": ctx.Object.assign({}, smallButton, block),
