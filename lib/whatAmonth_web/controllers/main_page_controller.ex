@@ -34,7 +34,12 @@ defmodule WhatAmonthWeb.MainPageController do
           name: "Twitter",
           href: "https://twitter.com/ErDmKo",
           text: "//twitter.com/ErDmKo"
-        }
+        },
+        %{
+          name: "Blog",
+          href: "https://erdmko.de/blog",
+          text: "//erdmko.de/blog"
+        },
       ],
       tools: [%{
           name: "Base64 ecoder/decoder",
