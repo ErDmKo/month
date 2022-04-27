@@ -6,7 +6,7 @@ Simple phoenix month app
 ```bash
 mix phx.server
 ```
-Server will be runed on http://localhost:4000
+Server will be runned on http://localhost:4000
 
 ## Deploy command sequence
 ```bash
