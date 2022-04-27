@@ -34,6 +34,11 @@ defmodule WhatAmonthWeb.Router do
     get "/", RandomPageController, :index
   end
 
+  scope "/tetris", WhatAmonthWeb do
+    pipe_through :browser
+    get "/", TetrisPageController, :index
+  end
+
   scope "/ecomm", WhatAmonthWeb do
     pipe_through :browser
     get "/", EcommPageController, :index

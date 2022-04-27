@@ -1,13 +1,22 @@
-<script
-    async
-    src="<%= Routes.static_path(@conn, "/assets/app.js") %>">
-</script>
+<%= with %{:divClass => text} <- @conn.assigns do %>
+    <script
+        async
+        src="<%= Routes.static_path(@conn, "/assets/app.js") %>">
+    </script>
+<% else _ -> %> 
+<% end %>
 <section class="phx-hero" style="background-color: #daf">
-    <h1 id="header">Random generator</h1>
+    <%= with %{:description => text} <- @conn.assigns do %>
+        <h1 id="header"><%= text %></h1>
+    <% else _ -> %> 
+    <% end %>
     <%= with %{:random => text} <- @conn.assigns do %>
         <h3>Result</h3> 
         <h2>"<span class="nowrap"><%= text %></span>"</h2>
     <% else _ -> %> 
     <% end %>
-    <div class="js-tetris"></div>
+    <%= with %{:divClass => text} <- @conn.assigns do %>
+        <div class="js-tetris">loading</div>
+    <% else _ -> %> 
+    <% end %>
 </section>

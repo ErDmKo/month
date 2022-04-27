@@ -2,10 +2,15 @@
 
 Simple phoenix month app
 
-## Learn more
+## Run for develop
+```bash
+mix phx.server
+```
+Server will be runed on http://localhost:4000
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+## Deploy command sequence
+```bash
+git commit 
+git push
+ansible-playbook ansible/pull.yaml -i ansible/inventory.yaml
+```

@@ -1,5 +1,5 @@
 import { cont } from "@src/utils";
-import { Vector2D, FieldType, ZeroOne, WIDTH_INDEX, HEIGHT_INDEX, FieldState } from "./field";
+import { Vector2D, FieldType, ZeroOneString, WIDTH_INDEX, HEIGHT_INDEX, FieldState } from "./field";
 
 export type Margins = [
     top: number,
@@ -10,8 +10,9 @@ export type Margins = [
 export type FigureState = [
     matrix: FieldType, // 0
     position: Vector2D, // 1
-    sideMargins: Margins, // 2,
-    isFixed: 0 | 1 // 3
+    sideMargins: Margins, // 2
+    isFixed: 0 | 1, // 3
+    color: string // 4
 ]
 
 export const IS_FIXED_INDEX = 3;
@@ -47,23 +48,23 @@ const rightL: FieldType = [
     [1, 1],
 ];
 
+const dogR: FieldType = [
+    [0, 1, 1],
+    [1, 1, 0],
+];
 const dogL: FieldType = [
     [1, 1, 0],
     [0, 1, 1],
 ];
-const dogR: FieldType = [
-    [1, 1, 0],
-    [0, 1, 1],
-];
 
-export const fullFigureList: FieldType[] = [
-    theT, //0
-    dogL, //1
-    dogR, //2
-    rightL, //3
-    leftL, //4
-    line, //5
-    square //6
+export const fullFigureList: [figure: FieldType, color: string][] = [
+    [theT, "#808001"], //0
+    [dogL, "#008000"], //1
+    [dogR, "#018080"], //2
+    [rightL, "#888"], //3
+    [leftL, "#008"], //4
+    [line, "#800"], //5
+    [square, "#808"] //6
 ]
 const iterMatrix = (
     matrix: FieldType,
@@ -169,10 +170,10 @@ export const rotateFigureLeft = (
 }
 export const figureToField = (
     field: FieldType,
-    isClear: ZeroOne,
+    isClear: ZeroOneString,
     state: FigureState
 ) => {
-    const [matrix, position, margins] = state;
+    const [matrix, position, margins,, color] = state;
     const size = matrix.length;
     const [top, left, bottom, right] = margins;
     const sizeLeft = size + right;
@@ -183,7 +184,7 @@ export const figureToField = (
             const rowIndex = i + newY;
             const row = field[rowIndex];
             const collIndex = j + newX;
-            row[collIndex] = isClear ? 0 : matrix[i][j];
+            row[collIndex] = isClear ? 0 : color;
         }
     }
 }
@@ -241,9 +242,10 @@ export const moveFigure = (
 }
 export const figure = (
     ctx: Window,
-    matrix: FieldType,
+    figureShapeIndex: number,
     position: Vector2D
 ): FigureInstance => {
+    const [matrix, color] = fullFigureList[figureShapeIndex];
     const diff = matrix.length - matrix[0].length;
     if (diff < 0) {
         for (let i = 0; i < Math.abs(diff); i++) {
@@ -258,6 +260,6 @@ export const figure = (
         }
     }
     const margins = calcMargins(matrix);
-    const state: FigureState = [matrix, position, margins, 0];
+    const state: FigureState = [matrix, position, margins, 0, color];
     return cont(state);
 }

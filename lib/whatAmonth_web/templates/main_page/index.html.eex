@@ -39,6 +39,22 @@
             </ul>
         </address>
         <address class="address__item">
+            <h3 class="address__header"> 🎮 Some simple html games</h3>
+            <ul class="address__list">
+                <%= for game <- @games do %>
+                <li>
+                    <span class="address__title"><%= game.name %></span> 
+                    <a 
+                        class="address__ancor"
+                        rel="noopener noreferrer"
+                        href="<%= game.href %>">
+                            <%= game.text %>
+                    </a>
+                </li>
+                <% end %>
+            </ul>
+        </address>
+        <address class="address__item">
             <h3 class="address__header">💸 Or you can send me some money just for fun!</h3>
             <ul class="address__list">
                 <li>

@@ -41,6 +41,11 @@ defmodule WhatAmonthWeb.MainPageController do
           text: "//erdmko.de/blog"
         },
       ],
+      games: [%{
+          name: "Tetris game",
+          href: Routes.tetris_page_path(conn, :index),
+          text: "Tetris"
+      }],
       tools: [%{
           name: "Base64 ecoder/decoder",
           href: Routes.base64_page_path(conn, :index),

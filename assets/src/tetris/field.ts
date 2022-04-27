@@ -10,9 +10,9 @@ import {
     rotateFigureLeft,
 } from "./figure";
 
-export type ZeroOne = 0 | 1;
+export type ZeroOneString = 0 | 1 | string;
 
-export type FieldType = ZeroOne[][];
+export type FieldType = ZeroOneString[][];
 export type Vector2D = [width: number, height: number];
 export const WIDTH_INDEX = 0;
 export const HEIGHT_INDEX = 1;
@@ -73,7 +73,7 @@ const chekLines = (ctx: Window, state: FieldState) => {
     for (let i = 0; i < field.length; i++) {
         let lineSum = 0;
         for (let j = 0; j < field[i].length; j ++) {
-            lineSum += field[i][j];
+            lineSum += field[i][j] ? 1: 0;
         }
         if (lineSum == field[i].length) {
             lines.push(i);
@@ -151,10 +151,9 @@ export const addFigureRandomFigure = (ctx: Window, state: FieldState) => {
     const figureShapeIndex = ctx.Math.round(
         randomRange(ctx, 0, fullFigureList.length - 1)
     );
-    const figureShape = fullFigureList[figureShapeIndex];
     const center = ctx.Math.floor(field[0].length / 2);
     const centerPosition: Vector2D = [center - 2, 0];
-    const figureInstance = figure(ctx, figureShape, centerPosition);
+    const figureInstance = figure(ctx, figureShapeIndex, centerPosition);
     figures.push(figureInstance);
 }
 
@@ -163,7 +162,7 @@ export const drawField = (
     fieldState: FieldState
 ) => {
     const margin = 5;
-    const [field, cellSize] = fieldState;
+    const [field, cellSize,,,color] = fieldState;
     const [width, height] = cellSize;
     const rows = field.length;
     const colls = field[0].length;
@@ -179,12 +178,17 @@ export const drawField = (
                 canvasCtx.fillRect(x-1, 0, 2, fullHeight);
             }
             if (field[row][coll]) {
+                const color  = field[row][coll];
+                if (typeof color == 'string') {
+                    canvasCtx.fillStyle = color;
+                }
                 canvasCtx.fillRect(
                     x + margin,
                     y + margin,
                     width - (margin * 2),
                     height - (margin * 2)
                 );
+                canvasCtx.fillStyle = '#000';
             }
         }
     }

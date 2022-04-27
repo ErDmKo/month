@@ -46,11 +46,11 @@ const getKeyHandlers = (ctx: Window, fieldInstance: FieldInstance): KeyHandlers 
 const START_TEXT = 'Press SPACE to start';
 
 const phoneControlsMap: [string, string][] = [
-    ["Space", "Start"],
-    ["KeyE", "Rotate"],
-    ["KeyA", "Left"],
-    ["KeyS", "Down"],
-    ["KeyD", "Right"]
+    ["Space", "Start (space)"],
+    ["KeyE", "Rotate (E)"],
+    ["KeyA", "Left (A)"],
+    ["KeyS", "Down (S)"],
+    ["KeyD", "Right (D)"]
 ];
 const inlineBlock = {
     display: 'inline-block',
@@ -103,6 +103,7 @@ const addPhoneControls = (
 
 const initCanvas = (ctx: Window, element: Element) => {
     const htmlElement = element as HTMLDivElement;
+    htmlElement.innerHTML = '';
     const boardSize: Vector2D = [10, 20];
     ctx.Object.assign(htmlElement.style, {
         height: '400px',
