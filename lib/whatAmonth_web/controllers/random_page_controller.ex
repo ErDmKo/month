@@ -8,10 +8,9 @@ defmodule WhatAmonthWeb.RandomPageController do
       description: "Random generator",
       rootButtonText: "Back to main page",
       title: "Random generator",
-      random: :rand.uniform(1000000000)
+      random: :rand.uniform(1_000_000_000)
     }
-  end 
-  
+  end
 
   def index(conn, _params) do
     render(conn, "random.html", getCtx())

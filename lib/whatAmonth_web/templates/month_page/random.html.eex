@@ -1,4 +1,4 @@
-<%= with %{:divClass => text} <- @conn.assigns do %>
+<%= with %{:divClass => _} <- @conn.assigns do %>
     <script
         async
         src="<%= Routes.static_path(@conn, "/assets/app.js") %>">
@@ -15,7 +15,7 @@
         <h2>"<span class="nowrap"><%= text %></span>"</h2>
     <% else _ -> %> 
     <% end %>
-    <%= with %{:divClass => text} <- @conn.assigns do %>
+    <%= with %{:divClass => _} <- @conn.assigns do %>
         <div class="js-tetris">loading</div>
     <% else _ -> %> 
     <% end %>

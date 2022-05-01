@@ -1,3 +1,10 @@
+declare global {
+    interface Window {
+        Object: typeof Object;
+        Array: typeof Array;
+        Math: typeof Math;
+    }
+}
 export const fillElemWidhCanvas = (
     ctx: Window,
     element: HTMLDivElement
@@ -9,20 +16,20 @@ export const fillElemWidhCanvas = (
         left: '0px',
         pointerEvents: 'none',
         width: '100%',
-        height: '100%'
+        height: '100%',
     });
     ctx.Object.assign(element.style, {
-        position: 'relative'
+        position: 'relative',
     });
     element.appendChild(canvas);
     const rectRaw = canvas.getBoundingClientRect();
     const rect = ctx.Object.assign(rectRaw, {
         width: rectRaw.width * 2,
-        height: rectRaw.height * 2
+        height: rectRaw.height * 2,
     });
     ctx.Object.assign(canvas, {
         width: rect.width,
-        height: rect.height
+        height: rect.height,
     });
     return [rect, canvas];
-}
+};

@@ -1,0 +1,52 @@
+load("@npm//@bazel/esbuild:index.bzl", "esbuild")
+load("@npm//@bazel/typescript:index.bzl", "ts_project", "ts_config")
+load("@npm//google-closure-compiler:index.bzl", "google_closure_compiler")
+load("@com_github_airyhq_bazel_tools//lint:prettier.bzl", "fix_prettier")
+load("@build_bazel_rules_nodejs//:index.bzl", "pkg_web")
+
+_TSCONFIG = {}
+
+ts_project(
+    name = "lib",
+    srcs = glob(["**/*.ts"]),
+    extends = "//:baseTsconfig",
+    tsconfig = _TSCONFIG,
+    deps = [
+        "//assets/src/snowflake:package",
+        "//assets/src/tetris:package",
+    ],
+)
+
+
+esbuild(
+    name = "bundle",
+    entry_point = "app.ts",
+    metafile = False,
+    #minify = True,
+    sourcemap = 'inline',
+    deps = [
+        ":lib",
+    ],
+)
+
+google_closure_compiler(
+    name = "closure",
+    outs = ["bundle.min.js"],
+    args = [
+        "--js=$(locations :bundle)",
+        "--js_output_file=$@",
+    ],
+    data = [":bundle"],
+)
+
+fix_prettier(
+    name = "prettier",
+    config = "//:prettierrc",
+    ignore = "//:prettierignore",
+)
+genrule(
+    name = "src",
+    srcs = [":closure"],
+    outs = ["priv/static/assets/bundle.min.js"],
+    cmd = "cp $(location :closure) priv/static/assets"
+)

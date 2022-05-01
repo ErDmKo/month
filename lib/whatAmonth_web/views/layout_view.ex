@@ -18,7 +18,6 @@ defmodule WhatAmonthWeb.LayoutView do
     "Номера месяцев в году"
   end
 
-
   def title(%{:title => title}) do
     ~s/#{title}/
   end

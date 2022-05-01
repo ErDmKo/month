@@ -1,2 +1,2 @@
-export * from './snowflake'
-export * from './canvas'
+export * from './snowflake';
+export * from './canvas';

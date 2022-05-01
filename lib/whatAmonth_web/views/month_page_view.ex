@@ -1,18 +1,31 @@
 defmodule WhatAmonthWeb.MonthPageView do
   use WhatAmonthWeb, :view
+
   @colors [
-    "#2287c9", # 1
-    "#0279be", # 2
-    "#72a869", # 3
-    "#3a9c5a", # 4
-    "#8cb056", # 5
-    "#fccb84", # 6
-    "#f6aa78", # 7
-    "#f1816c", # 8
-    "#f1791e", # 9
-    "#eb6114", # 10
-    "#52a3d9", # 11
-    "#2287c9", # 12
+    # 1
+    "#2287c9",
+    # 2
+    "#0279be",
+    # 3
+    "#72a869",
+    # 4
+    "#3a9c5a",
+    # 5
+    "#8cb056",
+    # 6
+    "#fccb84",
+    # 7
+    "#f6aa78",
+    # 8
+    "#f1816c",
+    # 9
+    "#f1791e",
+    # 10
+    "#eb6114",
+    # 11
+    "#52a3d9",
+    # 12
+    "#2287c9"
   ]
   def getMonthColor(month) when is_number(month) do
     Enum.at(@colors, month, "#fff")

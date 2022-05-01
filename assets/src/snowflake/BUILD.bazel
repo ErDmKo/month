@@ -1,0 +1,23 @@
+load("@npm//@bazel/typescript:index.bzl", "ts_project", "ts_config")
+load("@build_bazel_rules_nodejs//:index.bzl", "js_library") 
+
+_TSCONFIG = {}
+
+package(default_visibility = ["//:__subpackages__"])
+ts_project(
+    name = "lib",
+    srcs = glob(["*.ts"]),
+    extends = "//:baseTsconfig",
+    declaration = True,
+    tsconfig = _TSCONFIG,
+    deps = [
+        "@npm//@types/node",
+        "//assets/src/utils:lib",
+    ],
+)
+
+js_library(
+    name = "package",
+    package_name = "@month/snowflake",
+    deps = [":lib"],
+)

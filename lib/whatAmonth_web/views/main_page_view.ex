@@ -1,3 +1,3 @@
 defmodule WhatAmonthWeb.MainPageView do
-    use WhatAmonthWeb, :view
+  use WhatAmonthWeb, :view
 end

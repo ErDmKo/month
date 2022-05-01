@@ -1,0 +1,4 @@
+/priv
+/deps
+/bazel-*
+/_build

@@ -1,21 +1,23 @@
 {
+    "$schema": "http://json.schemastore.org/tsconfig",
     "compilerOptions": {
         "noImplicitUseStrict": true,
-        "target": "ES2018",
-        "alwaysStrict": true,
+        "target": "esNext",
+        "alwaysStrict": false,
         "strict": true,
-        "module": "commonjs",
+        "module": "ES2022",
         "moduleResolution": "node",
         "keyofStringsOnly": true,
-        "noEmit": true,
+        "noEmit": false,
         "skipLibCheck": true,
-        "esModuleInterop": true,
+        "declaration": true,
+        "esModuleInterop": false,
         "lib": [
             "es2017",
             "dom"
         ],
         "types": [
-            "node",
+            "node"
         ],
         "typeRoots": [
             "@types",
@@ -23,13 +25,11 @@
         ],
         "baseUrl": ".",
         "paths": {
-            "@src/*": [
-                "./assets/src/*"
-            ],
-            "@root/*": [
-                "./assets/*"
+            "@month/*": [
+                "./assets/src/*",
+                "./bazel-out/darwin-fastbuild/bin/assets/src/*"
             ]
-        },
+        }
     },
     "exclude": [
         "node_modules"

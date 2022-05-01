@@ -10,8 +10,7 @@ defmodule WhatAmonthWeb.TetrisPageController do
       title: "Tetris game",
       divClass: "js-tetris"
     }
-  end 
-  
+  end
 
   def index(conn, _params) do
     render(conn, "random.html", getCtx())

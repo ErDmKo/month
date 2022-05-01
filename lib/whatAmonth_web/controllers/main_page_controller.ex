@@ -1,11 +1,12 @@
 defmodule WhatAmonthWeb.MainPageController do
   use WhatAmonthWeb, :controller
 
-  plug :put_layout, { WhatAmonthWeb.MainLayoutView, "main.html" }
+  plug :put_layout, {WhatAmonthWeb.MainLayoutView, "main.html"}
 
   def index(conn, _param) do
     render(conn, "index.html", %{
-      links: [%{
+      links: [
+        %{
           name: "Email",
           href: "mailto:erdmko@gmail.com",
           text: "erdmko@gmail.com"
@@ -39,14 +40,17 @@ defmodule WhatAmonthWeb.MainPageController do
           name: "Blog",
           href: "https://erdmko.de/blog",
           text: "//erdmko.de/blog"
-        },
+        }
       ],
-      games: [%{
+      games: [
+        %{
           name: "Tetris game",
           href: Routes.tetris_page_path(conn, :index),
           text: "Tetris"
-      }],
-      tools: [%{
+        }
+      ],
+      tools: [
+        %{
           name: "Base64 ecoder/decoder",
           href: Routes.base64_page_path(conn, :index),
           text: "Base64"

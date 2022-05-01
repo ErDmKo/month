@@ -5,18 +5,21 @@ defmodule WhatAmonthWeb.TestPageController do
 
   defp processChunk(conn, list) do
     conn = Plug.Conn.send_chunked(conn, 200)
-    Enum.reduce_while(Enum.with_index(list), conn, fn ({chunk}, conn) ->
-        :timer.sleep(500);
-        case Plug.Conn.chunk(conn, chunk) do
-          {:ok, conn} -> {:cont, conn}
-          {:error, :closed} -> {:halt, conn}
-        end; 
-      end)
+
+    Enum.reduce_while(Enum.with_index(list), conn, fn {chunk}, conn ->
+      :timer.sleep(500)
+
+      case Plug.Conn.chunk(conn, chunk) do
+        {:ok, conn} -> {:cont, conn}
+        {:error, :closed} -> {:halt, conn}
+      end
+    end)
   end
 
   def index(conn, _params) do
     format = get_format(conn)
     template = template_name("base64.html", format)
+
     view =
       Map.get(conn.private, :phoenix_view) ||
         raise "a view module was not specified, set one with put_view/2"
@@ -32,7 +35,7 @@ defmodule WhatAmonthWeb.TestPageController do
       conn
     else
       content_type = content_type <> "; charset=utf-8"
-      %Plug.Conn{conn | resp_headers: [{"content-type", content_type}|resp_headers]}
+      %Plug.Conn{conn | resp_headers: [{"content-type", content_type} | resp_headers]}
     end
   end
 
@@ -66,6 +69,7 @@ defmodule WhatAmonthWeb.TestPageController do
 
   defp prepare_assigns(conn, assigns, template, format) do
     assigns = to_map(assigns)
+
     layout =
       case layout(conn, assigns, format) do
         {mod, layout} -> {mod, template_name(layout, format)}
@@ -81,8 +85,6 @@ defmodule WhatAmonthWeb.TestPageController do
     end)
   end
 
-  defp template_name(name, format) when is_atom(name), do:
-    Atom.to_string(name) <> "." <> format
-  defp template_name(name, _format) when is_binary(name), do:
-    name
+  defp template_name(name, format) when is_atom(name), do: Atom.to_string(name) <> "." <> format
+  defp template_name(name, _format) when is_binary(name), do: name
 end

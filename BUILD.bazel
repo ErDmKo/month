@@ -1,0 +1,15 @@
+package(default_visibility = ["//visibility:public"])
+
+filegroup(
+    name = "baseTsconfig",
+    srcs = ["tsconfig.json"],
+)
+filegroup(
+    name = "prettierignore",
+    srcs = [".prettierignore"],
+)
+
+filegroup(
+    name = "prettierrc",
+    srcs = [".prettierrc.json"],
+)

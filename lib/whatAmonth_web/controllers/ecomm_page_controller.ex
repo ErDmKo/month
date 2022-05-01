@@ -10,8 +10,7 @@ defmodule WhatAmonthWeb.EcommPageController do
       title: "Ecom page",
       random: 0
     }
-  end 
-  
+  end
 
   def index(conn, _params) do
     render(conn, "ecomm.html", getCtx())

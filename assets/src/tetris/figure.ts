@@ -1,19 +1,26 @@
-import { cont } from "@src/utils";
-import { Vector2D, FieldType, ZeroOneString, WIDTH_INDEX, HEIGHT_INDEX, FieldState } from "./field";
+import { cont } from '@month/utils';
+import {
+    Vector2D,
+    FieldType,
+    ZeroOneString,
+    WIDTH_INDEX,
+    HEIGHT_INDEX,
+    FieldState,
+} from './field';
 
 export type Margins = [
     top: number,
     left: number,
     bottom: number,
     right: number
-]
+];
 export type FigureState = [
     matrix: FieldType, // 0
     position: Vector2D, // 1
     sideMargins: Margins, // 2
     isFixed: 0 | 1, // 3
     color: string // 4
-]
+];
 
 export const IS_FIXED_INDEX = 3;
 
@@ -21,20 +28,15 @@ export type FigureInstance = <R>(a: (s: FigureState) => R) => R;
 
 const theT: FieldType = [
     [0, 1, 0],
-    [1, 1, 1]
+    [1, 1, 1],
 ];
 
 const square: FieldType = [
     [1, 1],
-    [1, 1]
+    [1, 1],
 ];
 
-const line: FieldType = [
-    [1],
-    [1],
-    [1],
-    [1]
-];
+const line: FieldType = [[1], [1], [1], [1]];
 
 const leftL: FieldType = [
     [0, 1],
@@ -58,14 +60,14 @@ const dogL: FieldType = [
 ];
 
 export const fullFigureList: [figure: FieldType, color: string][] = [
-    [theT, "#808001"], //0
-    [dogL, "#008000"], //1
-    [dogR, "#018080"], //2
-    [rightL, "#888"], //3
-    [leftL, "#008"], //4
-    [line, "#800"], //5
-    [square, "#808"] //6
-]
+    [theT, '#808001'], //0
+    [dogL, '#008000'], //1
+    [dogR, '#018080'], //2
+    [rightL, '#888'], //3
+    [leftL, '#008'], //4
+    [line, '#800'], //5
+    [square, '#808'], //6
+];
 const iterMatrix = (
     matrix: FieldType,
     callback: (i: number, j: number) => number | undefined
@@ -80,13 +82,10 @@ const iterMatrix = (
         }
     }
     return 0;
-}
-const calcMargins = (matrix: FieldType): [
-    top: number,
-    left: number,
-    bottom: number,
-    right: number
-] => {
+};
+const calcMargins = (
+    matrix: FieldType
+): [top: number, left: number, bottom: number, right: number] => {
     const matrixWidthIndex = matrix[0].length - 1;
     const matrixHeightIndex = matrix.length - 1;
     const leftSide = iterMatrix(matrix, (i, j) => {
@@ -108,12 +107,12 @@ const calcMargins = (matrix: FieldType): [
         if (matrix[matrixHeightIndex - i][j]) {
             return -i;
         }
-    })
+    });
     return [topSide, leftSide, bottomSide, rightSide];
-}
+};
 
 export const validateState = (
-    matrix: FieldType, 
+    matrix: FieldType,
     position: Vector2D,
     margins: Margins,
     fieldState: FieldState
@@ -128,20 +127,21 @@ export const validateState = (
 
     let isNewPositionCorrect: 0 | 1 | 2 = 1;
 
-    for (let i = -top; i < sizeTop; i ++) {
-        for (let j = -left; j < sizeLeft; j++) if (matrix[i][j]) {
-            const rowIndex = i + newY;
-            const collIndex = j + newX;
-            const isBottomEnd = field[rowIndex] === undefined;
-            const fixedCheck = isBottomEnd || field[rowIndex][collIndex];
-            if (fixedCheck) {
-                isNewPositionCorrect = 0;
-                break;
+    for (let i = -top; i < sizeTop; i++) {
+        for (let j = -left; j < sizeLeft; j++)
+            if (matrix[i][j]) {
+                const rowIndex = i + newY;
+                const collIndex = j + newX;
+                const isBottomEnd = field[rowIndex] === undefined;
+                const fixedCheck = isBottomEnd || field[rowIndex][collIndex];
+                if (fixedCheck) {
+                    isNewPositionCorrect = 0;
+                    break;
+                }
             }
-        }
     }
     return isNewPositionCorrect;
-}
+};
 
 export const rotateFigureLeft = (
     fieldState: FieldState,
@@ -157,42 +157,37 @@ export const rotateFigureLeft = (
         }
     }
     const margins = calcMargins(result);
-    const isValidState = validateState(
-        result,
-        position,
-        margins,
-        fieldState
-    );
+    const isValidState = validateState(result, position, margins, fieldState);
     if (isValidState) {
         state[0] = result;
         state[2] = margins;
     }
-}
+};
 export const figureToField = (
     field: FieldType,
     isClear: ZeroOneString,
     state: FigureState
 ) => {
-    const [matrix, position, margins,, color] = state;
+    const [matrix, position, margins, , color] = state;
     const size = matrix.length;
     const [top, left, bottom, right] = margins;
     const sizeLeft = size + right;
     const sizeTop = size + bottom;
     const [newX, newY] = position;
-    for (let i = -top; i < sizeTop; i ++) {
-        for (let j = -left; j < sizeLeft; j++) if (matrix[i][j]) {
-            const rowIndex = i + newY;
-            const row = field[rowIndex];
-            const collIndex = j + newX;
-            row[collIndex] = isClear ? 0 : color;
-        }
+    for (let i = -top; i < sizeTop; i++) {
+        for (let j = -left; j < sizeLeft; j++)
+            if (matrix[i][j]) {
+                const rowIndex = i + newY;
+                const row = field[rowIndex];
+                const collIndex = j + newX;
+                row[collIndex] = isClear ? 0 : color;
+            }
     }
-}
+};
 
 export const isFixed = (state: FigureState) => {
     return state[IS_FIXED_INDEX];
-}
-
+};
 
 export const moveFigure = (
     ctx: Window,
@@ -221,7 +216,7 @@ export const moveFigure = (
         [newX, newY],
         margins,
         fieldState
-    )
+    );
     if (!isValidPosition && deltaY) {
         state[IS_FIXED_INDEX] = 1;
     }
@@ -239,7 +234,7 @@ export const moveFigure = (
         position[HEIGHT_INDEX],
         maxHeight - sizeTop
     );
-}
+};
 export const figure = (
     ctx: Window,
     figureShapeIndex: number,
@@ -262,4 +257,4 @@ export const figure = (
     const margins = calcMargins(matrix);
     const state: FigureState = [matrix, position, margins, 0, color];
     return cont(state);
-}
+};

@@ -1,4 +1,12 @@
-import { bindArg, bindArgs, cont, observer, ObserverInstance, randomRange, sumOperator, trigger } from "@src/utils";
+import {
+    bindArg,
+    bindArgs,
+    cont,
+    observer,
+    ObserverInstance,
+    randomRange,
+    trigger,
+} from '@month/utils';
 import {
     figureToField,
     figure,
@@ -8,7 +16,7 @@ import {
     FigureState,
     isFixed,
     rotateFigureLeft,
-} from "./figure";
+} from './figure';
 
 export type ZeroOneString = 0 | 1 | string;
 
@@ -20,65 +28,67 @@ export const HEIGHT_INDEX = 1;
 export type GameObservers = [
     gameState: ObserverInstance<number>,
     score: ObserverInstance<number>
-]
+];
 
 export const GAME_STATE_PLAY = 0;
 export const GAME_STATE_END = 1;
 
 export type FieldState = [
     field: FieldType, // 0
-    cellSize: Vector2D,  // 1
+    cellSize: Vector2D, // 1
     figure: FigureInstance[], // 2
     loop: number, // 3
     observers: GameObservers, // 4
-    score: number, // 5
+    score: number // 5
 ];
 const LOOP_INDEX = 3;
 const OBSERVERS_INDEX = 4;
-const SCORE_INDEX = 5
+const SCORE_INDEX = 5;
 
 export type FieldInstance = <R>(a: (s: FieldState) => R) => R;
 
 export const getObservers = (state: FieldState) => {
     return state[OBSERVERS_INDEX];
-}
+};
 
 export const applyToFigue = <R>(
     fn: (f: FigureState) => R,
     state: FieldState
 ) => {
-    const [field,,figures] = state;
+    const [field, , figures] = state;
     const result = [];
-    for (let figure of figures) if (figure) {
-        figure(bindArgs([field, 1], figureToField));
-        result.push(figure(fn));
-        figure(bindArgs([field, 0], figureToField));
-    }
+    for (let figure of figures)
+        if (figure) {
+            figure(bindArgs([field, 1], figureToField));
+            result.push(figure(fn));
+            figure(bindArgs([field, 0], figureToField));
+        }
     return result;
-}
-export const rotateFieldFigureLeft = (
+};
+export const rotateFieldFigureLeft = (state: FieldState) => {
+    applyToFigue(bindArg(state, rotateFigureLeft), state);
+};
+export const moveFieldFigure = (
+    ctx: Window,
+    vector: Vector2D,
     state: FieldState
 ) => {
-    applyToFigue(bindArg(state, rotateFigureLeft), state);
-}
-export const moveFieldFigure = (ctx: Window, vector: Vector2D, state: FieldState) => {
     applyToFigue(bindArgs([ctx, vector, state], moveFigure), state);
-}
-
+};
 
 const chekLines = (ctx: Window, state: FieldState) => {
     const [field] = state;
-    const [gameState,score] = getObservers(state);
+    const [gameState, score] = getObservers(state);
     const lines = [];
     for (let i = 0; i < field.length; i++) {
         let lineSum = 0;
-        for (let j = 0; j < field[i].length; j ++) {
-            lineSum += field[i][j] ? 1: 0;
+        for (let j = 0; j < field[i].length; j++) {
+            lineSum += field[i][j] ? 1 : 0;
         }
         if (lineSum == field[i].length) {
             lines.push(i);
         }
-        if (!i && lineSum)  {
+        if (!i && lineSum) {
             gameState(bindArg(GAME_STATE_END, trigger));
             ctx.clearTimeout(state[LOOP_INDEX]);
             return 0;
@@ -86,34 +96,33 @@ const chekLines = (ctx: Window, state: FieldState) => {
     }
     for (const line of lines) {
         state[SCORE_INDEX] += 1;
-        score(bindArg(state[SCORE_INDEX],  trigger));
+        score(bindArg(state[SCORE_INDEX], trigger));
         for (let i = line; i > 0; i--) {
             for (let j = 0; j < field[i].length; j++) {
-                field[i][j] = field[i-1][j];
+                field[i][j] = field[i - 1][j];
             }
         }
     }
     return lines.length;
-}
-
+};
 
 const animateField = (ctx: Window, state: FieldState) => {
-    const [,,figures] = state;
+    const [, , figures] = state;
     moveFieldFigure(ctx, [0, 1], state);
     state[LOOP_INDEX] = ctx.setTimeout(
-        bindArgs([ctx,state], animateField), 
-        1000 - (state[SCORE_INDEX] * 10)
+        bindArgs([ctx, state], animateField),
+        1000 - state[SCORE_INDEX] * 10
     );
 
     for (let i = 0; i < figures.length; i++) {
         if (figures[i](isFixed)) {
-            while(chekLines(ctx, state)) {};
+            while (chekLines(ctx, state)) {}
             delete figures[i];
             figures.length = figures.length - 1;
             addFigureRandomFigure(ctx, state);
         }
     }
-}
+};
 
 export const initField = (
     ctx: Window,
@@ -130,20 +139,20 @@ export const initField = (
     const scoreObserver = observer<number>();
     const state: FieldState = [
         field,
-        collSize, [] as FigureInstance[],
+        collSize,
+        [] as FigureInstance[],
         0,
         [gameOverObserver, scoreObserver],
-        0
+        0,
     ];
     animateField(ctx, state);
 
     return cont(state);
-}
-
+};
 
 export const addFigureRandomFigure = (ctx: Window, state: FieldState) => {
-    const [field,,figures] = state;
-    const [ gameState ] = getObservers(state);
+    const [field, , figures] = state;
+    const [gameState] = getObservers(state);
     gameState(bindArg(GAME_STATE_PLAY, trigger));
     if (figures.length) {
         return;
@@ -155,14 +164,14 @@ export const addFigureRandomFigure = (ctx: Window, state: FieldState) => {
     const centerPosition: Vector2D = [center - 2, 0];
     const figureInstance = figure(ctx, figureShapeIndex, centerPosition);
     figures.push(figureInstance);
-}
+};
 
 export const drawField = (
-    canvasCtx: CanvasRenderingContext2D, 
+    canvasCtx: CanvasRenderingContext2D,
     fieldState: FieldState
 ) => {
     const margin = 5;
-    const [field, cellSize,,,color] = fieldState;
+    const [field, cellSize, , , color] = fieldState;
     const [width, height] = cellSize;
     const rows = field.length;
     const colls = field[0].length;
@@ -171,26 +180,25 @@ export const drawField = (
     canvasCtx.clearRect(0, 0, fullWidth, fullHeight);
     for (let row = 0; row < rows; row++) {
         const y = height * row;
-        canvasCtx.fillRect(0, y-1, fullWidth, 2);
+        canvasCtx.fillRect(0, y - 1, fullWidth, 2);
         for (let coll = 0; coll < colls; coll++) {
             const x = width * coll;
             if (!row) {
-                canvasCtx.fillRect(x-1, 0, 2, fullHeight);
+                canvasCtx.fillRect(x - 1, 0, 2, fullHeight);
             }
             if (field[row][coll]) {
-                const color  = field[row][coll];
+                const color = field[row][coll];
                 if (typeof color == 'string') {
                     canvasCtx.fillStyle = color;
                 }
                 canvasCtx.fillRect(
                     x + margin,
                     y + margin,
-                    width - (margin * 2),
-                    height - (margin * 2)
+                    width - margin * 2,
+                    height - margin * 2
                 );
                 canvasCtx.fillStyle = '#000';
             }
         }
     }
-}
-
+};

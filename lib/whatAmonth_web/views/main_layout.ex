@@ -7,6 +7,6 @@ defmodule WhatAmonthWeb.MainLayoutView do
   end
 
   def title(_a) do
-      "erdmko - home page"
+    "erdmko - home page"
   end
 end
