@@ -2,30 +2,22 @@ workspace(
     name = "month",
 )
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-http_archive(
-    name = "aspect_rules_swc",
-    sha256 = "206a89aae3a04831123b43962a3864e8ab1652b703c4af58d84b04174360137d",
-    strip_prefix = "rules_swc-0.4.0",
-    url = "https://github.com/aspect-build/rules_swc/archive/refs/tags/v0.4.0.tar.gz",
-)
+
 http_archive(
     name = "build_bazel_rules_nodejs",
-    sha256 = "280cefd3649b9648fdc444e9d6ed17c949152ff28d7e23638390ae8b93941d60",
-    urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/5.4.1/rules_nodejs-5.4.1.tar.gz"],
+    sha256 = "e328cb2c9401be495fa7d79c306f5ee3040e8a03b2ebb79b022e15ca03770096",
+    urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/5.4.2/rules_nodejs-5.4.2.tar.gz"],
 )
+
+
 load("@build_bazel_rules_nodejs//:repositories.bzl", "build_bazel_rules_nodejs_dependencies")
 
 build_bazel_rules_nodejs_dependencies()
 
-load("@aspect_rules_swc//swc:dependencies.bzl", "rules_swc_dependencies")
-
-rules_swc_dependencies()
-
-
-load("@rules_nodejs//nodejs:repositories.bzl", "nodejs_register_toolchains")
-nodejs_register_toolchains(
-    name = "nodejs",
+load("@build_bazel_rules_nodejs//:index.bzl", "node_repositories")
+node_repositories(
     node_version = "16.9.0",
+    yarn_version = "1.22.18"
 )
 
 load("@build_bazel_rules_nodejs//:index.bzl", "npm_install")
@@ -50,4 +42,61 @@ git_repository(
 )
 
 load("@com_github_airyhq_bazel_tools//:repositories.bzl", "airy_bazel_tools_dependencies")
+
 airy_bazel_tools_dependencies()
+
+http_archive(
+    name = "io_bazel_rules_sass",
+    url = "https://github.com/bazelbuild/rules_sass/archive/1.51.0.zip",
+    strip_prefix = "rules_sass-1.51.0",
+    sha256 = "856080c608e51993ab3088c08c70361d3f1fce383e14499cc2279060b350898c"
+)
+
+load("@io_bazel_rules_sass//:defs.bzl", "sass_repositories")
+sass_repositories()
+
+
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+http_archive(
+    name = "rules_rust",
+    sha256 = "edb87c0d2ba70823fe3df7862676d695599314a4634b9758bd55f0e8f19c2751",
+    urls = [
+        "https://mirror.bazel.build/github.com/bazelbuild/rules_rust/releases/download/0.4.0/rules_rust-v0.4.0.tar.gz",
+        "https://github.com/bazelbuild/rules_rust/releases/download/0.4.0/rules_rust-v0.4.0.tar.gz",
+    ],
+)
+
+load("@rules_rust//rust:repositories.bzl", "rules_rust_dependencies", "rust_register_toolchains")
+
+rules_rust_dependencies()
+rust_register_toolchains(
+    version = "1.60.0",
+    edition = "2021"
+)
+
+load("@rules_rust//crate_universe:repositories.bzl", "crate_universe_dependencies")
+
+crate_universe_dependencies()
+
+load("@rules_rust//crate_universe:crates_deps.bzl", "crate_repositories")
+
+crate_repositories()
+
+load("@rules_rust//crate_universe:defs.bzl", "crates_repository")
+
+crates_repository(
+    name = "crate_index_cargo_local",
+    # `generator` is not necessary in official releases.
+    # See load satement for `cargo_bazel_bootstrap`.
+    # generator = "@cargo_bazel_bootstrap//:cargo-bazel",
+    lockfile = "//server:Cargo.lock",
+    lockfile_kind = "cargo",
+    manifests = ["//server:Cargo.toml"],
+)
+
+load(
+    "@crate_index_cargo_local//:defs.bzl",
+    cargo_local_crate_repositories = "crate_repositories",
+)
+
+cargo_local_crate_repositories()

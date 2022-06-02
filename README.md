@@ -38,3 +38,15 @@ bazel build //assets/src --spawn_strategy=standalone
 
 It will throw an Error but still works until js bundle does't exist
 TODO - fix it
+
+### Run npm comands in bazel
+
+```bash
+ bazel run @nodejs_host//:npm -- version
+```
+
+### Run cargo-raze
+
+```bash
+bazel run @cargo_raze//:raze -- --manifest-path=$(realpath /Cargo.toml)
+```

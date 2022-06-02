@@ -12,7 +12,7 @@ ts_project(
     tsconfig = _TSCONFIG,
     deps = [
         "@npm//@types/node",
-        "//assets/src/utils:lib",
+        "//assets/js/utils:lib",
     ],
 )
 

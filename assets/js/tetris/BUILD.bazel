@@ -14,7 +14,7 @@ ts_project(
     tsconfig = _TSCONFIG,
     deps = [
         "@npm//@types/node",
-        "//assets/src/utils:package",
+        "//assets/js/utils:package",
     ],
 )
 

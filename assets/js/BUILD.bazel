@@ -6,14 +6,16 @@ load("@build_bazel_rules_nodejs//:index.bzl", "pkg_web")
 
 _TSCONFIG = {}
 
+package(default_visibility = ["//visibility:public"])
+
 ts_project(
     name = "lib",
     srcs = glob(["**/*.ts"]),
     extends = "//:baseTsconfig",
     tsconfig = _TSCONFIG,
     deps = [
-        "//assets/src/snowflake:package",
-        "//assets/src/tetris:package",
+        "//assets/js/snowflake:package",
+        "//assets/js/tetris:package",
     ],
 )
 
@@ -43,10 +45,4 @@ fix_prettier(
     name = "prettier",
     config = "//:prettierrc",
     ignore = "//:prettierignore",
-)
-genrule(
-    name = "src",
-    srcs = [":closure"],
-    outs = ["priv/static/assets/bundle.min.js"],
-    cmd = "cp $(location :closure) priv/static/assets"
 )

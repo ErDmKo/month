@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="phx-hero">
+    <h1 id="header">Online base 64 convertor</h1>
+    {% if result %}
+        <h3>Result</h3> 
+        <h2>"<span class="nowrap">{{ result }}</span>"</h2>
+    {% endif %}
+</section>
+<section>
+<form action="/base64" method="get">
+    <input 
+        type="text"
+        value="{{ query }}"
+        name="query"
+        placeholder="Encode/Decode"/>
+    <div class="inline-margin">
+        <button 
+            name="action"
+            value="encode"
+            id="encode">Encode</button>
+        <button
+            name="action"
+            value="decode"
+            id="decode">"Decode"</button> 
+    </div>
+</form>
+<script>
+    document.addEventListener('click', function(e) {
+        if (e.target && e.target.id) {
+            gtag('event', e.target.id);
+        }
+    });
+</script>
+</section>
+{% endblock content %}

@@ -1,0 +1,20 @@
+load("@crate_index_cargo_local//:defs.bzl", "aliases", "all_crate_deps")
+load("@rules_rust//rust:defs.bzl", "rust_binary")
+
+rust_binary(
+    name = "server",
+    srcs = glob(["src/**/*.rs"]),
+    aliases = aliases(),
+    proc_macro_deps = all_crate_deps(proc_macro = True),
+    rustc_env = {
+        'IS_BAZEL': 'server'
+    },
+    deps = all_crate_deps(normal = True),
+    data = [
+        '//server/templates',
+        '//assets/js:closure',
+        '//assets/css',
+        '//assets/img',
+        '//assets',
+    ]
+)

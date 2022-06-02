@@ -26,8 +26,8 @@
         "baseUrl": ".",
         "paths": {
             "@month/*": [
-                "./assets/src/*",
-                "./bazel-out/darwin-fastbuild/bin/assets/src/*"
+                "./assets/js/*",
+                "./bazel-out/darwin-fastbuild/bin/assets/js/*"
             ]
         }
     },

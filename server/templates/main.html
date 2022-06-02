@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block content %}
+<article class="page">
+    <header class="page__header js-header">
+        <h1 class="page__headline">Eroshenko Dmitry</h1>
+        <h2 class="page__sub">👨‍💻 Programmer</h2>
+    </header>
+    <hr class="avatar"/>
+    <section class="address">
+        <address class="address__item">
+            <h3 class="address__header">📝 If you have any questions or comments don't hesitate to email me</h3>
+            <ul class="address__list">
+                {% for address in addreses %}
+                <li>
+                    <span class="address__title">{{ address.name }}</span>
+                    <a 
+                        class="address__ancor"
+                        rel="noopener noreferrer"
+                        href="{{ address.href }}"
+                        target="_blank">
+                            {{ address.text }}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </address>
+        <address class="address__item">
+            <h3 class="address__header"> 🛠 Some awesome online tools</h3>
+            <ul class="address__list">
+                {% for tool in tools %}
+                <li>
+                    <span class="address__title">{{ tool.name }}</span> 
+                    <a 
+                        class="address__ancor"
+                        rel="noopener noreferrer"
+                        href="{{ tool.href }}">
+                            {{ tool.text }}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </address>
+        <address class="address__item">
+            <h3 class="address__header"> 🎮 Some simple html games</h3>
+            <ul class="address__list">
+                {% for game in games %}
+                <li>
+                    <span class="address__title">{{ game.name }}</span> 
+                    <a 
+                        class="address__ancor"
+                        rel="noopener noreferrer"
+                        href="{{ game.href }}">
+                            {{ game.text }}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </address>
+        <address class="address__item">
+            <h3 class="address__header">💸 Or you can send me some money just for fun!</h3>
+            <ul class="address__list">
+                <li>
+                    <span class="address__title">Eth:</span> 
+                    <a 
+                        class="address__ancor"
+                        rel="noopener noreferrer"
+                        href="https://etherscan.io/address/0xB2D7Bc25533671eF57DF31248AC14C4D3aAB4477">
+                            0xB2D7Bc25533671eF57DF31248AC14C4D3aAB4477
+                    </a>
+                </li>
+            </ul>
+        </address>
+    </section>
+</article>
+{% endblock content %}
