@@ -29,8 +29,8 @@ async fn base64_page_handler(req: HttpRequest, info: web::Query<Base64Params>) -
                 Some(Actions::Decode) => {
                     let mut is_ok = true;
                     let decoded_bytes = decode(query_val).unwrap_or_else(|_| {
-                            is_ok = false;
-                            vec![0]
+                        is_ok = false;
+                        vec![0]
                     });
                     let decoded_str = String::from_utf8(decoded_bytes).unwrap_or_else(|_| {
                         is_ok = false;

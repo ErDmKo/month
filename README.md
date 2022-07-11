@@ -27,17 +27,28 @@ ansible-playbook ansible/pull.yaml -i ansible/inventory.yaml
 Run this command to fix code style
 
 ```bash
-bazel run //assets/src:prettier
+bazel run //assets/js:prettier
 ```
 
-### Build and copy static
+### Build static
 
 ```bash
-bazel build //assets/src --spawn_strategy=standalone
+bazel build //assets/js:closure
+bazel build //assets/css
 ```
 
-It will throw an Error but still works until js bundle does't exist
-TODO - fix it
+### Run rust server
+
+```bash
+bazel run //server:server
+```
+
+#### Run code formater
+```bash
+cargo fmt
+```
+
+This command will run a http server on port 8080
 
 ### Run npm comands in bazel
 

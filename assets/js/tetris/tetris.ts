@@ -115,10 +115,10 @@ const initCanvas = (ctx: Window, element: Element) => {
         left: '0',
         right: '0',
         position: 'absolute',
-        top: '-30px',
+        backgroundColor: 'white',
+        top: '30px',
     });
     info.innerText = START_TEXT;
-    element.appendChild(info);
     const [rect, canvas] = fillElemWidhCanvas(ctx, htmlElement);
     var canvasCtx = canvas.getContext('2d');
     if (!canvasCtx) {
@@ -141,6 +141,7 @@ const initCanvas = (ctx: Window, element: Element) => {
         bindArg((state: number) => {
             if (state === GAME_STATE_PLAY && info.innerText == START_TEXT) {
                 info.innerText = '';
+                info.style.top = '-30px';
             } else if (state === GAME_STATE_END) {
                 info.innerText = 'Game Over';
             }
@@ -152,6 +153,7 @@ const initCanvas = (ctx: Window, element: Element) => {
         }, on)
     );
     draw(ctx, fieldInstance, canvasCtx);
+    element.appendChild(info);
 };
 
 export const initTetrisEffect = (ctx: Window) => {

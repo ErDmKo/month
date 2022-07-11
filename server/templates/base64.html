@@ -1,10 +1,11 @@
-{% extends "base.html" %}
-{% block content %}
-<section class="phx-hero">
+{% extends "inner.html" %}
+{% block title %}Base 64 decode encode{% endblock title %}
+{% block inner_content %}
+<section>
     <h1 id="header">Online base 64 convertor</h1>
     {% if result %}
         <h3>Result</h3> 
-        <h2>"<span class="nowrap">{{ result }}</span>"</h2>
+        <h2>"<span>{{ result }}</span>"</h2>
     {% endif %}
 </section>
 <section>
@@ -14,7 +15,7 @@
         value="{{ query }}"
         name="query"
         placeholder="Encode/Decode"/>
-    <div class="inline-margin">
+    <div class="buttons">
         <button 
             name="action"
             value="encode"
@@ -22,7 +23,7 @@
         <button
             name="action"
             value="decode"
-            id="decode">"Decode"</button> 
+            id="decode">Decode</button>   
     </div>
 </form>
 <script>
@@ -33,4 +34,4 @@
     });
 </script>
 </section>
-{% endblock content %}
+{% endblock inner_content %}

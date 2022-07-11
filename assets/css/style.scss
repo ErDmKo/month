@@ -1,7 +1,13 @@
+$base-color: #007db5;
+
 body,
 html {
     margin: 0;
     font-family: 'Roboto', sans-serif;
+}
+a {
+    color: $base-color;
+    text-decoration: none;
 }
 h1,
 h2,
@@ -13,7 +19,14 @@ h5 {
 h3 {
     margin: 0;
 }
-.page {
+.inner-page {
+    margin: 30px 0px;
+}
+.buttons {
+    margin: 15px 0px;
+}
+.page,
+.inner-page {
     text-align: center;
 }
 .page__headline {
@@ -47,13 +60,13 @@ h3 {
     font-size: 16px;
 }
 .address__ancor {
-    font-size: 20px;
     text-decoration: none;
     max-width: 500px;
     word-break: break-all;
-    color: #007db5;
+    color: $base-color;
 }
-.address__ancor:hover {
+.address__ancor:hover,
+a:hover {
     text-decoration: underline;
 }
 .address__title {
@@ -77,7 +90,7 @@ h3 {
 }
 .avatar,
 .address {
-    vertical-align: middle;
+    vertical-align: top;
 }
 .avatar {
     background-image: url(/static/img/avatar.jpg);
