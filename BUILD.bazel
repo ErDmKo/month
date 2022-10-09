@@ -13,3 +13,8 @@ filegroup(
     name = "prettierrc",
     srcs = [".prettierrc.json"],
 )
+
+filegroup(
+    name = "eslint",
+    srcs = [".eslint.json", ".eslintignore"],
+)

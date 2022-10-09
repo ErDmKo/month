@@ -1,10 +1,10 @@
 {% extends "inner.html" %}
 {% block title %}{% if title %}{{ title }}{% else %}Номер месяца{% endif %}{% endblock title %}
 {% block inner_content %}
-<h1>Номер месяца</h1>
+<h1>Номер месяца {% if current %}{{ current }} {{ current_no }}{% endif %}</h1>
 <ul class="month">
 {% for i in range(end=12) %}
-<li>{{ i + 1 }} {{ months[i] }}</li>
+<li><a href="/month/{{ i + 1 }}">{{ i + 1 }} {{ months[i] }}</a></li>
 {% endfor %}
 </ul>
 {% endblock inner_content %}

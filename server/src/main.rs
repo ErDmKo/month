@@ -30,6 +30,7 @@ async fn main() -> std::io::Result<()> {
 
     HttpServer::new(move || {
         App::new()
+            .wrap(middleware::NormalizePath::trim())
             .wrap(middleware::Compress::default())
             .app_data(templates.clone())
             .service(pages::main_page_handler)
@@ -37,6 +38,7 @@ async fn main() -> std::io::Result<()> {
             .service(pages::base64_page_handler)
             .service(pages::tetris_page_handler)
             .service(pages::month_page_handler)
+            .service(pages::month_no_page_handler)
             .service(fs::Files::new("/static", &static_path).show_files_listing())
     })
     .bind(("127.0.0.1", 8080))?

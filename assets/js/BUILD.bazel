@@ -2,11 +2,20 @@ load("@npm//@bazel/esbuild:index.bzl", "esbuild")
 load("@npm//@bazel/typescript:index.bzl", "ts_project", "ts_config")
 load("@npm//google-closure-compiler:index.bzl", "google_closure_compiler")
 load("@com_github_airyhq_bazel_tools//lint:prettier.bzl", "fix_prettier")
+load("@com_github_airyhq_bazel_tools//lint:eslint.bzl", "eslint")
+
 load("@build_bazel_rules_nodejs//:index.bzl", "pkg_web")
 
 _TSCONFIG = {}
 
 package(default_visibility = ["//visibility:public"])
+
+eslint(
+    name = "eslint",
+    config = "//:.eslint.json",
+    srcs = ["index.ts"], # Defaults to all js,jsx,ts,tsx,scss,css files in package
+    ignore = "//:.eslintignore", # Defaults to lint/.eslintignore
+)
 
 ts_project(
     name = "lib",
