@@ -2,4 +2,4 @@ all:
     children:
         web:
             hosts:
-                root@erdmko.de:
+                root@erdmko.us.to:

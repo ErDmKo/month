@@ -31,6 +31,7 @@ RUN touch /usr/src/app/src/main.rs
 ARG STATIC_DIR=./server/static
 COPY ./server/templates /usr/local/bin/templates
 COPY $STATIC_DIR /usr/local/bin/static/
+ENV DOMAIN='erdmko.us.to'
 RUN cargo build --target x86_64-unknown-linux-musl --release
 
 FROM alpine:3.16.0 AS runtime 

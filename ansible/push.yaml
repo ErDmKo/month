@@ -1,0 +1,32 @@
+---
+- hosts: web
+  name: push image 
+  vars:
+    install_dirr: '/opt/month'
+    app_name: 'my_app'
+    image_name: 'what_amonth'
+  tasks:
+  - name: push image
+    ansible.posix.synchronize:
+      src: './../image.tar'
+      dest: '{{ install_dirr }}'
+  - name: Stop docker container
+    ansible.builtin.shell: |
+      docker stop {{ app_name }} || true
+  - name: Remove old container
+    ansible.builtin.shell: |
+      docker rm {{ app_name }} || true
+  - name: Remove old image
+    ansible.builtin.shell: docker rmi {{ image_name }}
+  - name: Load image to docker
+    ansible.builtin.shell: docker load --input image.tar
+    args:
+      chdir: "{{ install_dirr }}"
+  - name: run app from docker
+    ansible.builtin.shell: |
+      docker run \
+      --publish 8080:8080 \
+      -d \
+      --name {{ app_name }} \
+      --restart unless-stopped \
+      {{ image_name }}
