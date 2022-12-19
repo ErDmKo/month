@@ -134,6 +134,7 @@ fn get_page_ctx() -> MainPageContext {
 #[get("/")]
 pub async fn main_page_handler(req: HttpRequest) -> impl Responder {
     let page_ctx = get_page_ctx();
+    println!("Main page render");
     let ctx = &Context::from_serialize(str_to_string_ctx(page_ctx)).unwrap();
     return utils::render(req, "main.html", &ctx).await;
 }

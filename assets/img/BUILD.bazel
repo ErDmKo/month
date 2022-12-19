@@ -6,4 +6,8 @@ filegroup(
         ["**/*"],
         exclude = ['**/*.bazel']
     ),
+    data = glob(
+        ["**/*"],
+        exclude = ['**/*.bazel']
+    ),
 )

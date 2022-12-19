@@ -1,0 +1,6 @@
+filegroup(
+    name = "static",
+    srcs = [
+      '//assets',
+    ],
+)

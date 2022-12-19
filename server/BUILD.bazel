@@ -7,7 +7,7 @@ rust_binary(
     aliases = aliases(),
     proc_macro_deps = all_crate_deps(proc_macro = True),
     rustc_env = {
-        'IS_BAZEL': 'server',
+        'BAZEL_STATIC': 'server',
         'DOMAIN': 'erdmko.ru'
     },
     deps = all_crate_deps(normal = True),

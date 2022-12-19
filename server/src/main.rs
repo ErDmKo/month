@@ -1,33 +1,44 @@
-use actix_files as fs;
+use actix_files;
 use actix_web::{middleware, App, HttpServer};
-use std::option_env;
+use std::{option_env, env};
 use std::path::PathBuf;
 use std::sync::{Arc, RwLock};
 use tera::Tera;
 pub mod pages;
 
 static TEMPLATES_GLOB: &str = "templates/**/*";
-static BAZEL_PREFIX: Option<&'static str> = option_env!("IS_BAZEL");
+static BASE_PATH: Option<&'static str> = option_env!("BASE_PATH");
+static BAZEL_STATIC: Option<&'static str> = option_env!("BAZEL_STATIC");
+static HOST_RUN: Option<&'static str> = option_env!("HOST");
+static PORT_RUN: Option<&'static str> = option_env!("PORT");
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    let env_path = BAZEL_PREFIX.unwrap_or("");
-    let mut path = PathBuf::from(env_path);
-    path.push(&TEMPLATES_GLOB);
-    let tera = match Tera::new(&path.to_str().unwrap()) {
-        Ok(t) => t,
-        Err(e) => {
-            println!("Parsing error(s): {}", e);
-            ::std::process::exit(1);
-        }
-    };
-    let templates = Arc::new(RwLock::new(tera));
-    let mut static_path = PathBuf::from(env_path);
-    if env_path != "" {
-        static_path.push("..");
-        static_path.push("assets");
+    let current_dir = env::current_dir().unwrap();
+    let current_dir_str = current_dir.to_str().unwrap();
+    println!("Starting http server from  directory '{}'", &current_dir_str);
+    let base_path = BASE_PATH.unwrap_or(&current_dir_str);
+    let mut static_path = PathBuf::from(&base_path);
+    let mut templates_path = PathBuf::from(&base_path);
+    match BAZEL_STATIC {
+        Some(bazel_path) => {
+            println!("Is bazel build info - '{}'", bazel_path);
+            static_path.push("assets");
+            templates_path.push(bazel_path)
+        },
+        None => static_path.push("static")
     }
-
+    println!("Static path '{:?}'", static_path);
+    templates_path.push(&TEMPLATES_GLOB);
+    let host = HOST_RUN.unwrap_or("127.0.0.1");
+    let port_str = PORT_RUN.unwrap_or("8080");
+    let port = port_str.parse::<u16>().unwrap();
+    let tera_path = &templates_path.to_str().unwrap();
+    println!("Templates start {:?}", tera_path);
+    let tera = Tera::new(tera_path).unwrap();
+    println!("Templates done");
+    let templates = Arc::new(RwLock::new(tera));
+    println!("Srating server host '{}' port '{}'", host, port);
     HttpServer::new(move || {
         App::new()
             .wrap(middleware::NormalizePath::trim())
@@ -39,9 +50,9 @@ async fn main() -> std::io::Result<()> {
             .service(pages::tetris_page_handler)
             .service(pages::month_page_handler)
             .service(pages::month_no_page_handler)
-            .service(fs::Files::new("/static", &static_path).show_files_listing())
+            .service(actix_files::Files::new("/static", &static_path).show_files_listing())
     })
-    .bind(("127.0.0.1", 8080))?
+    .bind((host, port))?
     .run()
     .await
 }

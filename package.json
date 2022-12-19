@@ -3,12 +3,15 @@
   "version": "1.0.0",
   "description": "Simple phoenix month app",
   "main": "index.js",
+  "type": "module",
   "directories": {
     "lib": "lib",
     "test": "test"
   },
   "scripts": {
-    "test": "bazel test //..."
+    "test": "bazel test //...",
+    "build": "node script/docker.js",
+    "start": "docker run --rm -p 8080:8080 what_amonth"
   },
   "repository": {
     "type": "git",

@@ -1,14 +1,6 @@
 # WhatAmonth
 
-Simple phoenix month app
-
-## Run for develop
-
-```bash
-mix phx.server
-```
-
-Server will be runned on http://localhost:4000
+My homepage app
 
 ## Deploy command sequence
 
@@ -45,7 +37,7 @@ bazel run //server:server
 
 #### Run code formater
 ```bash
-cargo fmt
+cd server && cargo fmt
 ```
 
 This command will run a http server on port 8080
@@ -61,3 +53,24 @@ This command will run a http server on port 8080
 ```bash
 bazel run @cargo_raze//:raze -- --manifest-path=$(realpath /Cargo.toml)
 ```
+
+### Build docker container
+
+```bash
+npm run build
+```
+
+### Run docker container
+
+```bash
+npm start
+```
+
+### Run for develop elixir app (legacy)
+
+```bash
+mix phx.server
+```
+
+Server will be runned on http://localhost:4000
+
