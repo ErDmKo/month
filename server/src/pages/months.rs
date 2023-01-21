@@ -1,4 +1,5 @@
 use super::utils;
+use chrono::Local;
 use actix_web::{web, get, HttpRequest, Responder};
 use tera::Context;
 
@@ -19,11 +20,10 @@ fn get_months() -> Vec<&'static str> {
     ]
 }
 
-#[get("/month/{number}")]
-async fn month_no_page_handler(req: HttpRequest, no: web::Path<String>) -> impl Responder {
+fn create_ctx(no_string: String) -> Context {
     let mut ctx = Context::new();
     let months = get_months();
-    let no_string = no.to_string();
+    ctx.insert("months", &months);
     if let Ok(no_num) = no_string.parse::<usize>() {
         let val = months.get(no_num - 1);
         if val.is_some() {
@@ -31,13 +31,20 @@ async fn month_no_page_handler(req: HttpRequest, no: web::Path<String>) -> impl 
             ctx.insert("current_no", &no_string);
         }
     }
-    ctx.insert("months", &months);
+    return ctx;
+}
+
+#[get("/month/{number}")]
+async fn month_no_page_handler(req: HttpRequest, no: web::Path<String>) -> impl Responder {
+    let no_string = no.to_string();
+    let ctx = create_ctx(no_string);
     return utils::render(req, "months.html", &ctx).await;
 }
 
 #[get("/month")]
 async fn month_page_handler(req: HttpRequest) -> impl Responder {
-    let mut ctx = Context::new();
-    ctx.insert("months", &get_months());
+    let local_time = Local::now();
+    let no_string = format!("{}", local_time.format("%m"));
+    let ctx = create_ctx(no_string);
     return utils::render(req, "months.html", &ctx).await;
 }
