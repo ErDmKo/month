@@ -65,12 +65,3 @@ npm run build
 ```bash
 npm start
 ```
-
-### Run for develop elixir app (legacy)
-
-```bash
-mix phx.server
-```
-
-Server will be runned on http://localhost:4000
-

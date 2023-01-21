@@ -1,0 +1,36 @@
+{% extends "inner.html" %}
+{% block title %}Slugify string{% endblock title %}
+{% block inner_content %}
+<section>
+    <h1 id="header">Online string slugifier</h1>
+    {% if result %}
+    <div class="result">
+      <h3>Result</h3> 
+      <h2>"<span id="result">{{ result }}</span>"</h2>
+      <div class="">
+        <button id="copycat">Copy</button>
+      </div>
+    </div>
+    {% endif %}
+</section>
+<section>
+  <form action="/slugify">
+    <input 
+      type="text"
+      value="{{ query }}"
+      name="query"
+      class="big_input"
+      placeholder="Put here string to slugify"/>
+    <div class="buttons">
+      <button>Slugify</button>
+    </div>
+  </form>
+</section>
+<script>
+  ((a) => {
+    if (!(a && a.length >= 2 && navigator && navigator.clipboard))return;
+    a[1].addEventListener('click', () => navigator.clipboard.writeText(a[0].innerText));
+  })(document.querySelectorAll('#copycat,#result'));
+</script>
+{% endblock inner_content %}
+;

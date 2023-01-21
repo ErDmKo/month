@@ -121,6 +121,11 @@ fn get_page_ctx() -> MainPageContext {
                 href: "/month",
                 text: "Month",
             },
+            MainPageLink {
+                name: "Slug generator",
+                href: "/slugify",
+                text: "Slugify",
+            },
         ],
         games: vec![MainPageLink {
             name: "Tetris game",

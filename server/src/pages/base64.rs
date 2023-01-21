@@ -21,11 +21,11 @@ struct Base64Params {
 
 #[get("/base64")]
 async fn base64_page_handler(req: HttpRequest, info: web::Query<Base64Params>) -> impl Responder {
-    let ref mut i = info.into_inner();
-    match &i.query {
+    let ref mut query_params = info.into_inner();
+    match &query_params.query {
         None => Some(String::from("")),
         Some(query_val) => {
-            let a: Option<String> = match &i.action {
+            let string_result: Option<String> = match &query_params.action {
                 Some(Actions::Decode) => {
                     let mut is_ok = true;
                     let decoded_bytes = decode(query_val).unwrap_or_else(|_| {
@@ -48,10 +48,10 @@ async fn base64_page_handler(req: HttpRequest, info: web::Query<Base64Params>) -
                 }
                 None => None,
             };
-            i.result = a;
+            query_params.result = string_result;
             None
         }
     };
-    let ctx = &Context::from_serialize(&i).unwrap();
+    let ctx = &Context::from_serialize(&query_params).unwrap();
     return utils::render(req, "base64.html", &ctx).await;
 }

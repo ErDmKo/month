@@ -4,14 +4,17 @@
 <section>
     <h1 id="header">Online base 64 convertor</h1>
     {% if result %}
-        <h3>Result</h3> 
-        <h2>"<span>{{ result }}</span>"</h2>
+    <div class="result">
+      <h3>Result</h3>
+      <h2>"<span>{{ result }}</span>"</h2>
+    </div>
     {% endif %}
 </section>
 <section>
-<form action="/base64" method="get">
+<form action="/base64">
     <input 
         type="text"
+        class="big_input"
         value="{{ query }}"
         name="query"
         placeholder="Encode/Decode"/>
@@ -26,12 +29,5 @@
             id="decode">Decode</button>   
     </div>
 </form>
-<script>
-    document.addEventListener('click', function(e) {
-        if (e.target && e.target.id) {
-            gtag('event', e.target.id);
-        }
-    });
-</script>
 </section>
 {% endblock inner_content %}

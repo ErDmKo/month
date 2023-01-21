@@ -50,6 +50,7 @@ async fn main() -> std::io::Result<()> {
             .service(pages::tetris_page_handler)
             .service(pages::month_page_handler)
             .service(pages::month_no_page_handler)
+            .service(pages::slugify_page_handler)
             .service(actix_files::Files::new("/static", &static_path).show_files_listing())
     })
     .bind((host, port))?
