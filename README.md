@@ -5,11 +5,15 @@ My homepage app
 ## Deploy command sequence
 
 ```bash
-ssh-add
-git add lib
-git commit -a
-git push
+npm run build
+npm run save
 ansible-playbook ansible/push.yaml -i ansible/inventory.yaml
+```
+
+Or just
+
+```bash
+npm run pub
 ```
 
 ## Bazel static build
@@ -58,6 +62,7 @@ bazel run @cargo_raze//:raze -- --manifest-path=$(realpath /Cargo.toml)
 
 ```bash
 npm run build
+npm run save
 ```
 
 ### Run docker container
