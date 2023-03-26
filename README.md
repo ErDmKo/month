@@ -9,7 +9,7 @@ ssh-add
 git add lib
 git commit -a
 git push
-ansible-playbook ansible/pull.yaml -i ansible/inventory.yaml
+ansible-playbook ansible/push.yaml -i ansible/inventory.yaml
 ```
 
 ## Bazel static build

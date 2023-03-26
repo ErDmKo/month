@@ -41,25 +41,22 @@
         <title>{% block title %}Main page{% endblock title %}</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
         <meta name="description" content="{% block desc %}Main page{% endblock desc %}"/>
-        <link media="print" onload="this.onload=null;this.removeAttribute('media');" href="https://fonts.googleapis.com/css?family=Poiret+One|Roboto&display=swap" rel="stylesheet">
+        <link
+          media="print"
+          onload="this.onload=null;this.removeAttribute('media');"
+          href="https://fonts.googleapis.com/css?family=Poiret+One|Roboto&display=swap" 
+          rel="stylesheet">
         {% block head %}{% endblock head %}
     </head>
     <body>
         {% block content %}{% endblock content %}
-        {% if domain %}
-        <!-- Yandex.Metrika counter -->
-        <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://mc.{{ domain }}/gtag/js?id=UA-49120707-1"></script>
+        <script async src="/static/js/mc.js"></script>
         <script>
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-
-                gtag('config', 'UA-49120707-1', {
-                    transport_url: 'https://mc.{{ domain }}',
-                    first_party_collection: true
-                });
+          window.ym = (...args) => {
+            window.ym.a = (window.ym.a || []);
+            window.ym.a.push(args);
+          };
+          ym(64378813, "init");
         </script>
-        {% endif %}
     </body>
 </html>

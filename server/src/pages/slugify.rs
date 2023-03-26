@@ -19,7 +19,6 @@ async fn slugify_page_handler(req: HttpRequest, info: web::Query<SlugifyParams>)
         None => None,
         Some(query_val) => {
             let res = slugify(query_val);
-            println!();
             Some(res)
         }
     };

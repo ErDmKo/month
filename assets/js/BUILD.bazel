@@ -50,6 +50,11 @@ google_closure_compiler(
     data = [":bundle"],
 )
 
+filegroup(
+    name = "metrika",
+    srcs = ["mc.js"],
+)
+
 fix_prettier(
     name = "prettier",
     config = "//:prettierrc",
