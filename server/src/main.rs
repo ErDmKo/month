@@ -8,32 +8,23 @@ use std::{env, option_env};
 use tera::Tera;
 pub mod pages;
 
+struct AppCtx {
+    static_path: PathBuf,
+}
+
 static TEMPLATES_GLOB: &str = "templates/**/*";
 static BASE_PATH: Option<&'static str> = option_env!("BASE_PATH");
 static BAZEL_STATIC: Option<&'static str> = option_env!("BAZEL_STATIC");
 static HOST_RUN: Option<&'static str> = option_env!("HOST");
 static PORT_RUN: Option<&'static str> = option_env!("PORT");
 
-fn get_static_path() -> PathBuf {
-    let current_dir = env::current_dir().unwrap();
-    let current_dir_str = current_dir.to_str().unwrap();
-    let base_path = BASE_PATH.unwrap_or(&current_dir_str);
-    let mut static_path = PathBuf::from(&base_path);
-    match BAZEL_STATIC {
-        Some(_) => {
-            static_path.push("assets");
-        }
-        None => static_path.push("static"),
-    }
-    static_path.clone()
-}
-
 async fn get_static_from_root(
+    ctx: web::Data<AppCtx>,
     req: actix_web::HttpRequest,
 ) -> actix_web::Result<actix_files::NamedFile> {
     match req.match_pattern() {
         Some(pattern) => {
-            let mut full_path = get_static_path();
+            let mut full_path = ctx.static_path.clone();
             let path_list: Vec<&str> = pattern.split("/").collect();
             let file_name = path_list.last().unwrap_or(&"robots.txt");
             full_path.push(file_name);
@@ -50,15 +41,16 @@ async fn main() -> std::io::Result<()> {
     let current_dir_str = current_dir.to_str().unwrap();
     info!("Starting http server from directory '{}'", &current_dir_str);
     let base_path = BASE_PATH.unwrap_or(&current_dir_str);
+    let mut static_path = PathBuf::from(&base_path);
     let mut templates_path = PathBuf::from(&base_path);
     match BAZEL_STATIC {
         Some(bazel_path) => {
             info!("Is bazel build info - '{}'", bazel_path);
+            static_path.push("assets");
             templates_path.push(bazel_path)
         }
-        None => (),
+        None => static_path.push("static")
     }
-    let static_path = get_static_path();
     info!("Static path '{:?}'", static_path);
     templates_path.push(&TEMPLATES_GLOB);
     let host = HOST_RUN.unwrap_or("127.0.0.1");
@@ -72,6 +64,9 @@ async fn main() -> std::io::Result<()> {
     info!("Srating server host '{}' port '{}'", host, port);
     HttpServer::new(move || {
         App::new()
+            .app_data(web::Data::new(AppCtx {
+                static_path: static_path.clone(),
+            }))
             .wrap(middleware::NormalizePath::trim())
             .wrap(middleware::Compress::default())
             .wrap(middleware::Logger::default())
