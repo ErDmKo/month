@@ -1,7 +1,7 @@
 use actix_web::{HttpRequest, HttpResponse, Responder};
+use log::error;
 use std::sync::{Arc, RwLock};
 use tera::{Context, Tera};
-use log::error;
 
 pub async fn render(req: HttpRequest, template: &str, ctx: &Context) -> impl Responder {
     let data: Option<&Arc<RwLock<Tera>>> = req.app_data();

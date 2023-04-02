@@ -1,11 +1,11 @@
 use actix_files;
-use actix_web::{middleware, App, HttpServer};
-use std::{option_env, env};
-use std::path::PathBuf;
-use std::sync::{Arc, RwLock};
-use tera::Tera;
+use actix_web::{middleware, web, App, HttpServer};
 use env_logger;
 use log::info;
+use std::path::PathBuf;
+use std::sync::{Arc, RwLock};
+use std::{env, option_env};
+use tera::Tera;
 pub mod pages;
 
 static TEMPLATES_GLOB: &str = "templates/**/*";
@@ -14,24 +14,51 @@ static BAZEL_STATIC: Option<&'static str> = option_env!("BAZEL_STATIC");
 static HOST_RUN: Option<&'static str> = option_env!("HOST");
 static PORT_RUN: Option<&'static str> = option_env!("PORT");
 
+fn get_static_path() -> PathBuf {
+    let current_dir = env::current_dir().unwrap();
+    let current_dir_str = current_dir.to_str().unwrap();
+    let base_path = BASE_PATH.unwrap_or(&current_dir_str);
+    let mut static_path = PathBuf::from(&base_path);
+    match BAZEL_STATIC {
+        Some(_) => {
+            static_path.push("assets");
+        }
+        None => static_path.push("static"),
+    }
+    static_path.clone()
+}
+
+async fn get_static_from_root(
+    req: actix_web::HttpRequest,
+) -> actix_web::Result<actix_files::NamedFile> {
+    match req.match_pattern() {
+        Some(pattern) => {
+            let mut full_path = get_static_path();
+            let path_list: Vec<&str> = pattern.split("/").collect();
+            let file_name = path_list.last().unwrap_or(&"robots.txt");
+            full_path.push(file_name);
+            Ok(actix_files::NamedFile::open(full_path)?)
+        }
+        None => Err(actix_web::error::ErrorBadRequest("Wrong match")),
+    }
+}
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
     let current_dir = env::current_dir().unwrap();
     let current_dir_str = current_dir.to_str().unwrap();
-    info!("Starting http server from  directory '{}'", &current_dir_str);
+    info!("Starting http server from directory '{}'", &current_dir_str);
     let base_path = BASE_PATH.unwrap_or(&current_dir_str);
-    let mut static_path = PathBuf::from(&base_path);
     let mut templates_path = PathBuf::from(&base_path);
     match BAZEL_STATIC {
         Some(bazel_path) => {
             info!("Is bazel build info - '{}'", bazel_path);
-            static_path.push("assets");
             templates_path.push(bazel_path)
-        },
-        None => static_path.push("static")
+        }
+        None => (),
     }
+    let static_path = get_static_path();
     info!("Static path '{:?}'", static_path);
     templates_path.push(&TEMPLATES_GLOB);
     let host = HOST_RUN.unwrap_or("127.0.0.1");
@@ -57,6 +84,10 @@ async fn main() -> std::io::Result<()> {
             .service(pages::month_no_page_handler)
             .service(pages::slugify_page_handler)
             .service(actix_files::Files::new("/static", &static_path).show_files_listing())
+            .route("/robots.txt", web::get().to(get_static_from_root))
+            .route("/favicon.ico", web::get().to(get_static_from_root))
+            .route("/site.webmanifest", web::get().to(get_static_from_root))
+            .route("/browserconfig.xml", web::get().to(get_static_from_root))
     })
     .bind((host, port))?
     .run()

@@ -1,6 +1,6 @@
 use super::utils;
+use actix_web::{get, web, HttpRequest, Responder};
 use chrono::Local;
-use actix_web::{web, get, HttpRequest, Responder};
 use tera::Context;
 
 fn get_months() -> Vec<&'static str> {

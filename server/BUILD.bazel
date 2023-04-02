@@ -17,6 +17,6 @@ rust_binary(
         '//assets/js:metrika',
         '//assets/css',
         '//assets/img',
-        '//assets',
+        '//assets:assets',
     ]
 )
