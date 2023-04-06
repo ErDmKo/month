@@ -3,9 +3,9 @@
 {% block inner_content %}
 <h1>Номер месяца {% if current %}{{ current }} {{ current_no }}{% endif %}</h1>
 <ul class="month">
-  <li><a href="/month">Текущий</a></li>
+  <li class="month__item"><a href="/month">Текущий</a></li>
 {% for i in range(end=12) %}
-  <li><a href="/month/{{ i + 1 }}">{{ i + 1 }} {{ months[i] }}</a></li>
+  <li class="month__item"><a href="/month/{{ i + 1 }}">{{ i + 1 }} {{ months[i] }}</a></li>
 {% endfor %}
 </ul>
 {% endblock inner_content %}
