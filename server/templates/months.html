@@ -1,7 +1,9 @@
 {% extends "inner.html" %}
 {% block title %}{% if title %}{{ title }}{% else %}Номер месяца{% endif %}{% endblock title %}
+{% block desc %}{% if current %}Месяц '{{ current }}' - имеет порядковый номер {{ current_no_number }}{% else %}Номер месяца{% endif %}{% endblock desc %}
 {% block inner_content %}
-<h1>Номер месяца {% if current %}{{ current }} {{ current_no }}{% endif %}</h1>
+<h1>Номер месяца {% if current %}{{ current }} {{ current_no_number }}{% endif %}</h1>
+<h2>Другие месяцы</h2>
 <ul class="month">
   <li class="month__item"><a href="/month">Текущий</a></li>
 {% for i in range(end=12) %}

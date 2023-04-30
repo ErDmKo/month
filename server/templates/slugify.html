@@ -1,5 +1,6 @@
 {% extends "inner.html" %}
-{% block title %}Slugify string{% endblock title %}
+{% block title %}Slugify string {% if result %}for "{{ result }}"{% endif %}{% endblock title %}
+{% block desc %}Simple online slugify tool{% endblock desc %}
 {% block inner_content %}
 <section>
     <h1 id="header">Online string slugifier</h1>

@@ -22,6 +22,6 @@ async fn slugify_page_handler(req: HttpRequest, info: web::Query<SlugifyParams>)
             Some(res)
         }
     };
-    let ctx = &Context::from_serialize(&query_params).unwrap();
+    let ctx = Context::from_serialize(&query_params).unwrap();
     return utils::render(req, "slugify.html", &ctx).await;
 }

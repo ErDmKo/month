@@ -15,7 +15,7 @@ import {
     moveFigure,
     FigureState,
     isFixed,
-    rotateFigureLeft,
+    rotateFigure,
 } from './figure';
 
 export type ZeroOneString = 0 | 1 | string;
@@ -66,7 +66,10 @@ export const applyToFigue = <R>(
     return result;
 };
 export const rotateFieldFigureLeft = (state: FieldState) => {
-    applyToFigue(bindArg(state, rotateFigureLeft), state);
+    applyToFigue(bindArgs([state, false], rotateFigure), state);
+};
+export const rotateFieldFigureRight = (state: FieldState) => {
+    applyToFigue(bindArgs([state, true], rotateFigure), state);
 };
 export const moveFieldFigure = (
     ctx: Window,
@@ -171,7 +174,7 @@ export const drawField = (
     fieldState: FieldState
 ) => {
     const margin = 5;
-    const [field, cellSize, , , color] = fieldState;
+    const [field, cellSize] = fieldState;
     const [width, height] = cellSize;
     const rows = field.length;
     const colls = field[0].length;

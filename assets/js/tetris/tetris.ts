@@ -10,6 +10,7 @@ import {
     GAME_STATE_PLAY,
     GAME_STATE_END,
     rotateFieldFigureLeft,
+    rotateFieldFigureRight,
 } from './field';
 
 const draw = (
@@ -31,6 +32,7 @@ const getKeyHandlers = (
     const figureBind: KeyHandlers = {
         Space: bindArg(ctx, addFigureRandomFigure) as any,
         KeyE: rotateFieldFigureLeft as any,
+        KeyQ: rotateFieldFigureRight as any,
         // "KeyW": bindArgs([ctx, [0, -1]], moveFieldFigure),
         KeyS: bindArgs([ctx, [0, 1]], moveFieldFigure),
         KeyA: bindArgs([ctx, [-1, 0]], moveFieldFigure),
@@ -47,6 +49,7 @@ const START_TEXT = 'Press SPACE to start';
 const phoneControlsMap: [string, string][] = [
     ['Space', 'Start (space)'],
     ['KeyE', 'Rotate (E)'],
+    ['KeyQ', 'Rotate (Q)'],
     ['KeyA', 'Left (A)'],
     ['KeyS', 'Down (S)'],
     ['KeyD', 'Right (D)'],

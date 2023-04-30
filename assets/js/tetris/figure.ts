@@ -143,17 +143,22 @@ export const validateState = (
     return isNewPositionCorrect;
 };
 
-export const rotateFigureLeft = (
+export const rotateFigure = (
     fieldState: FieldState,
-    state: FigureState
+    isLeft: boolean,
+    state: FigureState,
 ) => {
     const [matrix, position] = state;
     const size = matrix.length;
     const result: FieldType = [];
-    for (let i = 0; i < size; i++) {
-        result[i] = [];
-        for (let j = 0; j < size; j++) {
-            result[i].push(matrix[size - j - 1][i]);
+    for (let row = 0; row < size; row++) {
+        result[row] = [];
+        for (let col = 0; col < size; col++) {
+            if (isLeft) {
+              result[row].push(matrix[size - col - 1][row]);
+            } else {
+              // result[row].unshift(matrix[col][row]);
+            }
         }
     }
     const margins = calcMargins(result);

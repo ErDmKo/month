@@ -29,6 +29,7 @@ fn create_ctx(no_string: String) -> Context {
         if val.is_some() {
             ctx.insert("current", val.unwrap());
             ctx.insert("current_no", &no_string);
+            ctx.insert("current_no_number", &no_num);
         }
     }
     return ctx;
