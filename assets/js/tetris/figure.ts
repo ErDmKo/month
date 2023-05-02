@@ -157,7 +157,7 @@ export const rotateFigure = (
             if (isLeft) {
               result[row].push(matrix[size - col - 1][row]);
             } else {
-              // result[row].unshift(matrix[col][row]);
+              result[row].push(matrix[col][size - row - 1]);
             }
         }
     }
