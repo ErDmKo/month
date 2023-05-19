@@ -1,16 +1,16 @@
 use actix_files;
-use actix_web::{middleware, web, App, HttpServer};
+use actix_web::{Result, middleware, web, App, HttpServer};
 use env_logger;
 use log::info;
 use std::path::PathBuf;
 use std::sync::{Arc, RwLock};
 use std::{env, option_env};
 use tera::Tera;
-pub mod pages;
+use std::io::{ErrorKind, Error};
 
-struct AppCtx {
-    static_path: PathBuf,
-}
+pub mod app;
+pub mod db;
+pub mod pages;
 
 static TEMPLATES_GLOB: &str = "templates/**/*";
 static BASE_PATH: Option<&'static str> = option_env!("BASE_PATH");
@@ -19,9 +19,9 @@ static HOST_RUN: Option<&'static str> = option_env!("HOST");
 static PORT_RUN: Option<&'static str> = option_env!("PORT");
 
 async fn get_static_from_root(
-    ctx: web::Data<AppCtx>,
+    ctx: web::Data<app::AppCtx>,
     req: actix_web::HttpRequest,
-) -> actix_web::Result<actix_files::NamedFile> {
+) -> Result<actix_files::NamedFile> {
     match req.match_pattern() {
         Some(pattern) => {
             let mut full_path = ctx.static_path.clone();
@@ -62,10 +62,13 @@ async fn main() -> std::io::Result<()> {
     info!("Templates done");
     let templates = Arc::new(RwLock::new(tera));
     info!("Srating server host '{}' port '{}'", host, port);
+    let pool = db::init_db().await
+        .map_err(|e| Error::new(ErrorKind::Other, e.to_string()))?;
     HttpServer::new(move || {
         App::new()
-            .app_data(web::Data::new(AppCtx {
+            .app_data(web::Data::new(app::AppCtx {
                 static_path: static_path.clone(),
+                pool: pool.clone()
             }))
             .wrap(middleware::NormalizePath::trim())
             .wrap(middleware::Compress::default())

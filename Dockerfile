@@ -35,6 +35,8 @@ ENV DOMAIN='erdmko.dev'
 RUN cargo build --target x86_64-unknown-linux-musl --release
 
 FROM alpine:3.16.0 AS runtime 
+RUN apk update \
+    && apk add sqlite
 WORKDIR /usr/local/bin/
 EXPOSE 8080
 COPY --from=builder /usr/src/app/target/x86_64-unknown-linux-musl/release/server /usr/local/bin/server

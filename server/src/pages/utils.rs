@@ -1,20 +1,24 @@
-use actix_web::{HttpRequest, HttpResponse, Responder};
+use actix_web::{HttpRequest, HttpResponse, error, Result};
 use log::error;
 use std::sync::{Arc, RwLock};
 use tera::{Context, Tera};
 
-pub async fn render(req: HttpRequest, template: &str, ctx: &Context) -> impl Responder {
+pub async fn render(
+    req: HttpRequest,
+    template: &str,
+    ctx: &Context
+) -> Result<HttpResponse> {
     let data: Option<&Arc<RwLock<Tera>>> = req.app_data();
     if let Some(eng) = data {
         let engine = eng.read().unwrap();
         let body = engine.render(template, &ctx);
         return match body {
-            Ok(v) => HttpResponse::Ok().body(v),
+            Ok(v) => Ok(HttpResponse::Ok().body(v)),
             Err(e) => {
                 error!("Template error {:?}", e);
-                HttpResponse::BadRequest().body("Template error")
+                Err(error::ErrorBadRequest("Template error"))
             }
         };
     }
-    HttpResponse::BadRequest().body("Error")
+    Err(error::ErrorBadRequest("Error"))
 }
