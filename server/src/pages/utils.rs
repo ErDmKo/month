@@ -1,13 +1,9 @@
-use actix_web::{HttpRequest, HttpResponse, error, Result};
+use actix_web::{error, HttpRequest, HttpResponse, Result};
 use log::error;
 use std::sync::{Arc, RwLock};
 use tera::{Context, Tera};
 
-pub async fn render(
-    req: HttpRequest,
-    template: &str,
-    ctx: &Context
-) -> Result<HttpResponse> {
+pub async fn render(req: HttpRequest, template: &str, ctx: &Context) -> Result<HttpResponse> {
     let data: Option<&Arc<RwLock<Tera>>> = req.app_data();
     if let Some(eng) = data {
         let engine = eng.read().unwrap();

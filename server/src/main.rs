@@ -1,12 +1,12 @@
 use actix_files;
-use actix_web::{Result, middleware, web, App, HttpServer};
+use actix_web::{middleware, web, App, HttpServer, Result};
 use env_logger;
 use log::info;
+use std::io::{Error, ErrorKind};
 use std::path::PathBuf;
 use std::sync::{Arc, RwLock};
 use std::{env, option_env};
 use tera::Tera;
-use std::io::{ErrorKind, Error};
 
 pub mod app;
 pub mod db;
@@ -49,7 +49,7 @@ async fn main() -> std::io::Result<()> {
             static_path.push("assets");
             templates_path.push(bazel_path)
         }
-        None => static_path.push("static")
+        None => static_path.push("static"),
     }
     info!("Static path '{:?}'", static_path);
     templates_path.push(&TEMPLATES_GLOB);
@@ -62,13 +62,14 @@ async fn main() -> std::io::Result<()> {
     info!("Templates done");
     let templates = Arc::new(RwLock::new(tera));
     info!("Srating server host '{}' port '{}'", host, port);
-    let pool = db::init_db().await
+    let pool = db::init_db()
+        .await
         .map_err(|e| Error::new(ErrorKind::Other, e.to_string()))?;
     HttpServer::new(move || {
         App::new()
             .app_data(web::Data::new(app::AppCtx {
                 static_path: static_path.clone(),
-                pool: pool.clone()
+                pool: pool.clone(),
             }))
             .wrap(middleware::NormalizePath::trim())
             .wrap(middleware::Compress::default())
