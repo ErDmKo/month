@@ -1,16 +1,9 @@
 use actix_web::{get, web, HttpRequest, HttpResponse, Result};
-use serde::{Deserialize, Serialize};
 use tera::Context;
 
 use super::utils;
 use crate::app::AppCtx;
 use crate::db::query;
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct TestSqlResult {
-    name: String,
-    date: String,
-}
 
 #[get("/tetris")]
 pub async fn tetris_page_handler(
