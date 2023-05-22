@@ -40,8 +40,17 @@ bazel run //server:server
 ```
 
 #### Run code formater
+
+Formatter for backend
+
 ```bash
 cd server && cargo fmt
+```
+
+Formatter for frontend
+
+```bash
+bazel run //assets/js:prettier
 ```
 
 This command will run a http server on port 8080

@@ -9,7 +9,7 @@ import {
 } from '@month/utils';
 import {
     figureToField,
-    figure,
+    createFigure,
     FigureInstance,
     fullFigureList,
     moveFigure,
@@ -57,12 +57,11 @@ export const applyToFigue = <R>(
 ) => {
     const [field, , figures] = state;
     const result = [];
-    for (let figure of figures)
-        if (figure) {
-            figure(bindArgs([field, 1], figureToField));
-            result.push(figure(fn));
-            figure(bindArgs([field, 0], figureToField));
-        }
+    for (let figure of figures) {
+        figure(bindArgs([field, 1], figureToField));
+        result.push(figure(fn));
+        figure(bindArgs([field, 0], figureToField));
+    }
     return result;
 };
 export const rotateFieldFigureLeft = (state: FieldState) => {
@@ -165,7 +164,7 @@ export const addFigureRandomFigure = (ctx: Window, state: FieldState) => {
     );
     const center = ctx.Math.floor(field[0].length / 2);
     const centerPosition: Vector2D = [center - 2, 0];
-    const figureInstance = figure(ctx, figureShapeIndex, centerPosition);
+    const figureInstance = createFigure(ctx, figureShapeIndex, centerPosition);
     figures.push(figureInstance);
 };
 
