@@ -30,7 +30,8 @@ const PROJECT_NAME = 'what_amonth';
 const TMP_DIR = '_tmp';
 
 const main = async () => {
-    await execAsync(`bazel build //server/static`);
+    await execAsync(`rm -rf ./${TMP_DIR}`);
+    await execAsync(`bazel build //server`);
     const { stdout: files } = await execAsync(
         ['bazel', 'cquery', '//server', '--output=files'].join(' ')
     );

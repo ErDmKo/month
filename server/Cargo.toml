@@ -24,6 +24,9 @@ features = ["derive"]
 version = "1.15.0"
 default-features = false
 
+[registries.crates-io]
+protocol = "sparse"
+
 [package.metadata.raze]
 # The path at which to write output files.
 #

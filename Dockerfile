@@ -1,6 +1,6 @@
 FROM rust:slim-buster as builder
 
-RUN apt update && apt install -y musl-tools musl-dev
+RUN apt update && apt install -y musl-tools musl-dev sqlite3 libsqlite3-dev
 
 WORKDIR /usr/src
 
@@ -36,7 +36,7 @@ RUN cargo build --target x86_64-unknown-linux-musl --release
 
 FROM alpine:3.16.0 AS runtime 
 RUN apk update \
-    && apk add sqlite
+    && apk add sqlite sqlite-dev
 WORKDIR /usr/local/bin/
 EXPOSE 8080
 COPY --from=builder /usr/src/app/target/x86_64-unknown-linux-musl/release/server /usr/local/bin/server
