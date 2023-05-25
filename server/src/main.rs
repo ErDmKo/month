@@ -1,7 +1,7 @@
 use actix_files;
 use actix_web::{middleware, web, App, HttpServer, Result};
 use env_logger;
-use log::{info, error};
+use log::info;
 use std::io::{Error, ErrorKind};
 use std::path::PathBuf;
 use std::sync::{Arc, RwLock};
@@ -62,12 +62,11 @@ async fn main() -> std::io::Result<()> {
     info!("Templates done");
     let templates = Arc::new(RwLock::new(tera));
     info!("Srating server host '{}' port '{}'", host, port);
-    let pool = db::init_db()
-        .await
-        .map_err(|e| {
-            error!("DB error {:?}", e);
-            Error::new(ErrorKind::Other, e.to_string())
-        })?;
+    let pool = db::init_db().await.map_err(|e| {
+        info!("DB error {:?}", e);
+        Error::new(ErrorKind::Other, "Pool error")
+    })?;
+    info!("DB pool is ready");
     HttpServer::new(move || {
         App::new()
             .app_data(web::Data::new(app::AppCtx {

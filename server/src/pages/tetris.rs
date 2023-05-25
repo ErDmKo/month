@@ -12,9 +12,8 @@ pub async fn tetris_page_handler(
 ) -> Result<HttpResponse> {
     let mut ctx = Context::new();
     let query_result = query(app_ctx).await;
-    while let Ok(res) = &query_result {
+    if let Ok(res) = &query_result {
         ctx.insert("result", &format!("{:?}", res));
     }
-
     return utils::render(req, "tetris.html", &ctx).await;
 }

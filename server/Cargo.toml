@@ -14,7 +14,10 @@ slug = "0.1.4"
 env_logger="0.10.0"
 r2d2 = "0.8.10"
 r2d2_sqlite = "0.21.0"
-rusqlite = "0.28.0"
+
+[dependencies.rusqlite]
+version= "0.28.0"
+features = ["bundled"]
 
 [dependencies.serde]
 version = "1.0.137"

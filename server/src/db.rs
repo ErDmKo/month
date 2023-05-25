@@ -1,4 +1,5 @@
 use actix_web::{error, web};
+use log::info;
 use r2d2_sqlite::{self, SqliteConnectionManager};
 use serde::{Deserialize, Serialize};
 
@@ -13,18 +14,27 @@ pub struct TestSqlResult {
     date: String,
 }
 
-pub async fn init_db() -> Result<Pool, rusqlite::Error> {
+fn init_pool() -> Result<Pool, r2d2::Error> {
     let manager = SqliteConnectionManager::file("edk.db");
-    let pool = Pool::new(manager).unwrap();
-    let conn = pool.get().unwrap();
+    let pool = Pool::new(manager)?;
+    Ok(pool)
+}
+
+pub async fn init_db() -> Result<Pool, rusqlite::Error> {
+    info!("Init db");
     let drop_query = format!("DROP TABLE IF EXISTS {TABLE_NAME}");
+    let pool = init_pool().map_err(|e| {
+        let error_text = format!("Pool error {e:?}");
+        rusqlite::Error::InvalidParameterName(error_text)
+    })?;
+    let conn = pool.get().unwrap();
     conn.execute(&drop_query, ())?;
     let create_query = format!(
         "CREATE TABLE IF NOT EXISTS {TABLE_NAME} (
             id    INTEGER PRIMARY KEY,
             name  TEXT NOT NULL,
             date  TEXT NOT NULL
-        )"
+            )"
     );
     conn.execute(&create_query, ())?;
     conn.execute(
