@@ -182,11 +182,22 @@ export const drawField = (
     canvasCtx.clearRect(0, 0, fullWidth, fullHeight);
     for (let row = 0; row < rows; row++) {
         const y = height * row;
+        // horizontal line
         canvasCtx.fillRect(0, y - 1, fullWidth, 2);
         for (let coll = 0; coll < colls; coll++) {
             const x = width * coll;
             if (!row) {
+                // vetrical line
                 canvasCtx.fillRect(x - 1, 0, 2, fullHeight);
+                if (coll == colls - 1) {
+                    // the last right line
+                    canvasCtx.fillRect(
+                        (coll + 1) * width - 1,
+                        0,
+                        2,
+                        fullHeight
+                    );
+                }
             }
             if (field[row][coll]) {
                 const color = field[row][coll];
@@ -201,6 +212,10 @@ export const drawField = (
                 );
                 canvasCtx.fillStyle = '#000';
             }
+        }
+        // the last bottom line
+        if (row == rows - 1) {
+            canvasCtx.fillRect(0, height * (row + 1) - 1, fullWidth, 2);
         }
     }
 };
