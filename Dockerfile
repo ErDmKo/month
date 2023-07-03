@@ -40,6 +40,7 @@ EXPOSE 8080
 COPY --from=builder /usr/src/app/target/x86_64-unknown-linux-musl/release/server /usr/local/bin/server
 COPY --from=builder /usr/local/bin/static/ /usr/local/bin/static/
 COPY --from=builder /usr/local/bin/templates /usr/local/bin/templates/
+VOLUME edk /usr/local/bin/db/
 # ENV RUST_LOG=trace
 # ENV RUST_BACKTRACE=1
 CMD ["/usr/local/bin/server"]

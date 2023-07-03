@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 use actix_web::{error, web};
 use log::info;
 use r2d2_sqlite::{self, SqliteConnectionManager};
@@ -14,16 +16,19 @@ pub struct TestSqlResult {
     date: String,
 }
 
-fn init_pool() -> Result<Pool, r2d2::Error> {
-    let manager = SqliteConnectionManager::file("edk.db");
+fn init_pool(base_dir: &mut PathBuf) -> Result<Pool, r2d2::Error> {
+    base_dir.push("db");
+    base_dir.push("main.db");
+    info!("Db pool start {:?}", base_dir);
+    let manager = SqliteConnectionManager::file(base_dir);
     let pool = Pool::new(manager)?;
     Ok(pool)
 }
 
-pub async fn init_db() -> Result<Pool, rusqlite::Error> {
+pub async fn init_db(base_dir: &mut PathBuf) -> Result<Pool, rusqlite::Error> {
     info!("Init db");
     let drop_query = format!("DROP TABLE IF EXISTS {TABLE_NAME}");
-    let pool = init_pool().map_err(|e| {
+    let pool = init_pool(base_dir).map_err(|e| {
         let error_text = format!("Pool error {e:?}");
         rusqlite::Error::InvalidParameterName(error_text)
     })?;

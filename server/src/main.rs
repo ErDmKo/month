@@ -52,6 +52,7 @@ async fn main() -> std::io::Result<()> {
         None => static_path.push("static"),
     }
     info!("Static path '{:?}'", static_path);
+    let mut base_dir = templates_path.clone();
     templates_path.push(&TEMPLATES_GLOB);
     let host = HOST_RUN.unwrap_or("127.0.0.1");
     let port_str = PORT_RUN.unwrap_or("8080");
@@ -62,10 +63,11 @@ async fn main() -> std::io::Result<()> {
     info!("Templates done");
     let templates = Arc::new(RwLock::new(tera));
     info!("Srating server host '{}' port '{}'", host, port);
-    let pool = db::init_db().await.map_err(|e| {
-        info!("DB error {:?}", e);
-        Error::new(ErrorKind::Other, "Pool error")
-    })?;
+    let pool = db::init_db(&mut base_dir)
+        .await.map_err(|e| {
+            info!("DB error {:?}", e);
+            Error::new(ErrorKind::Other, "Pool error")
+        })?;
     info!("DB pool is ready");
     HttpServer::new(move || {
         App::new()

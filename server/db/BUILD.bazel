@@ -1,0 +1,9 @@
+package(default_visibility = ["//visibility:public"])
+
+filegroup(
+    name = "db",
+    srcs = glob(
+        ["*"],
+        exclude = ['**/*.bazel']
+    ),
+)
