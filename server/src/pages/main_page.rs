@@ -95,11 +95,6 @@ fn get_page_ctx() -> MainPageContext {
                 text: "//www.linkedin.com/in/erdmko/",
             },
             MainPageLink {
-                name: "Zen",
-                href: "https://zen.yandex.ru/id/5a8ed6eddcaf8e23b97cf564",
-                text: "//zen.yandex.ru/id/5a8ed6eddcaf8e23b97cf564",
-            },
-            MainPageLink {
                 name: "Twitter",
                 href: "https://twitter.com/ErDmKo",
                 text: "//twitter.com/ErDmKo",
