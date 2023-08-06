@@ -27,7 +27,7 @@
       docker run \
       --publish 8080:8080 \
       -d \
-      --mount source=edk,target=/data \
+      --mount source=edk,target=/usr/local/bin/db  \
       --name {{ app_name }} \
       --restart unless-stopped \
       {{ image_name }}
