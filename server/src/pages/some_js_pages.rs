@@ -11,9 +11,21 @@ pub async fn tetris_page_handler(
     req: HttpRequest,
 ) -> Result<HttpResponse> {
     let mut ctx = Context::new();
+    ctx.insert("game_name", "Tetris");
+    ctx.insert("bundle_name", "tetris");
     let query_result = query(app_ctx).await;
     if let Ok(res) = &query_result {
         ctx.insert("result", &format!("{:?}", res));
     }
-    return utils::render(req, "tetris.html", &ctx).await;
+    return utils::render(req, "js_bundle_page.html", &ctx).await;
+}
+
+#[get("/tennis")]
+pub async fn tennis_page_handler(
+    req: HttpRequest,
+) -> Result<HttpResponse> {
+    let mut ctx = Context::new();
+    ctx.insert("game_name", "Tennis");
+    ctx.insert("bundle_name", "tennis");
+    return utils::render(req, "js_bundle_page.html", &ctx).await;
 }

@@ -20,6 +20,6 @@ ts_project(
 
 js_library(
     name = "package",
-    package_name = "@month/tetris",
+    package_name = "@month/tennis",
     deps = [":lib"],
 )

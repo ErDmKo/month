@@ -25,15 +25,15 @@ ts_project(
     deps = [
         "//assets/js/snowflake:package",
         "//assets/js/tetris:package",
+        "//assets/js/tennis:package",
     ],
 )
-
 
 esbuild(
     name = "bundle",
     entry_point = "app.ts",
     metafile = False,
-    #minify = True,
+    minify = True,
     sourcemap = 'inline',
     deps = [
         ":lib",

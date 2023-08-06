@@ -47,31 +47,21 @@ const getKeyHandlers = (
 const START_TEXT = 'Press SPACE to start';
 
 const phoneControlsMap: [string, string][] = [
-    ['Space', 'Start (space)'],
-    ['KeyE', 'Rotate (E)'],
-    ['KeyQ', 'Rotate (Q)'],
+    ['Space', 'Start (Space)'],
+    ['KeyE', 'Rotate Right (E)'],
+    ['KeyQ', 'Rotate Left (Q)'],
     ['KeyA', 'Left (A)'],
     ['KeyS', 'Down (S)'],
     ['KeyD', 'Right (D)'],
 ];
-const inlineBlock = {
-    display: 'inline-block',
-    margin: '5px',
-};
-const block = {
-    display: 'block',
-    margin: '5px auto',
-};
-const smallButton = {
-    padding: '5px',
-    touchAction: 'manipulation',
-};
-const phoneStyleMap = (ctx: Window): Record<string, any> => ({
-    Space: ctx.Object.assign({}, smallButton, block),
-    KeyE: ctx.Object.assign({}, smallButton, block),
-    KeyS: ctx.Object.assign({}, inlineBlock, smallButton),
-    KeyA: ctx.Object.assign({}, inlineBlock, smallButton),
-    KeyD: ctx.Object.assign({}, inlineBlock, smallButton),
+const smallButton = 's';
+const phoneStyleMap = (ctx: Window): Record<string, string[]> => ({
+    Space: ['start', smallButton],
+    KeyE: ['rotateR', smallButton],
+    KeyQ: ['rotateL', smallButton],
+    KeyS: ['down', smallButton],
+    KeyA: ['left', smallButton],
+    KeyD: ['right', smallButton],
 });
 
 const addPhoneControls = (
@@ -80,22 +70,14 @@ const addPhoneControls = (
     keyHandlers: KeyHandlers
 ) => {
     const controls = ctx.document.createElement('div');
-    ctx.Object.assign(element.style, {
-        marginBottom: '200px',
-    });
-    ctx.Object.assign(controls.style, {
-        position: 'absolute',
-        top: '100%',
-        left: '0',
-        right: '0',
-    });
+    controls.classList.add('c');
     const styles = phoneStyleMap(ctx);
     phoneControlsMap.forEach(([key, name]) => {
         const elem = ctx.document.createElement('button');
         elem.innerText = name;
         const style = styles[key];
         if (style) {
-            ctx.Object.assign(elem.style, style);
+            elem.classList.add(...style);
         }
         elem.addEventListener('click', keyHandlers[key], { passive: true });
         controls.appendChild(elem);
@@ -106,27 +88,20 @@ const addPhoneControls = (
 const initCanvas = (ctx: Window, element: Element) => {
     const htmlElement = element as HTMLDivElement;
     htmlElement.innerHTML = '';
+    htmlElement.classList.add('tetris');
     const boardSize: Vector2D = [10, 20];
-    ctx.Object.assign(htmlElement.style, {
-        height: '400px',
-        width: '200px',
-        backgroundColor: 'white',
-        margin: '40px auto 0',
-    });
+    const wrapper = ctx.document.createElement('div');
+    wrapper.classList.add('wrapper');
+    htmlElement.appendChild(wrapper);
     const info = ctx.document.createElement('div');
-    ctx.Object.assign(info.style, {
-        left: '0',
-        right: '0',
-        position: 'absolute',
-        backgroundColor: 'white',
-        top: '30px',
-    });
+    info.classList.add('info');
     info.innerText = START_TEXT;
-    const [rect, canvas] = fillElemWidhCanvas(ctx, htmlElement);
+    const [rect, canvas] = fillElemWidhCanvas(ctx, wrapper);
     var canvasCtx = canvas.getContext('2d');
     if (!canvasCtx) {
         return;
     }
+    wrapper.appendChild(info);
     const [collums, rows] = boardSize;
     const collHeight = rect.height / rows;
     const collWidth = rect.width / collums;
@@ -156,10 +131,9 @@ const initCanvas = (ctx: Window, element: Element) => {
         }, on)
     );
     draw(ctx, fieldInstance, canvasCtx);
-    element.appendChild(info);
 };
 
 export const initTetrisEffect = (ctx: Window) => {
-    const tags = document.querySelectorAll('.js-tetris');
+    const tags = ctx.document.querySelectorAll('.js-tetris');
     ctx.Array.from(tags).forEach(bindArg(ctx, initCanvas));
 };

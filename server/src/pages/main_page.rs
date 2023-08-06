@@ -122,10 +122,15 @@ fn get_page_ctx() -> MainPageContext {
                 text: "Slugify",
             },
         ],
-        games: vec![MainPageLink {
+        games: vec![
+        MainPageLink {
             name: "Tetris game",
             href: "/tetris",
-            text: "tetris",
+            text: "tetris 🟥🟥🟥",
+        }, MainPageLink {
+            name: "Ping pong game",
+            href: "/tennis",
+            text: "Tennis 🎾",
         }],
     };
     page_info

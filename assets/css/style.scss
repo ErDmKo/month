@@ -140,3 +140,45 @@ a:hover {
     margin: 10px;
     padding: 5px;
 }
+.tetris {
+  position: relative;
+  background-color: #fff;
+  margin-bottom: 200px;
+  .wrapper {
+    width: 200px;
+    height: 400px;
+    margin: 40px auto 0;
+  }
+  .info {
+      left: 0;
+      right: 0;
+      position: absolute;
+      background-color: #fff;
+      top: 30px;
+  }
+  .s {
+    padding: 10px;
+    touch-action: manipulation;
+    margin: 5px;
+  }
+  .start {
+    grid-column: span 3;
+  }
+  .rotateL {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .rotateR {
+    grid-column: 3;
+  }
+  .c {
+      position: absolute;
+      transform: translate(-50%, 0);
+      top: 100%;
+      left: 50%;
+      display: grid;
+      margin-top: 50px;
+      max-width: 500px;
+      grid-template-columns: auto auto auto;
+  }
+}

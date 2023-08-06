@@ -35,6 +35,8 @@ bazel build //assets/css
 
 ### Run rust server
 
+This command will run a http server on port 8080
+
 ```bash
 bazel run //server:server
 ```
@@ -53,7 +55,6 @@ Formatter for frontend
 bazel run //assets/js:prettier
 ```
 
-This command will run a http server on port 8080
 
 ### Run npm comands in bazel
 
