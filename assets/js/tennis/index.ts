@@ -30,7 +30,7 @@ const initTemplate = (ctx: Window, element: Element) => {
     plusOneRight.innerText = '+1 Right';
     const scoreElement = ctx.document.createElement('span');
     scoreElement.classList.add('score');
-    scoreElement.innerText = '0:0';
+    scoreElement.innerText = `${SERVE}0:0`;
 
     gameStateObserver(bindArg(()=>{
       const {teamLeft, teamRight, serve} = state;
