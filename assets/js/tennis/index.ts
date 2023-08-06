@@ -2,19 +2,20 @@ import { bindArg, observer, on, trigger } from "@month/utils";
 
 const TEAM_LEFT = 'L';
 const TEAM_RIGHT = 'R';
+const SERVE = '🏓'
 
 type GameState = {
   teamLeft: number,
   teamRight: number,
-  serve: typeof TEAM_LEFT | typeof TEAM_RIGHT | ''
+  serve: typeof TEAM_LEFT | typeof TEAM_RIGHT
 }
 
 const initTemplate = (ctx: Window, element: Element) => {
-    const state = {
+    const state: GameState = {
       teamLeft: 0,
       teamRight: 0,
-      serve: ''
-    } as GameState;
+      serve: 'L'
+    };
     const gameStateObserver = observer<number, void>();
     const htmlElement = element as HTMLDivElement;
     htmlElement.innerText = '';
@@ -32,15 +33,12 @@ const initTemplate = (ctx: Window, element: Element) => {
     scoreElement.innerText = '0:0';
 
     gameStateObserver(bindArg(()=>{
-      if (state.serve == '') {
-        state.serve = state.teamLeft ? TEAM_LEFT : TEAM_RIGHT;
-      }
       const {teamLeft, teamRight, serve} = state;
       if (!((teamRight + teamLeft) % 2)) {
         state.serve = serve == TEAM_RIGHT ? TEAM_LEFT : TEAM_RIGHT;
       }
-      const leftBall = state.serve == TEAM_LEFT ? '🎾' : '';
-      const rightBall = state.serve == TEAM_RIGHT ? '🎾' : '';
+      const leftBall = state.serve == TEAM_LEFT ? SERVE : '';
+      const rightBall = state.serve == TEAM_RIGHT ? SERVE : '';
       scoreElement.innerText = `${leftBall}${teamLeft}:${teamRight}${rightBall}`;
     }, on));
 

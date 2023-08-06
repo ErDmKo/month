@@ -130,7 +130,7 @@ fn get_page_ctx() -> MainPageContext {
         }, MainPageLink {
             name: "Ping pong game",
             href: "/tennis",
-            text: "Tennis 🎾",
+            text: "Tennis 🏓",
         }],
     };
     page_info
