@@ -27,7 +27,8 @@
         "paths": {
             "@month/*": [
                 "./assets/js/*",
-                "./bazel-out/darwin-fastbuild/bin/assets/js/*"
+                "./bazel-out/darwin-fastbuild/bin/assets/js/*",
+                "./bazel-out/darwin_arm64-fastbuild/bin/assets/js/*"
             ]
         }
     },

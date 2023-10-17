@@ -1,5 +1,5 @@
 {% extends "inner.html" %}
-{% block title %}{% if title %}{{ title }}{% else %}Номер месяца{% endif %}{% endblock title %}
+{% block title %}{% if title %}{{ title }}{% else %}Номер месяца {% if current %}{{ current }} {{ current_no_number }}{% endif %}{% endif %}{% endblock title %}
 {% block desc %}{% if current %}Месяц '{{ current }}' - имеет порядковый номер {{ current_no_number }}{% else %}Номер месяца{% endif %}{% endblock desc %}
 {% block inner_content %}
 <h1>Номер месяца {% if current %}{{ current }} {{ current_no_number }}{% endif %}</h1>
