@@ -2,14 +2,14 @@ import { bindArg } from './bind';
 import { cont } from './cont';
 
 export type ObserverState<EventType> = ((e: EventType) => void)[];
-export type ObserverInstance<EventType, R = any> = (
-    a: (s: ObserverState<EventType>) => R
-) => R;
+export type ObserverInstance<EventType, ResultType = any> = (
+    a: (s: ObserverState<EventType>) => ResultType
+) => ResultType;
 
-export const observer = <EventType, R = any>(
+export const observer = <EventType, ResultType = any>(
     state = [] as ObserverState<EventType>
 ) => {
-    return cont<ObserverState<EventType>, R>(state);
+    return cont<ObserverState<EventType>, ResultType>(state);
 };
 
 export const on = <EventType>(

@@ -1,20 +1,24 @@
 import { bindArg, observer, on, trigger } from "@month/utils";
+import { Sides, TEAM_LEFT, TEAM_RIGHT } from "./const";
+import { Commands, COMMAND_TYPE, LOG_TYPE, startListen } from "./speech";
 
-const TEAM_LEFT = 'L';
-const TEAM_RIGHT = 'R';
-const SERVE = '🏓'
+const SERVE = '🏓' as const;
+const LOG = 3 as const;
 
 type GameState = {
-  teamLeft: number,
-  teamRight: number,
-  serve: typeof TEAM_LEFT | typeof TEAM_RIGHT
+  [TEAM_LEFT]: number,
+  [TEAM_RIGHT]: number,
+  [SERVE]: Sides[keyof Sides],
+  [LOG]: string[]
 }
+const eventOptions = { passive: true };
 
 const initTemplate = (ctx: Window, element: Element) => {
     const state: GameState = {
-      teamLeft: 0,
-      teamRight: 0,
-      serve: 'L'
+      [TEAM_LEFT]: 0,
+      [TEAM_RIGHT]: 0,
+      [SERVE]: TEAM_LEFT,
+      [LOG]: []
     };
     const gameStateObserver = observer<number, void>();
     const htmlElement = element as HTMLDivElement;
@@ -24,7 +28,7 @@ const initTemplate = (ctx: Window, element: Element) => {
     wrapper.classList.add('wrapper');
     const plusOneLeft = ctx.document.createElement('button');
     plusOneLeft.classList.add('pOneL');
-    plusOneLeft.innerText = '+1 Left';
+    plusOneLeft.innerText = '+1 Yellow';
     const plusOneRight = ctx.document.createElement('button');
     plusOneRight.classList.add('pOneR');
     plusOneRight.innerText = '+1 Right';
@@ -32,13 +36,27 @@ const initTemplate = (ctx: Window, element: Element) => {
     scoreElement.classList.add('score');
     scoreElement.innerText = `${SERVE}0:0`;
 
+    const logElement = ctx.document.createElement('div');
+    logElement.classList.add('log');
+
     gameStateObserver(bindArg(()=>{
-      const {teamLeft, teamRight, serve} = state;
-      if (!((teamRight + teamLeft) % 2)) {
-        state.serve = serve == TEAM_RIGHT ? TEAM_LEFT : TEAM_RIGHT;
+      const {
+        [TEAM_LEFT]: teamLeft,
+        [TEAM_RIGHT]: teamRight, 
+        [SERVE]: serve
+      } = state;
+
+      logElement.innerHTML = state[LOG]
+        .map((log, i) => `<div>${i}: "${log}"</div>`).join('');
+
+      if (teamLeft == 0 && teamRight == 0) {
+        return;
       }
-      const leftBall = state.serve == TEAM_LEFT ? SERVE : '';
-      const rightBall = state.serve == TEAM_RIGHT ? SERVE : '';
+      if (!((teamRight + teamLeft) % 2)) {
+        state[SERVE] = serve == TEAM_RIGHT ? TEAM_LEFT : TEAM_RIGHT;
+      }
+      const leftBall = state[SERVE] == TEAM_LEFT ? SERVE : '';
+      const rightBall = state[SERVE] == TEAM_RIGHT ? SERVE : '';
       scoreElement.innerText = `${leftBall}${teamLeft}:${teamRight}${rightBall}`;
     }, on));
 
@@ -46,15 +64,31 @@ const initTemplate = (ctx: Window, element: Element) => {
     wrapper.appendChild(plusOneLeft);
     wrapper.appendChild(scoreElement);
     wrapper.appendChild(plusOneRight);
+    wrapper.appendChild(logElement);
 
-    plusOneRight.addEventListener('click', () => {
-      state.teamRight += 1;
+    const voiceControlObserver = startListen(ctx);
+    voiceControlObserver(bindArg((command: Commands) => {
+      const [type, data] = command;
+      if (type === COMMAND_TYPE) {
+        state[data] += 1;
+      }
+      if (type === LOG_TYPE) {
+        state[LOG].unshift(data);
+        if (state[LOG].length > 5) {
+          state[LOG].pop();
+        }
+      }
       gameStateObserver(bindArg(0, trigger));
-    }, { passive: true });
+    }, on));
+
     plusOneLeft.addEventListener('click', () => {
-      state.teamLeft += 1;
+      state[TEAM_LEFT] += 1;
       gameStateObserver(bindArg(0, trigger));
-    }, { passive: true });
+    }, eventOptions);
+    plusOneRight.addEventListener('click', () => {
+      state[TEAM_RIGHT] += 1;
+      gameStateObserver(bindArg(0, trigger));
+    }, eventOptions);
 }
 
 export const initTennisEffect = (ctx: Window) => {
