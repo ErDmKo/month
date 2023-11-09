@@ -118,7 +118,7 @@ const animateField = (ctx: Window, state: FieldState) => {
 
     for (let i = 0; i < figures.length; i++) {
         if (figures[i](isFixed)) {
-            while (chekLines(ctx, state)) {};
+            while (chekLines(ctx, state)) {}
             delete figures[i];
             figures.length = figures.length - 1;
             addFigureRandomFigure(ctx, state);

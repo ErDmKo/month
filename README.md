@@ -55,7 +55,6 @@ Formatter for frontend
 bazel run //assets/js:prettier
 ```
 
-
 ### Run npm comands in bazel
 
 ```bash

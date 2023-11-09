@@ -13,3 +13,4 @@ pub use self::random::random_page_handler;
 pub use self::slugify::slugify_page_handler;
 pub use self::some_js_pages::tetris_page_handler;
 pub use self::some_js_pages::tennis_page_handler;
+pub use self::some_js_pages::ws_page_handler;
