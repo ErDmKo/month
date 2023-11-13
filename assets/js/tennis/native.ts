@@ -31,7 +31,7 @@ const getConstructors = (winCtx: Window) => {
     return result;
 };
 
-const commands = [TEAM_RIGHT_NAME, TEAM_LEFT_NAME, STOP_COMMAND];
+const commands = Object.keys(WORDS_TO_COMMANDS);
 
 export const useNative = (ctx: Window) => {
     const observerObj = observer<Commands, void>();
