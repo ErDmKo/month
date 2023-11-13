@@ -1,7 +1,7 @@
 import { bindArg, ObserverInstance, on } from '@month/utils';
 import { Commands, START_TYPE, STOP_TYPE } from './const';
 
-export const useScreenLoock = (
+export const useScreenLock = (
     ctx: Window,
     observerObj: ObserverInstance<Commands, void>
 ) => {
