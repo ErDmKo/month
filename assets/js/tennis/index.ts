@@ -13,6 +13,7 @@ import {
     START_TYPE,
     STOP_TYPE,
 } from './const';
+import { useScreenLoock } from './screen';
 import { startListen } from './speech';
 
 const SERVE = '🏓' as const;
@@ -94,6 +95,7 @@ const initTemplate = (ctx: Window, element: Element) => {
     wrapper.appendChild(logElement);
 
     const voiceControlObserver = startListen(ctx);
+    useScreenLoock(ctx, voiceControlObserver);
     voiceControlObserver(
         bindArg((command: Commands) => {
             const [type, data] = command;
