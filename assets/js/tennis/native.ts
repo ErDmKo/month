@@ -39,10 +39,10 @@ export const useNative = (ctx: Window) => {
     if (!speech || !grammar) {
         try {
             return observerObj;
-        } catch (e) {
+        } finally {
             observerObj(
                 bindArg(
-                    [LOG_TYPE, `SpeechRecognition is not supported ${e}`],
+                    [LOG_TYPE, `SpeechRecognition is not supported`],
                     trigger
                 )
             );
