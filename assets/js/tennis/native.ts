@@ -3,10 +3,7 @@ import {
     Commands,
     LOG_TYPE,
     START_TYPE,
-    STOP_COMMAND,
     STOP_TYPE,
-    TEAM_LEFT_NAME,
-    TEAM_RIGHT_NAME,
     WORDS_TO_COMMANDS,
 } from './const';
 
