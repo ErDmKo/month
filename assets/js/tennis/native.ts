@@ -83,9 +83,6 @@ export const useNative = (ctx: Window) => {
                 const command = WORDS_TO_COMMANDS[word] as Commands;
                 observerObj(bindArg(command, trigger));
             }
-            if (word === STOP_COMMAND) {
-                observerObj(bindArg([STOP_TYPE], trigger));
-            }
         });
     };
 

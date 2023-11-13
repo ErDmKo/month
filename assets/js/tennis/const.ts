@@ -18,10 +18,11 @@ export type Commands =
 
 export const TEAM_LEFT_NAME = 'first';
 export const TEAM_RIGHT_NAME = 'second';
+export const STOP_COMMAND = 'stop';
 
 export const WORDS_TO_COMMANDS: Record<string, Commands | undefined> = {
     [TEAM_LEFT_NAME]: [COMMAND_TYPE, TEAM_LEFT],
     [TEAM_RIGHT_NAME]: [COMMAND_TYPE, TEAM_RIGHT],
+    [STOP_COMMAND]: [STOP_TYPE]
 };
 
-export const STOP_COMMAND = 'stop';
