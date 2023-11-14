@@ -1,10 +1,14 @@
 import { bindArg, observer, on, trigger } from '@month/utils';
+import { useNative } from './native';
 import {
-    Sides,
+    GameState,
+    LOG,
+    SERVE,
     TEAM_LEFT,
     TEAM_LEFT_NAME,
     TEAM_RIGHT,
     TEAM_RIGHT_NAME,
+    VOICE_ENABLED,
 } from './const';
 import {
     Commands,
@@ -16,17 +20,6 @@ import {
 import { useScreenLock } from './screen';
 import { startListen } from './speech';
 
-const SERVE = '🏓' as const;
-const LOG = 3 as const;
-const VOICE_ENABLED = 4 as const;
-
-type GameState = {
-    [TEAM_LEFT]: number;
-    [TEAM_RIGHT]: number;
-    [SERVE]: Sides[keyof Sides];
-    [LOG]: string[];
-    [VOICE_ENABLED]: boolean;
-};
 const eventOptions = { passive: true };
 
 const initTemplate = (ctx: Window, element: Element) => {
@@ -37,7 +30,7 @@ const initTemplate = (ctx: Window, element: Element) => {
         [LOG]: [],
         [VOICE_ENABLED]: false,
     };
-    const gameStateObserver = observer<number, void>();
+    const gameStateObserver = observer<GameState, void>();
     const htmlElement = element as HTMLDivElement;
     htmlElement.innerText = '';
     htmlElement.classList.add('tennis');
@@ -81,6 +74,7 @@ const initTemplate = (ctx: Window, element: Element) => {
             if (!((teamRight + teamLeft) % 2)) {
                 state[SERVE] = serve == TEAM_RIGHT ? TEAM_LEFT : TEAM_RIGHT;
             }
+            console.log(state);
             const leftBall = state[SERVE] == TEAM_LEFT ? SERVE : '';
             const rightBall = state[SERVE] == TEAM_RIGHT ? SERVE : '';
             scoreElement.innerText = `${leftBall}${teamLeft}:${teamRight}${rightBall}`;
@@ -94,14 +88,15 @@ const initTemplate = (ctx: Window, element: Element) => {
     wrapper.appendChild(voiceCommands);
     wrapper.appendChild(logElement);
 
-    const voiceControlObserver = startListen(ctx);
+    const voiceControlObserver = useNative(ctx);
+    startListen(ctx, gameStateObserver);
     useScreenLock(ctx, voiceControlObserver);
     voiceControlObserver(
         bindArg((command: Commands) => {
             const [type, data] = command;
             if (type === COMMAND_TYPE) {
                 state[data] += 1;
-                gameStateObserver(bindArg(0, trigger));
+                gameStateObserver(bindArg(state, trigger));
             }
             if (type === LOG_TYPE) {
                 state[LOG].unshift(data);
@@ -111,7 +106,7 @@ const initTemplate = (ctx: Window, element: Element) => {
             }
             if (type === STOP_TYPE) {
                 state[VOICE_ENABLED] = false;
-                gameStateObserver(bindArg(0, trigger));
+                gameStateObserver(bindArg(state, trigger));
             }
         }, on)
     );
@@ -120,14 +115,14 @@ const initTemplate = (ctx: Window, element: Element) => {
         state[VOICE_ENABLED] = !state[VOICE_ENABLED];
         let command = state[VOICE_ENABLED] ? START_TYPE : STOP_TYPE;
         voiceControlObserver(bindArg([command], trigger));
-        gameStateObserver(bindArg(0, trigger));
+        gameStateObserver(bindArg(state, trigger));
     });
 
     plusOneLeft.addEventListener(
         'click',
         () => {
             state[TEAM_LEFT] += 1;
-            gameStateObserver(bindArg(0, trigger));
+            gameStateObserver(bindArg(state, trigger));
         },
         eventOptions
     );
@@ -135,7 +130,7 @@ const initTemplate = (ctx: Window, element: Element) => {
         'click',
         () => {
             state[TEAM_RIGHT] += 1;
-            gameStateObserver(bindArg(0, trigger));
+            gameStateObserver(bindArg(state, trigger));
         },
         eventOptions
     );
