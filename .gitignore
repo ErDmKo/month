@@ -1,4 +1,5 @@
 # The directory Mix will write compiled artifacts to.
+/_tmp/
 /_build/
 image.tar
 .DS_Store

@@ -24,6 +24,7 @@ export const startListen = (
       const text = `Serving ${server} score ${teamLeft} ${teamRight}`;
       console.log(text);
       const utterThis = new SpeechSynthesisUtterance(text);
+      utterThis.lang = "en-US";
       synth.speak(utterThis);
     }, on));
     return observerObj;
