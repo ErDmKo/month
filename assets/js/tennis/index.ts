@@ -33,10 +33,6 @@ const initTemplate = (ctx: Window, element: Element) => {
     const htmlElement = element as HTMLDivElement;
     htmlElement.innerText = '';
     htmlElement.classList.add('tennis');
-    const elements = template(ctx, htmlElement);
-    if (!elements) {
-        return;
-    }
     const [
         wrapper,
         plusOneLeft,
@@ -44,7 +40,7 @@ const initTemplate = (ctx: Window, element: Element) => {
         plusOneRight,
         voiceCommands,
         logElement,
-    ] = elements;
+    ] = template(ctx, htmlElement);;
     htmlElement.appendChild(wrapper);
 
     const voiceControlObserver = useNative(ctx);

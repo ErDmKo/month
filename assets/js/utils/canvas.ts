@@ -1,3 +1,5 @@
+import { domCreator, PROP, REF, Ref } from './dom';
+
 declare global {
     interface Window {
         Object: typeof Object;
@@ -9,19 +11,28 @@ export const fillElemWidhCanvas = (
     ctx: Window,
     element: HTMLDivElement
 ): [DOMRect, HTMLCanvasElement] => {
-    const canvas = ctx.document.createElement('canvas');
-    ctx.Object.assign(canvas.style, {
-        position: 'absolute',
-        top: '0px',
-        left: '0px',
-        pointerEvents: 'none',
-        width: '100%',
-        height: '100%',
-    });
+
+    const [ canvas ] = domCreator(ctx, element, [
+        'canvas',
+        [
+            [REF],
+            [
+                'style',
+                {
+                    position: 'absolute',
+                    top: '0px',
+                    left: '0px',
+                    pointerEvents: 'none',
+                    width: '100%',
+                    height: '100%',
+                },
+                PROP,
+            ],
+        ],
+    ] as const);
     ctx.Object.assign(element.style, {
         position: 'relative',
     });
-    element.appendChild(canvas);
     const rectRaw = canvas.getBoundingClientRect();
     const rect = ctx.Object.assign(rectRaw, {
         width: rectRaw.width * 2,

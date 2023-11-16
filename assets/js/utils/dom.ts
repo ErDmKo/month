@@ -1,4 +1,4 @@
-export type Ref = [current?: HTMLElement];
+export type Ref<T = HTMLElement> = [current?: T];
 
 export const REF = 1 as const;
 export const PROP = 0 as const;
@@ -6,31 +6,39 @@ export const PROP = 0 as const;
 type Props =
     | readonly [key: string, value: string]
     | readonly [key: string, value: any, isProp: typeof PROP]
-    | readonly [typeof REF, Ref];
+    | readonly [key: typeof REF, ref?: Ref];
 
-type DOMStruct = readonly [
+type DOMStruct<K extends keyof HTMLElementTagNameMap> = readonly [
+    tag: K,
     attributes: readonly Props[],
-    children?: readonly DOMStruct[],
-    tag?: string
+    children?: readonly DOMStruct<K>[],
 ];
 
 // No recusion
-export const domCreator = (ctx: Window, root: Element, struct: DOMStruct) => {
+export const domCreator = <K extends keyof HTMLElementTagNameMap>(
+  ctx: Window,
+  root: Element,
+  struct: DOMStruct<K>
+) => {
     if (!(ctx.document && typeof ctx.document.createElement == 'function')) {
-        return;
+        throw new Error();
     }
     const currnent = [[root, struct] as const];
+    const refs: HTMLElementTagNameMap[K][] = [];
     while (currnent.length) {
         const nextStruct = currnent.pop();
         if (!nextStruct) {
             break;
         }
         const [root, struct] = nextStruct;
-        const [attributes, children, tag] = struct;
-        const element = ctx.document.createElement(tag || 'div');
+        const [tag, attributes, children] = struct;
+        const element = ctx.document.createElement(tag);
         attributes.forEach(([key, value, isProp]) => {
             if (key === REF) {
-                value[0] = element;
+                if (value) {
+                  value[0] = element;
+                }
+                refs.push(element);
             } else if (isProp === PROP) {
                 (element as any)[key] = value;
             } else {
@@ -42,6 +50,7 @@ export const domCreator = (ctx: Window, root: Element, struct: DOMStruct) => {
             currnent.unshift([element, child]);
         });
     }
+    return refs;
 };
 
 export const chekRefs = (refList: Ref[]): refList is Required<Ref>[] => {

@@ -1,88 +1,62 @@
-import { domCreator, REF, Ref, chekRefs, PROP } from '@month/utils';
+import { domCreator, REF, PROP } from '@month/utils';
 import { SERVE, TEAM_LEFT_NAME, TEAM_RIGHT_NAME } from './const';
 
 export const template = (ctx: Window, root: HTMLElement) => {
-    const wrapperRef: Ref = [];
-    const plusRefL: Ref = [];
-    const plusRefR: Ref = [];
-    const scoreRef: Ref = [];
-    const voiceRef: Ref = [];
-    const logRef: Ref = [];
-    domCreator(ctx, root, [
+    const res = domCreator(ctx, root, [
+        'div',
         [
             ['class', 'wrapper'],
-            [REF, wrapperRef],
+            [REF],
         ],
         [
             [
+                'button',
                 [
                     ['class', 'pOneL'],
                     ['innerText', `+1 ${TEAM_LEFT_NAME}`, PROP],
-                    [REF, plusRefL],
+                    [REF],
                 ],
-                ,
-                'button',
             ],
             [
+                'span',
                 [
                     ['class', 'score'],
                     ['innerText', `${SERVE}0:0`, PROP],
-                    [REF, scoreRef],
+                    [REF],
                 ],
-                ,
-                'span',
             ],
             [
+                'button',
                 [
                     ['class', 'pOneR'],
                     ['innerText', `+1 ${TEAM_RIGHT_NAME}`, PROP],
-                    [REF, plusRefR],
+                    [REF],
                 ],
-                ,
-                'button',
             ],
             [
+                'button',
                 [
                     ['class', 'voice'],
                     ['innerText', 'Voice control disabled', PROP],
-                    [REF, voiceRef],
+                    [REF],
                 ],
                 ,
-                'button',
             ],
             [
+                'div',
                 [
                     ['class', 'log'],
-                    [REF, logRef],
+                    [REF],
                 ],
             ],
         ],
     ] as const);
-    const refList = [
-        wrapperRef,
-        plusRefL,
-        scoreRef,
-        plusRefR,
-        voiceRef,
-        logRef,
-    ];
-    if (!chekRefs(refList)) {
-        return;
-    }
-    const [
-        [wrapper],
-        [plusOneLeft],
-        [scoreElement],
-        [plusOneRight],
-        [voiceCommands],
-        [logElement],
-    ] = refList;
-    return [
-        wrapper,
-        plusOneLeft,
-        scoreElement,
-        plusOneRight,
-        voiceCommands,
-        logElement,
-    ];
+    return res as [
+      HTMLDivElement,
+      HTMLButtonElement,
+      HTMLSpanElement,
+      HTMLButtonElement,
+      HTMLButtonElement,
+      HTMLDivElement
+    ]
 };
