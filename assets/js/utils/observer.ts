@@ -27,18 +27,18 @@ export const trigger = <EventType>(
         callback(event);
     }
 };
-export const delayOperator = <T>(delay:number, state: ObserverState<T>)  =>  {
-  const oldObserver = observer(state);
-  const newObserver = observer<T>();
-  oldObserver(
-      bindArg((newVal: T) => {
-        setTimeout(() => {
-          newObserver(bindArg(newVal, trigger));
-        }, delay);
-      }, on)
-  );
-  return newObserver;
-}
+export const delayOperator = <T>(delay: number, state: ObserverState<T>) => {
+    const oldObserver = observer(state);
+    const newObserver = observer<T>();
+    oldObserver(
+        bindArg((newVal: T) => {
+            setTimeout(() => {
+                newObserver(bindArg(newVal, trigger));
+            }, delay);
+        }, on)
+    );
+    return newObserver;
+};
 export const sumOperator = (state: ObserverState<number>) => {
     const oldObserver = observer(state);
     const newObserver = observer<number>();

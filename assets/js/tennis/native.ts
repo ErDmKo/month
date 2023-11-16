@@ -63,7 +63,7 @@ export const useNative = (ctx: Window) => {
             if (type === START_TYPE) {
                 isStopped = false;
                 recognition.start();
-            }  else if (type === STOP_TYPE) {
+            } else if (type === STOP_TYPE) {
                 isStopped = true;
                 recognition.stop();
             }

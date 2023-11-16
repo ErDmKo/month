@@ -23,14 +23,14 @@ export const TEAM_RIGHT_NAME = 'second';
 export const STOP_COMMAND = 'stop';
 
 export const TEAM_NAMES = {
-  [TEAM_LEFT]:  TEAM_LEFT_NAME,
-  [TEAM_RIGHT]: TEAM_RIGHT_NAME
+    [TEAM_LEFT]: TEAM_LEFT_NAME,
+    [TEAM_RIGHT]: TEAM_RIGHT_NAME,
 };
 
 export const WORDS_TO_COMMANDS: Record<string, Commands | undefined> = {
     [TEAM_NAMES[TEAM_LEFT]]: [COMMAND_TYPE, TEAM_LEFT],
     [TEAM_NAMES[TEAM_RIGHT]]: [COMMAND_TYPE, TEAM_RIGHT],
-    [STOP_COMMAND]: [STOP_TYPE]
+    [STOP_COMMAND]: [STOP_TYPE],
 };
 
 export const SERVE = '🏓' as const;
