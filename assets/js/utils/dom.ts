@@ -40,7 +40,11 @@ export const domCreator = <K extends keyof HTMLElementTagNameMap>(
                 }
                 refs.push(element);
             } else if (isProp === PROP) {
+              if (key === 'style') {
+                Object.assign(element.style, value);
+              } else {
                 (element as any)[key] = value;
+              }
             } else {
                 element.setAttribute(key, value);
             }

@@ -29,7 +29,7 @@ export const fillElemWidhCanvas = (
                 PROP,
             ],
         ],
-    ] as const);
+    ]);
     ctx.Object.assign(element.style, {
         position: 'relative',
     });

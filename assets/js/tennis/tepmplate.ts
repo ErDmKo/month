@@ -50,7 +50,7 @@ export const template = (ctx: Window, root: HTMLElement) => {
                 ],
             ],
         ],
-    ] as const);
+    ]);
     return res as [
       HTMLDivElement,
       HTMLButtonElement,

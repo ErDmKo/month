@@ -1,4 +1,4 @@
-import { bindArg, bindArgs, fillElemWidhCanvas, on } from '@month/utils';
+import { bindArg, bindArgs, domCreator, fillElemWidhCanvas, on, PROP, REF } from '@month/utils';
 import {
     FieldInstance,
     drawField,
@@ -69,20 +69,20 @@ const addPhoneControls = (
     element: HTMLDivElement,
     keyHandlers: KeyHandlers
 ) => {
-    const controls = ctx.document.createElement('div');
-    controls.classList.add('c');
     const styles = phoneStyleMap(ctx);
-    phoneControlsMap.forEach(([key, name]) => {
-        const elem = ctx.document.createElement('button');
-        elem.innerText = name;
-        const style = styles[key];
-        if (style) {
-            elem.classList.add(...style);
-        }
-        elem.addEventListener('click', keyHandlers[key], { passive: true });
-        controls.appendChild(elem);
-    });
-    element.appendChild(controls);
+    domCreator(ctx, element, [
+      'div', [
+        ['class', 'c'],
+      ],
+      phoneControlsMap.map(([key, name]) => {
+        const classes = styles[key];
+        return ['button', [
+          ['innerText', name, PROP],
+          ['class', (classes || []).join(' ')],
+          ['onclick', keyHandlers[key], PROP]
+        ]];
+      })
+    ]);
 };
 
 const initCanvas = (ctx: Window, element: Element) => {
@@ -90,18 +90,26 @@ const initCanvas = (ctx: Window, element: Element) => {
     htmlElement.innerHTML = '';
     htmlElement.classList.add('tetris');
     const boardSize: Vector2D = [10, 20];
-    const wrapper = ctx.document.createElement('div');
-    wrapper.classList.add('wrapper');
-    htmlElement.appendChild(wrapper);
-    const info = ctx.document.createElement('div');
-    info.classList.add('info');
-    info.innerText = START_TEXT;
+    const [
+      wrapper,
+      info
+    ] = domCreator(ctx, htmlElement, [
+      'div', [
+        ['class', 'wrapper'],
+        [REF]
+      ], [
+        ['div', [
+          ['class', 'info'],
+          ['innerText', START_TEXT],
+          [REF]
+        ]]
+      ],
+    ]);
     const [rect, canvas] = fillElemWidhCanvas(ctx, wrapper);
     var canvasCtx = canvas.getContext('2d');
     if (!canvasCtx) {
         return;
     }
-    wrapper.appendChild(info);
     const [collums, rows] = boardSize;
     const collHeight = rect.height / rows;
     const collWidth = rect.width / collums;
