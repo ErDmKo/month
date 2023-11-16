@@ -5,9 +5,7 @@ import {
     LOG,
     SERVE,
     TEAM_LEFT,
-    TEAM_LEFT_NAME,
     TEAM_RIGHT,
-    TEAM_RIGHT_NAME,
     VOICE_ENABLED,
 } from './const';
 import {
@@ -19,6 +17,7 @@ import {
 } from './const';
 import { useScreenLock } from './screen';
 import { startListen } from './speech';
+import { template } from './tepmplate';
 
 const eventOptions = { passive: true };
 
@@ -34,59 +33,18 @@ const initTemplate = (ctx: Window, element: Element) => {
     const htmlElement = element as HTMLDivElement;
     htmlElement.innerText = '';
     htmlElement.classList.add('tennis');
-    const wrapper = ctx.document.createElement('div');
-    wrapper.classList.add('wrapper');
-    const voiceCommands = ctx.document.createElement('button');
-    voiceCommands.classList.add('voice');
-    voiceCommands.innerText = 'Voice control disabled';
-    const plusOneLeft = ctx.document.createElement('button');
-    plusOneLeft.classList.add('pOneL');
-    plusOneLeft.innerText = `+1 ${TEAM_LEFT_NAME}`;
-    const plusOneRight = ctx.document.createElement('button');
-    plusOneRight.classList.add('pOneR');
-    plusOneRight.innerText = `+1 ${TEAM_RIGHT_NAME}`;
-    const scoreElement = ctx.document.createElement('span');
-    scoreElement.classList.add('score');
-    scoreElement.innerText = `${SERVE}0:0`;
-
-    const logElement = ctx.document.createElement('div');
-    logElement.classList.add('log');
-
-    gameStateObserver(
-        bindArg(() => {
-            const {
-                [TEAM_LEFT]: teamLeft,
-                [TEAM_RIGHT]: teamRight,
-                [SERVE]: serve,
-            } = state;
-
-            logElement.innerHTML = state[LOG].map(
-                (log, i) => `<div>${i}: "${log}"</div>`
-            ).join('');
-
-            voiceCommands.innerText = state[VOICE_ENABLED]
-                ? `Voice control enabled`
-                : `Voice control disabled`;
-
-            if (teamLeft == 0 && teamRight == 0) {
-                return;
-            }
-            if (!((teamRight + teamLeft) % 2)) {
-                state[SERVE] = serve == TEAM_RIGHT ? TEAM_LEFT : TEAM_RIGHT;
-            }
-            console.log(state);
-            const leftBall = state[SERVE] == TEAM_LEFT ? SERVE : '';
-            const rightBall = state[SERVE] == TEAM_RIGHT ? SERVE : '';
-            scoreElement.innerText = `${leftBall}${teamLeft}:${teamRight}${rightBall}`;
-        }, on)
-    );
-
-    htmlElement.appendChild(wrapper);
-    wrapper.appendChild(plusOneLeft);
-    wrapper.appendChild(scoreElement);
-    wrapper.appendChild(plusOneRight);
-    wrapper.appendChild(voiceCommands);
-    wrapper.appendChild(logElement);
+    const elements = template(ctx, htmlElement);
+    if (!elements) {
+        return;
+    }
+    const {
+        wrapper,
+        plusOneLeft,
+        scoreElement,
+        plusOneRight,
+        voiceCommands,
+        logElement,
+    } = elements;
 
     const voiceControlObserver = useNative(ctx);
     startListen(ctx, gameStateObserver);
@@ -111,13 +69,7 @@ const initTemplate = (ctx: Window, element: Element) => {
         }, on)
     );
 
-    voiceCommands.addEventListener('click', () => {
-        state[VOICE_ENABLED] = !state[VOICE_ENABLED];
-        let command = state[VOICE_ENABLED] ? START_TYPE : STOP_TYPE;
-        voiceControlObserver(bindArg([command], trigger));
-        gameStateObserver(bindArg(state, trigger));
-    });
-
+    htmlElement.appendChild(wrapper);
     plusOneLeft.addEventListener(
         'click',
         () => {
@@ -126,6 +78,42 @@ const initTemplate = (ctx: Window, element: Element) => {
         },
         eventOptions
     );
+
+    gameStateObserver(
+        bindArg(() => {
+            const {
+                [TEAM_LEFT]: teamLeft,
+                [TEAM_RIGHT]: teamRight,
+                [SERVE]: serve,
+            } = state;
+
+            logElement.innerHTML = state[LOG].map(
+                (log, i) => `<div>${i}: "${log}"</div>`
+            ).join('');
+
+            voiceCommands.innerText = state[VOICE_ENABLED]
+                ? `Voice control enabled`
+                : `Voice control disabled`;
+
+            if (teamLeft == 0 && teamRight == 0) {
+                return;
+            }
+            if (!((teamRight + teamLeft) % 2)) {
+                state[SERVE] = serve == TEAM_RIGHT ? TEAM_LEFT : TEAM_RIGHT;
+            }
+            const leftBall = state[SERVE] == TEAM_LEFT ? SERVE : '';
+            const rightBall = state[SERVE] == TEAM_RIGHT ? SERVE : '';
+            scoreElement.innerText = `${leftBall}${teamLeft}:${teamRight}${rightBall}`;
+        }, on)
+    );
+
+    voiceCommands.addEventListener('click', () => {
+        state[VOICE_ENABLED] = !state[VOICE_ENABLED];
+        let command = state[VOICE_ENABLED] ? START_TYPE : STOP_TYPE;
+        voiceControlObserver(bindArg([command], trigger));
+        gameStateObserver(bindArg(state, trigger));
+    });
+
     plusOneRight.addEventListener(
         'click',
         () => {
