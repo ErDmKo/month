@@ -1,10 +1,11 @@
-export type Ref = { current?: HTMLElement };
+export type Ref = [current?: HTMLElement];
 
 export const REF = 1 as const;
 export const PROP = 0 as const;
 
 type Props =
-    | readonly [key: string, value: string, isProp?: typeof PROP]
+    | readonly [key: string, value: string]
+    | readonly [key: string, value: any, isProp: typeof PROP]
     | readonly [typeof REF, Ref];
 
 type DOMStruct = readonly [
@@ -29,7 +30,7 @@ export const domCreator = (ctx: Window, root: Element, struct: DOMStruct) => {
         const element = ctx.document.createElement(tag || 'div');
         attributes.forEach(([key, value, isProp]) => {
             if (key === REF) {
-                value.current = element;
+                value[0] = element;
             } else if (isProp === PROP) {
                 (element as any)[key] = value;
             } else {
@@ -45,6 +46,6 @@ export const domCreator = (ctx: Window, root: Element, struct: DOMStruct) => {
 
 export const chekRefs = (refList: Ref[]): refList is Required<Ref>[] => {
     return refList.every((ref) => {
-        return ref.current;
+        return ref[0];
     });
 };

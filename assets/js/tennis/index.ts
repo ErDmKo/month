@@ -37,14 +37,15 @@ const initTemplate = (ctx: Window, element: Element) => {
     if (!elements) {
         return;
     }
-    const {
+    const [
         wrapper,
         plusOneLeft,
         scoreElement,
         plusOneRight,
         voiceCommands,
         logElement,
-    } = elements;
+    ] = elements;
+    htmlElement.appendChild(wrapper);
 
     const voiceControlObserver = useNative(ctx);
     startListen(ctx, gameStateObserver);
@@ -69,7 +70,6 @@ const initTemplate = (ctx: Window, element: Element) => {
         }, on)
     );
 
-    htmlElement.appendChild(wrapper);
     plusOneLeft.addEventListener(
         'click',
         () => {

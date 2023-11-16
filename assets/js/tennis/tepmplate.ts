@@ -2,12 +2,12 @@ import { domCreator, REF, Ref, chekRefs, PROP } from '@month/utils';
 import { SERVE, TEAM_LEFT_NAME, TEAM_RIGHT_NAME } from './const';
 
 export const template = (ctx: Window, root: HTMLElement) => {
-    const wrapperRef: Ref = {};
-    const plusRefL: Ref = {};
-    const plusRefR: Ref = {};
-    const scoreRef: Ref = {};
-    const voiceRef: Ref = {};
-    const logRef: Ref = {};
+    const wrapperRef: Ref = [];
+    const plusRefL: Ref = [];
+    const plusRefR: Ref = [];
+    const scoreRef: Ref = [];
+    const voiceRef: Ref = [];
+    const logRef: Ref = [];
     domCreator(ctx, root, [
         [
             ['class', 'wrapper'],
@@ -70,19 +70,19 @@ export const template = (ctx: Window, root: HTMLElement) => {
         return;
     }
     const [
-        { current: wrapper },
-        { current: plusOneLeft },
-        { current: scoreElement },
-        { current: plusOneRight },
-        { current: voiceCommands },
-        { current: logElement },
+        [wrapper],
+        [plusOneLeft],
+        [scoreElement],
+        [plusOneRight],
+        [voiceCommands],
+        [logElement],
     ] = refList;
-    return {
+    return [
         wrapper,
         plusOneLeft,
         scoreElement,
         plusOneRight,
         voiceCommands,
         logElement,
-    };
+    ];
 };
