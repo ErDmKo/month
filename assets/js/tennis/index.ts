@@ -40,7 +40,7 @@ const initTemplate = (ctx: Window, element: Element) => {
         plusOneRight,
         voiceCommands,
         logElement,
-    ] = template(ctx, htmlElement);;
+    ] = template(ctx, htmlElement);
     htmlElement.appendChild(wrapper);
 
     const voiceControlObserver = useNative(ctx);

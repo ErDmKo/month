@@ -11,14 +11,14 @@ type Props =
 type DOMStruct<K extends keyof HTMLElementTagNameMap> = readonly [
     tag: K,
     attributes: readonly Props[],
-    children?: readonly DOMStruct<K>[],
+    children?: readonly DOMStruct<K>[]
 ];
 
 // No recusion
 export const domCreator = <K extends keyof HTMLElementTagNameMap>(
-  ctx: Window,
-  root: Element,
-  struct: DOMStruct<K>
+    ctx: Window,
+    root: Element,
+    struct: DOMStruct<K>
 ) => {
     if (!(ctx.document && typeof ctx.document.createElement == 'function')) {
         throw new Error();
@@ -33,22 +33,22 @@ export const domCreator = <K extends keyof HTMLElementTagNameMap>(
         const [root, struct] = nextStruct;
         const [tag, attributes, children] = struct;
         const element = ctx.document.createElement(tag);
-        attributes.forEach(([key, value, isProp]) => {
+        for (const [key, value, isProp] of attributes) {
             if (key === REF) {
                 if (value) {
-                  value[0] = element;
+                    value[0] = element;
                 }
                 refs.push(element);
             } else if (isProp === PROP) {
-              if (key === 'style') {
-                Object.assign(element.style, value);
-              } else {
-                (element as any)[key] = value;
-              }
+                if (key === 'style') {
+                    Object.assign(element.style, value);
+                } else {
+                    (element as any)[key] = value;
+                }
             } else {
                 element.setAttribute(key, value);
             }
-        });
+        };
         root.appendChild(element);
         (children || []).forEach((child) => {
             currnent.unshift([element, child]);

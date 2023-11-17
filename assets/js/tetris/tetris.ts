@@ -1,4 +1,12 @@
-import { bindArg, bindArgs, domCreator, fillElemWidhCanvas, on, PROP, REF } from '@month/utils';
+import {
+    bindArg,
+    bindArgs,
+    domCreator,
+    fillElemWidhCanvas,
+    on,
+    PROP,
+    REF,
+} from '@month/utils';
 import {
     FieldInstance,
     drawField,
@@ -71,17 +79,19 @@ const addPhoneControls = (
 ) => {
     const styles = phoneStyleMap(ctx);
     domCreator(ctx, element, [
-      'div', [
-        ['class', 'c'],
-      ],
-      phoneControlsMap.map(([key, name]) => {
-        const classes = styles[key];
-        return ['button', [
-          ['innerText', name, PROP],
-          ['class', (classes || []).join(' ')],
-          ['onclick', keyHandlers[key], PROP]
-        ]];
-      })
+        'div',
+        [['class', 'c']],
+        phoneControlsMap.map(([key, name]) => {
+            const classes = styles[key];
+            return [
+                'button',
+                [
+                    ['innerText', name, PROP],
+                    ['class', (classes || []).join(' ')],
+                    ['onclick', keyHandlers[key], PROP],
+                ],
+            ];
+        }),
     ]);
 };
 
@@ -90,20 +100,10 @@ const initCanvas = (ctx: Window, element: Element) => {
     htmlElement.innerHTML = '';
     htmlElement.classList.add('tetris');
     const boardSize: Vector2D = [10, 20];
-    const [
-      wrapper,
-      info
-    ] = domCreator(ctx, htmlElement, [
-      'div', [
-        ['class', 'wrapper'],
-        [REF]
-      ], [
-        ['div', [
-          ['class', 'info'],
-          ['innerText', START_TEXT],
-          [REF]
-        ]]
-      ],
+    const [wrapper, info] = domCreator(ctx, htmlElement, [
+        'div',
+        [['class', 'wrapper'], [REF]],
+        [['div', [['class', 'info'], ['innerText', START_TEXT], [REF]]]],
     ]);
     const [rect, canvas] = fillElemWidhCanvas(ctx, wrapper);
     var canvasCtx = canvas.getContext('2d');

@@ -11,8 +11,7 @@ export const fillElemWidhCanvas = (
     ctx: Window,
     element: HTMLDivElement
 ): [DOMRect, HTMLCanvasElement] => {
-
-    const [ canvas ] = domCreator(ctx, element, [
+    const [canvas] = domCreator(ctx, element, [
         'canvas',
         [
             [REF],

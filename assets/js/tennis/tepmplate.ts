@@ -4,10 +4,7 @@ import { SERVE, TEAM_LEFT_NAME, TEAM_RIGHT_NAME } from './const';
 export const template = (ctx: Window, root: HTMLElement) => {
     const res = domCreator(ctx, root, [
         'div',
-        [
-            ['class', 'wrapper'],
-            [REF],
-        ],
+        [['class', 'wrapper'], [REF]],
         [
             [
                 'button',
@@ -19,11 +16,7 @@ export const template = (ctx: Window, root: HTMLElement) => {
             ],
             [
                 'span',
-                [
-                    ['class', 'score'],
-                    ['innerText', `${SERVE}0:0`, PROP],
-                    [REF],
-                ],
+                [['class', 'score'], ['innerText', `${SERVE}0:0`, PROP], [REF]],
             ],
             [
                 'button',
@@ -42,21 +35,15 @@ export const template = (ctx: Window, root: HTMLElement) => {
                 ],
                 ,
             ],
-            [
-                'div',
-                [
-                    ['class', 'log'],
-                    [REF],
-                ],
-            ],
+            ['div', [['class', 'log'], [REF]]],
         ],
     ]);
     return res as [
-      HTMLDivElement,
-      HTMLButtonElement,
-      HTMLSpanElement,
-      HTMLButtonElement,
-      HTMLButtonElement,
-      HTMLDivElement
-    ]
+        HTMLDivElement,
+        HTMLButtonElement,
+        HTMLSpanElement,
+        HTMLButtonElement,
+        HTMLButtonElement,
+        HTMLDivElement
+    ];
 };
