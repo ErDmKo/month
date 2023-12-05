@@ -159,6 +159,9 @@ a:hover {
         padding: 10px 20px;
         touch-action: manipulation;
         font-size: 50px;
+        &:hover {
+          cursor: pointer
+        }
     }
     .score {
         font-size: 68px;

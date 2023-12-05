@@ -35,6 +35,15 @@ export const template = (ctx: Window, root: HTMLElement) => {
                 ],
                 ,
             ],
+            [
+                'button',
+                [
+                    ['class', 'voice'],
+                    ['innerText', 'Back', PROP],
+                    [REF],
+                ],
+                ,
+            ],
             ['div', [['class', 'log'], [REF]]],
         ],
     ]);
@@ -44,6 +53,7 @@ export const template = (ctx: Window, root: HTMLElement) => {
         HTMLSpanElement,
         HTMLButtonElement,
         HTMLButtonElement,
+        HTMLDivElement,
         HTMLDivElement
     ];
 };
