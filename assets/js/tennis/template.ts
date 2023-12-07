@@ -31,7 +31,13 @@ export const gameStateRender = (
             'div',
             [],
             [
-                ['div', [['innerText', time, PROP]]],
+                [
+                    'div',
+                    [
+                        ['class', 'time'],
+                        ['innerText', time, PROP],
+                    ],
+                ],
                 ['div', [['innerText', stateString, PROP]]],
             ],
         ] as DOMStruct<'div'>;
