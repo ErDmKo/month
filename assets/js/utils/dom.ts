@@ -8,7 +8,7 @@ type Props =
     | readonly [key: string, value: any, isProp: typeof PROP]
     | readonly [key: typeof REF, ref?: Ref];
 
-type DOMStruct<K extends keyof HTMLElementTagNameMap> = readonly [
+export type DOMStruct<K extends keyof HTMLElementTagNameMap> = readonly [
     tag: K,
     attributes: readonly Props[],
     children?: readonly DOMStruct<K>[]
@@ -48,7 +48,7 @@ export const domCreator = <K extends keyof HTMLElementTagNameMap>(
             } else {
                 element.setAttribute(key, value);
             }
-        };
+        }
         root.appendChild(element);
         (children || []).forEach((child) => {
             currnent.unshift([element, child]);

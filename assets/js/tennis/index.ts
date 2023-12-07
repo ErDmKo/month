@@ -9,14 +9,14 @@ import {
     TEAM_RIGHT,
     VOICE_ENABLED,
     COMMAND_TYPE,
-    LOG_TYPE,
     START_TYPE,
     STOP_TYPE,
     BACK_TYPE,
+    UPDATE_DATE,
 } from './const';
 import { useScreenLock } from './screen';
 import { startListen } from './speech';
-import { template } from './template';
+import { gameStateRender, template } from './template';
 
 const eventOptions = { passive: true };
 
@@ -27,6 +27,7 @@ const initTemplate = (ctx: Window, element: Element) => {
         [SERVE]: TEAM_LEFT,
         [LOG]: [],
         [VOICE_ENABLED]: false,
+        [UPDATE_DATE]: new Date(),
     };
     const gameStateObserver = observer<GameState, void>();
     const htmlElement = element as HTMLDivElement;
@@ -41,6 +42,8 @@ const initTemplate = (ctx: Window, element: Element) => {
         back,
         logElement,
     ] = template(ctx, htmlElement);
+
+    gameStateRender(ctx, scoreElement, [state]);
     htmlElement.appendChild(wrapper);
 
     const voiceControlObserver = useNative(ctx);
@@ -50,17 +53,25 @@ const initTemplate = (ctx: Window, element: Element) => {
         bindArg((command: Commands) => {
             const [type, data] = command;
             if (type === COMMAND_TYPE) {
-                state[LOG].unshift(structuredClone(state));
+                state[LOG].unshift({
+                    [TEAM_LEFT]: state[TEAM_LEFT],
+                    [TEAM_RIGHT]: state[TEAM_RIGHT],
+                    [SERVE]: state[SERVE],
+                    [LOG]: state[LOG],
+                    [VOICE_ENABLED]: state[VOICE_ENABLED],
+                    [UPDATE_DATE]: state[UPDATE_DATE],
+                });
                 while (state[LOG].length > 5) {
                     state[LOG].pop();
                 }
                 state[data] += 1;
+                state[UPDATE_DATE] = new Date();
                 return gameStateObserver(bindArg(state, trigger));
             }
             if (type === BACK_TYPE) {
                 const lastState = state[LOG].shift();
                 if (!lastState) {
-                  return;
+                    return;
                 }
                 Object.assign(state, lastState);
                 return gameStateObserver(bindArg(state, trigger));
@@ -75,9 +86,7 @@ const initTemplate = (ctx: Window, element: Element) => {
     plusOneLeft.addEventListener(
         'click',
         () => {
-            voiceControlObserver(
-              bindArg([COMMAND_TYPE, TEAM_LEFT], trigger)
-            );
+            voiceControlObserver(bindArg([COMMAND_TYPE, TEAM_LEFT], trigger));
         },
         eventOptions
     );
@@ -90,9 +99,7 @@ const initTemplate = (ctx: Window, element: Element) => {
                 [SERVE]: serve,
             } = state;
 
-            logElement.innerHTML = state[LOG].map(
-                (log, i) => `<div>${i}: "${log}"</div>`
-            ).join('');
+            gameStateRender(ctx, logElement, state[LOG]);
 
             voiceCommands.innerText = state[VOICE_ENABLED]
                 ? `Voice control enabled`
@@ -100,15 +107,13 @@ const initTemplate = (ctx: Window, element: Element) => {
 
             if (teamLeft == 0 && teamRight == 0) {
                 state[SERVE] = TEAM_LEFT;
-                scoreElement.innerText = `${SERVE}0:0`;
+                gameStateRender(ctx, scoreElement, [state]);
                 return;
             }
             if (!((teamRight + teamLeft) % 2)) {
                 state[SERVE] = serve == TEAM_RIGHT ? TEAM_LEFT : TEAM_RIGHT;
             }
-            const leftBall = state[SERVE] == TEAM_LEFT ? SERVE : '';
-            const rightBall = state[SERVE] == TEAM_RIGHT ? SERVE : '';
-            scoreElement.innerText = `${leftBall}${teamLeft}:${teamRight}${rightBall}`;
+            gameStateRender(ctx, scoreElement, [state]);
         }, on)
     );
 
@@ -122,9 +127,7 @@ const initTemplate = (ctx: Window, element: Element) => {
     plusOneRight.addEventListener(
         'click',
         () => {
-            voiceControlObserver(
-              bindArg([COMMAND_TYPE, TEAM_RIGHT], trigger)
-            );
+            voiceControlObserver(bindArg([COMMAND_TYPE, TEAM_RIGHT], trigger));
         },
         eventOptions
     );

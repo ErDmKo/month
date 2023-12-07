@@ -2,6 +2,7 @@ export const TEAM_LEFT = 0 as const;
 export const TEAM_RIGHT = 1 as const;
 export const LOG = 3 as const;
 export const VOICE_ENABLED = 4 as const;
+export const UPDATE_DATE = 5 as const;
 
 export type Sides = {
     TEAM_LEFT: typeof TEAM_LEFT;
@@ -45,4 +46,5 @@ export type GameState = {
     [SERVE]: Sides[keyof Sides];
     [LOG]: GameState[];
     [VOICE_ENABLED]: boolean;
+    [UPDATE_DATE]: Date;
 };
