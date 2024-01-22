@@ -123,15 +123,17 @@ fn get_page_ctx() -> MainPageContext {
             },
         ],
         games: vec![
-        MainPageLink {
-            name: "Tetris game",
-            href: "/tetris",
-            text: "tetris 🟥🟥🟥",
-        }, MainPageLink {
-            name: "Ping pong game",
-            href: "/tennis",
-            text: "Tennis 🏓",
-        }],
+            MainPageLink {
+                name: "Tetris game",
+                href: "/tetris",
+                text: "tetris 🟥🟥🟥",
+            },
+            MainPageLink {
+                name: "Ping pong game",
+                href: "/tennis",
+                text: "Tennis 🏓",
+            },
+        ],
     };
     page_info
 }

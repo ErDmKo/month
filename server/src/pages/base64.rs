@@ -1,5 +1,4 @@
-use actix_web::HttpRequest;
-use actix_web::{get, web, Responder};
+use actix_web::{get, web, HttpRequest, Responder};
 use base64::{decode, encode};
 use serde::{Deserialize, Serialize};
 use tera::Context;

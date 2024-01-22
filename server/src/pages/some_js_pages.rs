@@ -1,5 +1,5 @@
 use actix::{Actor, StreamHandler};
-use actix_web::{get, web, HttpRequest, HttpResponse, Result, Error};
+use actix_web::{get, web, Error, HttpRequest, HttpResponse, Result};
 use actix_web_actors::ws;
 use tera::Context;
 
@@ -40,16 +40,17 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for AppWs {
 }
 
 #[get("/ws")]
-pub async fn ws_page_handler(req: HttpRequest, stream: web::Payload) -> Result<HttpResponse, Error> {
+pub async fn ws_page_handler(
+    req: HttpRequest,
+    stream: web::Payload,
+) -> Result<HttpResponse, Error> {
     let resp = ws::start(AppWs {}, &req, stream);
     println!("{:?}", resp);
     resp
 }
 
 #[get("/tennis")]
-pub async fn tennis_page_handler(
-    req: HttpRequest,
-) -> Result<HttpResponse> {
+pub async fn tennis_page_handler(req: HttpRequest) -> Result<HttpResponse> {
     let mut ctx = Context::new();
     ctx.insert("game_name", "Tennis");
     ctx.insert("bundle_name", "tennis");

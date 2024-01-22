@@ -6,8 +6,22 @@
   <h1>Random generator<h1>
   <h3>Result</h3> 
   <h2>"{{ result }}"</h2>
-  <form action="/random">
+</section>
+<section>
+<form action="/random">
+    <input
+        type="text"
+        class="min"
+        name="min"
+        value="{{ min_val }}"
+        placeholder="min value"/>
+    <input
+        type="text"
+        class="max"
+        name="max"
+        value="{{ max_val }}"
+        placeholder="max value"/>
     <button>Generate new val</button>
-  </form>
+</form>
 </section>
 {% endblock inner_content %}
