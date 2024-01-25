@@ -5,4 +5,12 @@
 {% block inner_content %}
 {% endblock inner_content %}
 </article>
+{% block inline_script %}
+<script>
+  ((a) => {
+    if (!(a && a.length >= 2 && navigator && navigator.clipboard))return;
+    a[1].addEventListener('click', () => navigator.clipboard.writeText(a[0].innerText));
+  })(document.querySelectorAll('#copycat,#result'));
+</script>
+{% endblock inline_script %}
 {% endblock content %}

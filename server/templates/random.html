@@ -4,8 +4,15 @@
 {% block inner_content %}
 <section>
   <h1>Random generator<h1>
-  <h3>Result</h3> 
-  <h2>"{{ result }}"</h2>
+  {% if result %}
+  <div class="result">
+    <h3>Result</h3> 
+    <h2>"<span id="result">{{ result }}</span>"</h2>
+    <div class="">
+      <button id="copycat">Copy</button>
+    </div>
+  </div>
+  {% endif %}
 </section>
 <section>
 <form action="/random">
