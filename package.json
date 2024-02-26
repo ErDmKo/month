@@ -1,7 +1,7 @@
 {
   "name": "whatamonth",
   "version": "1.0.0",
-  "description": "Simple phoenix month app",
+  "description": "ErDmKo home page",
   "main": "index.js",
   "type": "module",
   "directories": {
@@ -26,15 +26,9 @@
   },
   "homepage": "https://github.com/ErDmKo/month#readme",
   "devDependencies": {
-    "@bazel/typescript": "^5.4.1",
-    "@types/node": "^17.0.29",
-    "tslib": "^2.4.0",
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "@bazel/esbuild": "^5.4.1",
-    "google-closure-compiler": "^20220405.0.0",
-    "prettier": "^2.6.2",
-    "yarn": "^1.22.18"
+    "pnpm": "^8.15.4"
   }
 }

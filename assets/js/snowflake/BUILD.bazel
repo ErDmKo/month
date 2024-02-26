@@ -1,23 +1,24 @@
-load("@npm//@bazel/typescript:index.bzl", "ts_project", "ts_config")
-load("@build_bazel_rules_nodejs//:index.bzl", "js_library") 
-
-_TSCONFIG = {}
+load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 
 package(default_visibility = ["//:__subpackages__"])
+
+
 ts_project(
     name = "lib",
     srcs = glob(["*.ts"]),
-    extends = "//:baseTsconfig",
     declaration = True,
-    tsconfig = _TSCONFIG,
+    tsconfig = "//assets/js:tsconfig",
     deps = [
-        "@npm//@types/node",
-        "//assets/js/utils:lib",
+        "//:node_modules/@month/utils",
     ],
 )
 
-js_library(
+npm_package(
     name = "package",
-    package_name = "@month/snowflake",
-    deps = [":lib"],
+    srcs = [
+        ":lib",
+    ],
+    package = "@month/snowflake",
+    visibility = ["//:__subpackages__"],
 )

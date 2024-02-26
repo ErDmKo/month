@@ -1,7 +1,12 @@
 use actix_web::{get, web, HttpRequest, Responder};
+use log::info;
+use serde_json::json;
+use std::time::Duration;
 use base64::{decode, encode};
 use serde::{Deserialize, Serialize};
 use tera::Context;
+use awc::Client;
+use std::option_env;
 
 use super::utils;
 
@@ -16,6 +21,65 @@ struct Base64Params {
     result: Option<String>,
     query: Option<String>,
     action: Option<Actions>,
+}
+
+#[derive(Deserialize, Serialize)]
+#[serde(rename_all = "lowercase")]
+enum ImageActions {
+    Generate,
+}
+#[derive(Deserialize, Serialize)]
+struct ImageParams {
+    result: Option<String>,
+    query: Option<String>,
+    action: Option<ImageActions>,
+}
+
+static TOKEN: Option<&'static str> = option_env!("API_TOKEN");
+
+#[get("/image")]
+async fn image_page_handler(req: HttpRequest, info: web::Query<ImageParams>) -> impl Responder {
+    let ref mut query_params = info.into_inner();
+    let mut ctx = Context::new();
+    ctx.insert("query", &query_params.query);
+    let client = Client::default();
+    let token: Result<&str, &str> = match TOKEN {
+        Some("") => Err("No token"),
+        None => Err("No token"),
+        Some(val) => Ok(val)
+    };
+    if token.is_err() {
+        info!("No token");
+        return utils::render(req, "image.html", &ctx).await;
+    }
+
+    let request = client
+        .post("https://api-inference.huggingface.co/models/cagliostrolab/animagine-xl-3.0")
+        .append_header(("Authorization", format!("Bearer {}", token.unwrap())));
+
+    match &query_params.query {
+        Some(user_query) => {
+            let response = request
+                .timeout(Duration::new(60, 0))
+                .send_json(&json!({
+                    "inputs": user_query.clone()
+                })).await;
+            info!("Response: {:#?}", response);
+            match response {
+                Ok(mut resp) => {
+                    let body = resp.body().await?;
+                    let encoded_string = encode(body);
+                    ctx.insert("result", &encoded_string);
+                }
+                Err(_) => {
+                    ()
+                }
+            }
+        }
+        None => ()
+    }
+
+    return utils::render(req, "image.html", &ctx).await;
 }
 
 #[get("/base64")]

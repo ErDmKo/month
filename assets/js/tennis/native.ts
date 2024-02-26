@@ -38,7 +38,7 @@ export const useNative = (ctx: Window) => {
             return observerObj;
         } finally {
             observerObj(
-                bindArg(
+                (bindArg as any)(
                     [LOG_TYPE, `SpeechRecognition is not supported`],
                     trigger
                 )
@@ -84,7 +84,7 @@ export const useNative = (ctx: Window) => {
     };
 
     recognition.onerror = (e: { message: string }) => {
-        observerObj(bindArg([LOG_TYPE, e.message], trigger));
+        observerObj(bindArg([LOG_TYPE, e.message], trigger) as any);
     };
     recognition.onend = () => {
         if (!isStopped) {

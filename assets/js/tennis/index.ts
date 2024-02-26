@@ -86,7 +86,7 @@ const initTemplate = (ctx: Window, element: Element) => {
     plusOneLeft.addEventListener(
         'click',
         () => {
-            voiceControlObserver(bindArg([COMMAND_TYPE, TEAM_LEFT], trigger));
+            voiceControlObserver(bindArg([COMMAND_TYPE, TEAM_LEFT], trigger) as any);
         },
         eventOptions
     );
@@ -120,19 +120,19 @@ const initTemplate = (ctx: Window, element: Element) => {
     voiceCommands.addEventListener('click', () => {
         state[VOICE_ENABLED] = !state[VOICE_ENABLED];
         let command = state[VOICE_ENABLED] ? START_TYPE : STOP_TYPE;
-        voiceControlObserver(bindArg([command], trigger));
+        voiceControlObserver(bindArg([command], trigger) as any);
         gameStateObserver(bindArg(state, trigger));
     });
 
     plusOneRight.addEventListener(
         'click',
         () => {
-            voiceControlObserver(bindArg([COMMAND_TYPE, TEAM_RIGHT], trigger));
+            voiceControlObserver(bindArg([COMMAND_TYPE, TEAM_RIGHT], trigger) as any);
         },
         eventOptions
     );
     back.addEventListener('click', () => {
-        voiceControlObserver(bindArg([BACK_TYPE], trigger));
+        voiceControlObserver(bindArg([BACK_TYPE], trigger) as any);
     });
 };
 

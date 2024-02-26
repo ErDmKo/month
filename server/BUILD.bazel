@@ -1,21 +1,23 @@
-load("@crate_index_cargo_local//:defs.bzl", "aliases", "all_crate_deps")
+load("@crate_index//:defs.bzl", "all_crate_deps", "aliases")
 load("@rules_rust//rust:defs.bzl", "rust_binary")
+load("//:variables.bzl", "api_token")
 
+package(default_visibility = ["//visibility:public"])
 
 rust_binary(
     name = "server",
     srcs = glob(["src/**/*.rs"]),
-    aliases = aliases(),
     proc_macro_deps = all_crate_deps(proc_macro = True),
     rustc_env = {
         'BAZEL_STATIC': 'server',
-        'DOMAIN': 'erdmko.dev'
+        'DOMAIN': 'erdmko.dev',
+        'API_TOKEN': api_token
     },
     deps = all_crate_deps(normal = True),
     data = [
         '//server/db',
         '//server/templates',
-        '//assets/js:closure',
+        '//assets/js:bundle',
         '//assets/js:metrika',
         '//assets/css',
         '//assets/img',

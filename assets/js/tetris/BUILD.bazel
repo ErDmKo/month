@@ -1,25 +1,23 @@
-load("@npm//@bazel/typescript:index.bzl", "ts_project", "ts_config")
-load("@build_bazel_rules_nodejs//:index.bzl", "js_library") 
-
-_TSCONFIG = {
-}
+load("@aspect_rules_js//npm:defs.bzl", "npm_package")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 
 package(default_visibility = ["//:__subpackages__"])
 
 ts_project(
     name = "lib",
     srcs = glob(["*.ts"]),
-    extends = "//:baseTsconfig",
+    tsconfig = "//assets/js:tsconfig",
     declaration = True,
-    tsconfig = _TSCONFIG,
     deps = [
-        "@npm//@types/node",
-        "//assets/js/utils:package",
+        "//:node_modules/@month/utils",
     ],
 )
 
-js_library(
+npm_package(
     name = "package",
-    package_name = "@month/tetris",
-    deps = [":lib"],
+    srcs = [
+        ":lib",
+    ],
+    package = "@month/tetris",
+    visibility = ["//:__subpackages__"],
 )

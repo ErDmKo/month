@@ -1,62 +1,40 @@
-load("@npm//@bazel/esbuild:index.bzl", "esbuild")
-load("@npm//@bazel/typescript:index.bzl", "ts_project", "ts_config")
-load("@npm//google-closure-compiler:index.bzl", "google_closure_compiler")
-load("@com_github_airyhq_bazel_tools//lint:prettier.bzl", "fix_prettier")
-load("@com_github_airyhq_bazel_tools//lint:eslint.bzl", "eslint")
-
-load("@build_bazel_rules_nodejs//:index.bzl", "pkg_web")
-
-_TSCONFIG = {}
+load("@aspect_rules_esbuild//esbuild:defs.bzl", "esbuild")
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project", "ts_config")
 
 package(default_visibility = ["//visibility:public"])
 
-eslint(
-    name = "eslint",
-    config = "//:.eslint.json",
-    srcs = ["index.ts"], # Defaults to all js,jsx,ts,tsx,scss,css files in package
-    ignore = "//:.eslintignore", # Defaults to lint/.eslintignore
+exports_files([".swcrc"])
+
+ts_config(
+    name = "tsconfig",
+    src = "tsconfig.json",
+    visibility = [":__subpackages__"],
 )
 
 ts_project(
     name = "lib",
-    srcs = glob(["**/*.ts"]),
-    extends = "//:baseTsconfig",
-    tsconfig = _TSCONFIG,
+    srcs = ["app.ts"],
+    declaration = True,
     deps = [
-        "//assets/js/snowflake:package",
-        "//assets/js/tetris:package",
-        "//assets/js/tennis:package",
+        "//:node_modules/@month/snowflake",
+        "//:node_modules/@month/tetris",
+        "//:node_modules/@month/tennis",
     ],
 )
 
 esbuild(
     name = "bundle",
-    entry_point = "app.ts",
+    entry_point = "app.js",
     metafile = False,
     minify = True,
-    sourcemap = 'inline',
+    target = "esnext",
+    sourcemap = False,
     deps = [
         ":lib",
     ],
 )
 
-google_closure_compiler(
-    name = "closure",
-    outs = ["bundle.min.js"],
-    args = [
-        "--js=$(locations :bundle)",
-        "--js_output_file=$@",
-    ],
-    data = [":bundle"],
-)
-
 filegroup(
     name = "metrika",
     srcs = ["mc.js"],
-)
-
-fix_prettier(
-    name = "prettier",
-    config = "//:prettierrc",
-    ignore = "//:prettierignore",
 )

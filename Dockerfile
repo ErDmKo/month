@@ -20,7 +20,7 @@ WORKDIR /usr/src/app
 RUN rustup target add x86_64-unknown-linux-musl
 
 # This is a dummy build to get the dependencies cached.
-RUN cargo build --target x86_64-unknown-linux-musl --release
+RUN CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse cargo build --target x86_64-unknown-linux-musl --release
 
 # Now copy in the rest of the sources
 COPY server/src /usr/src/app/src/
@@ -29,9 +29,11 @@ COPY server/src /usr/src/app/src/
 RUN touch /usr/src/app/src/main.rs
 
 ARG STATIC_DIR=./server/static
+ARG API_TOKEN=""
 COPY ./server/templates /usr/local/bin/templates
 COPY $STATIC_DIR /usr/local/bin/static/
 ENV DOMAIN='erdmko.dev'
+ENV API_TOKEN=$API_TOKEN
 RUN cargo build --target x86_64-unknown-linux-musl --release
 
 FROM alpine:3.16.0 AS runtime 

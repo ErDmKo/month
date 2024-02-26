@@ -1,0 +1,75 @@
+###############################################################################
+# Bazel now uses Bzlmod by default to manage external dependencies.
+# Please consider migrating your external dependencies from WORKSPACE to MODULE.bazel.
+#
+# For more details, please check https://github.com/bazelbuild/bazel/issues/18958
+###############################################################################
+
+module(
+    name = "month",
+    version = "0.0.0",
+)
+
+bazel_dep(name = "platforms", version = "0.0.8")
+bazel_dep(name = "bazel_skylib", version = "1.5.0")
+
+#lint
+bazel_dep(name = "aspect_rules_lint", version = "0.12.0")
+
+#sass
+bazel_dep(name = "gzgz_rules_sass", version = "1.0.0")
+
+sass = use_extension("@gzgz_rules_sass//sass:extensions.bzl", "sass")
+
+sass.toolchain(sass_version = "1.63.6")
+use_repo(sass, "sass_toolchains")
+
+register_toolchains("@sass_toolchains//:all")
+
+
+bazel_dep(name = "aspect_rules_js", version = "1.38.0")
+bazel_dep(name = "rules_nodejs", version = "5.8.3")
+node = use_extension("@rules_nodejs//nodejs:extensions.bzl", "node")
+node.toolchain(node_version = "16.14.2")
+
+npm = use_extension("@aspect_rules_js//npm:extensions.bzl", "npm", dev_dependency = True)
+
+npm.npm_translate_lock(
+    name = "npm",
+    data = [":package.json"],
+    pnpm_lock = "//:pnpm-lock.yaml",
+)
+
+use_repo(npm, "npm")
+
+#TypeScript
+bazel_dep(name = "aspect_rules_ts", version = "2.1.1")
+bazel_dep(name = "aspect_rules_swc", version = "1.1.0")
+
+rules_ts_ext = use_extension("@aspect_rules_ts//ts:extensions.bzl", "ext")
+rules_ts_ext.deps()
+use_repo(rules_ts_ext, "npm_typescript")
+
+bazel_dep(name = "aspect_rules_esbuild", version = "0.18.0")
+
+# Rust
+bazel_dep(name = "rules_rust", version = "0.39.0")
+git_override(
+  module_name = "rules_rust",
+  remote = "https://github.com/bazelbuild/rules_rust.git",
+  commit = "777f3e5c5d280b14d37bb7574a88f1cbfb3f8d46"
+)
+rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
+rust.toolchain(edition = "2021")
+use_repo(rust, "rust_toolchains")
+register_toolchains("@rust_toolchains//:all")
+crate = use_extension(
+    "@rules_rust//crate_universe:extension.bzl",
+    "crate",
+)
+crate.from_cargo(
+    name = "crate_index",
+    cargo_lockfile = "//server:Cargo.lock",
+    manifests = ["//server:Cargo.toml"],
+)
+use_repo(crate, "crate_index")

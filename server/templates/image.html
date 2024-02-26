@@ -1,0 +1,33 @@
+{% extends "inner.html" %}
+{% block title %}Image generator{% endblock title %}
+{% block desc %}Image generator from promt{% endblock desc %}
+{% block inner_content %}
+<section>
+    <h1 id="header">Image generator</h1>
+    {% if result %}
+    <div class="result">
+      <h3>Result</h3>
+      <img alt="query result" src="data:image/jpg;base64,{{ result }}"/>
+      <div class="">
+        <button id="copycat">Copy</button>
+      </div>
+    </div>
+    {% endif %}
+</section>
+<section>
+<form action="/image">
+    <input 
+        type="text"
+        class="big_input"
+        value="{{ query }}"
+        name="query"
+        placeholder="Image promt"/>
+    <div class="buttons">
+        <button 
+            name="action"
+            value="generate"
+            id="encode">Generate</button>
+    </div>
+</form>
+</section>
+{% endblock inner_content %}

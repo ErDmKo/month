@@ -36,7 +36,15 @@ const main = async () => {
         ['bazel', 'cquery', '//server', '--output=files'].join(' ')
     );
     const [serverDeps] = files.trim().split('\n');
-    const staticDir = `${serverDeps}.runfiles/month/assets`;
+    const staticDir = `${serverDeps}.runfiles/_main/assets`;
+    let secrets = {};
+    try {
+      ({ default: secrets } = await import('./secret.json', {
+         assert: { type: "json" }
+      }));
+    } catch (e) {
+      console.log('No secrets build');
+    }
     /**
       Docker only can use files inside the the project folder,
       but bazel save files to /private/tmp/... just copy them
@@ -48,7 +56,10 @@ const main = async () => {
             'build .',
             `--tag ${PROJECT_NAME}`,
             `--build-arg STATIC_DIR=${TMP_DIR}`,
-        ].join(' ')
+        ].concat(secrets.apiToken ? [
+            `--build-arg API_TOKEN=${secrets.apiToken}`,
+        ] : [])
+      .join(' ')
     );
     await execAsync(`rm -rf ./${TMP_DIR}`);
 };
