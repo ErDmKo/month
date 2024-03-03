@@ -33,10 +33,15 @@ h3 {
     margin: 10px;
     background: rgba(10, 10, 0, 0.3);
 }
+.big_form {
+    padding: 10px;
+}
 .big_input {
     font-size: 40px;
     width: 100%;
     max-width: 1024px;
+    box-sizing: border-box;
+    margin: 20px 0px;
 }
 .page,
 .inner-page {

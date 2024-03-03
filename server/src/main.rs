@@ -82,6 +82,7 @@ async fn main() -> std::io::Result<()> {
             .service(pages::random_page_handler)
             .service(pages::base64_page_handler)
             .service(pages::image_page_handler)
+            .service(pages::post_image_page_handler)
             .service(pages::tetris_page_handler)
             .service(pages::tennis_page_handler)
             .service(pages::ws_page_handler)

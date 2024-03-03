@@ -4,23 +4,33 @@
 {% block inner_content %}
 <section>
     <h1 id="header">Image generator</h1>
-    {% if result %}
+    {% if error %}
+    <div class="result">
+      <h3>Result</h3>
+      <div>
+        Error "{{ error }}"
+      </div>
+    </div>
+    {% elif result %}
     <div class="result">
       <h3>Result</h3>
       <img alt="query result" src="data:image/jpg;base64,{{ result }}"/>
-      <div class="">
+      <div>
         <button id="copycat">Copy</button>
       </div>
     </div>
     {% endif %}
 </section>
 <section>
-<form action="/image">
+<form 
+  class="big_form"
+  method="POST"
+  action="/image">
     <input 
         type="text"
         class="big_input"
-        value="{{ query }}"
-        name="query"
+        value="{{ promt | default(value="") }}"
+        name="promt"
         placeholder="Image promt"/>
     <div class="buttons">
         <button 
@@ -28,6 +38,18 @@
             value="generate"
             id="encode">Generate</button>
     </div>
+    {% for task in prompts %}
+    <div>
+      <span>text = "{{ task.prompt }}"</span>
+      <span>state = "{{ task.state }}"</span>
+      {% if task.image %}
+        <img src="{{ task.image }}" alt="{{ task.prompt }}" />
+      {% endif %}
+      <button name="delete" value="{{task.id}}">
+        Delete
+      </button>
+    </div>
+    {% endfor %}
 </form>
 </section>
 {% endblock inner_content %}

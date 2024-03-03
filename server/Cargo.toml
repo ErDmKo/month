@@ -25,7 +25,7 @@ features = ["rustls"]
 
 [dependencies.rusqlite]
 version= "0.28.0"
-features = ["bundled"]
+features = ["bundled", "blob"]
 
 [dependencies.serde]
 version = "1.0.137"

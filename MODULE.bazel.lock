@@ -5140,100 +5140,6 @@
         ]
       }
     },
-    "@@aspect_rules_js~1.38.0//npm:extensions.bzl%pnpm": {
-      "general": {
-        "bzlTransitiveDigest": "ym9QI+s8n2nw44D5rAR5kt9OY2MpohPrgAo2gXbp0YQ=",
-        "accumulatedFileDigests": {},
-        "envVariables": {},
-        "generatedRepoSpecs": {
-          "pnpm__links": {
-            "bzlFile": "@@aspect_rules_js~1.38.0//npm/private:npm_import.bzl",
-            "ruleClassName": "npm_import_links",
-            "attributes": {
-              "name": "aspect_rules_js~1.38.0~pnpm~pnpm__links",
-              "package": "pnpm",
-              "version": "8.6.7",
-              "dev": false,
-              "root_package": "",
-              "link_packages": {},
-              "deps": {},
-              "transitive_closure": {},
-              "lifecycle_build_target": false,
-              "lifecycle_hooks_env": [],
-              "lifecycle_hooks_execution_requirements": [
-                "no-sandbox"
-              ],
-              "lifecycle_hooks_use_default_shell_env": false,
-              "bins": {},
-              "npm_translate_lock_repo": "",
-              "package_visibility": [
-                "//visibility:public"
-              ],
-              "replace_package": ""
-            }
-          },
-          "pnpm": {
-            "bzlFile": "@@aspect_rules_js~1.38.0//npm/private:npm_import.bzl",
-            "ruleClassName": "npm_import_rule",
-            "attributes": {
-              "name": "aspect_rules_js~1.38.0~pnpm~pnpm",
-              "package": "pnpm",
-              "version": "8.6.7",
-              "root_package": "",
-              "link_workspace": "",
-              "link_packages": {},
-              "integrity": "sha512-vRIWpD/L4phf9Bk2o/O2TDR8fFoJnpYrp2TKqTIZF/qZ2/rgL3qKXzHofHgbXsinwMoSEigz28sqk3pQ+yMEQQ==",
-              "url": "",
-              "commit": "",
-              "patch_args": [
-                "-p0"
-              ],
-              "patches": [],
-              "custom_postinstall": "",
-              "npm_auth": "",
-              "npm_auth_basic": "",
-              "npm_auth_username": "",
-              "npm_auth_password": "",
-              "lifecycle_hooks": [],
-              "extra_build_content": "load(\"@aspect_rules_js//js:defs.bzl\", \"js_binary\")\njs_binary(name = \"pnpm\", data = glob([\"package/**\"]), entry_point = \"package/dist/pnpm.cjs\", visibility = [\"//visibility:public\"])",
-              "generate_bzl_library_targets": false
-            }
-          }
-        },
-        "recordedRepoMappingEntries": [
-          [
-            "aspect_bazel_lib~1.40.0",
-            "bazel_skylib",
-            "bazel_skylib~1.5.0"
-          ],
-          [
-            "aspect_bazel_lib~1.40.0",
-            "bazel_tools",
-            "bazel_tools"
-          ],
-          [
-            "aspect_rules_js~1.38.0",
-            "aspect_bazel_lib",
-            "aspect_bazel_lib~1.40.0"
-          ],
-          [
-            "aspect_rules_js~1.38.0",
-            "bazel_features",
-            "bazel_features~0.1.0"
-          ],
-          [
-            "aspect_rules_js~1.38.0",
-            "bazel_skylib",
-            "bazel_skylib~1.5.0"
-          ],
-          [
-            "aspect_rules_js~1.38.0",
-            "bazel_tools",
-            "bazel_tools"
-          ]
-        ]
-      }
-    },
     "@@aspect_rules_swc~1.1.0//swc:extensions.bzl%swc": {
       "general": {
         "bzlTransitiveDigest": "1DcCNNvYR585lyLUgtEZUorWa2tl/hDhyuH1O42syzw=",
@@ -6279,11 +6185,11 @@
       "general": {
         "bzlTransitiveDigest": "+RRLbDbXBeTzznB8XrG3gR/KX0b69m3hvsXwoeSSBmA=",
         "accumulatedFileDigests": {
-          "@@rules_rust~0.40.0~rust~rust_host_tools//:bin/rustc": "8ae6dd7e0e4dba0fdf7f3114e32067fdc8cee3cdd7b86ed45812cd31435d7b3e",
-          "@@//server:Cargo.toml": "94ebf6701867e11b5ef418b13f30c2267b4a04915bbd90c7d81b4024904ad56e",
-          "@@rules_rust~0.40.0~cargo_bazel_bootstrap~cargo_bazel_bootstrap//:cargo-bazel": "420087e8e54c5892cd96f55025e34f2ce02777138aa3bccab10dc06a7a5306c8",
+          "@@rules_rust~0.40.0~rust~rust_host_tools//:bin/rustc": "54c5185e3c37571d8ac0262ddfc6fc5c6bd1ad22678c7c03141e22df7be5c910",
+          "@@//server:Cargo.toml": "5569c13b4d5f02b8f6a821f5fe93f38c6fd58c0f317ae861bb1fc06d01237618",
+          "@@rules_rust~0.40.0~cargo_bazel_bootstrap~cargo_bazel_bootstrap//:cargo-bazel": "860ec4a31c7bdb08ce9a6e1bc26c6d15fd4dd608f5c1da7e03a939b5e3f46580",
           "@@//server:Cargo.lock": "f5e64d578da0894bc11b05748e07bdf2416ab855b15affa2d43d2777f6d3a5dc",
-          "@@rules_rust~0.40.0~rust~rust_host_tools//:bin/cargo": "10100b70f5a0fa34c662e9cbdc1e461bc9b14f9eaffbda0594a7b411b125e62c"
+          "@@rules_rust~0.40.0~rust~rust_host_tools//:bin/cargo": "772c17be31dd20553142436dbd690926b6b2c079968c115d9860825ab9f2870f"
         },
         "envVariables": {},
         "generatedRepoSpecs": {
@@ -6324,7 +6230,7 @@
                 "https://crates.io/api/v1/crates/rusqlite/0.28.0/download"
               ],
               "strip_prefix": "rusqlite-0.28.0",
-              "build_file_content": "###############################################################################\n# @generated\n# DO NOT MODIFY: This file is auto-generated by a crate_universe tool. To \n# regenerate this file, run the following:\n#\n#     Run 'cargo update [--workspace]'\n###############################################################################\n\nload(\"@rules_rust//rust:defs.bzl\", \"rust_library\")\n\n# buildifier: disable=bzl-visibility\nload(\"@rules_rust//crate_universe/private:selects.bzl\", \"selects\")\n\npackage(default_visibility = [\"//visibility:public\"])\n\nrust_library(\n    name = \"rusqlite\",\n    deps = [\n        \"@crate_index__bitflags-1.3.2//:bitflags\",\n        \"@crate_index__fallible-iterator-0.2.0//:fallible_iterator\",\n        \"@crate_index__fallible-streaming-iterator-0.1.9//:fallible_streaming_iterator\",\n        \"@crate_index__hashlink-0.8.1//:hashlink\",\n        \"@crate_index__libsqlite3-sys-0.25.2//:libsqlite3_sys\",\n        \"@crate_index__smallvec-1.8.0//:smallvec\",\n    ],\n    compile_data = glob(\n        allow_empty = True,\n        include = [\"**\"],\n        exclude = [\n            \"**/* *\",\n            \".tmp_git_root/**/*\",\n            \"BUILD\",\n            \"BUILD.bazel\",\n            \"WORKSPACE\",\n            \"WORKSPACE.bazel\",\n        ],\n    ),\n    crate_features = [\n        \"bundled\",\n        \"modern_sqlite\",\n    ],\n    crate_root = \"src/lib.rs\",\n    edition = \"2018\",\n    rustc_flags = [\n        \"--cap-lints=allow\",\n    ],\n    srcs = glob(\n        allow_empty = False,\n        include = [\"**/*.rs\"],\n    ),\n    tags = [\n        \"cargo-bazel\",\n        \"crate-name=rusqlite\",\n        \"manual\",\n        \"noclippy\",\n        \"norustfmt\",\n    ],\n    target_compatible_with = select({\n        \"@rules_rust//rust/platform:aarch64-apple-darwin\": [],\n        \"@rules_rust//rust/platform:aarch64-apple-ios\": [],\n        \"@rules_rust//rust/platform:aarch64-apple-ios-sim\": [],\n        \"@rules_rust//rust/platform:aarch64-fuchsia\": [],\n        \"@rules_rust//rust/platform:aarch64-linux-android\": [],\n        \"@rules_rust//rust/platform:aarch64-pc-windows-msvc\": [],\n        \"@rules_rust//rust/platform:aarch64-unknown-linux-gnu\": [],\n        \"@rules_rust//rust/platform:aarch64-unknown-nixos-gnu\": [],\n        \"@rules_rust//rust/platform:aarch64-unknown-nto-qnx710\": [],\n        \"@rules_rust//rust/platform:arm-unknown-linux-gnueabi\": [],\n        \"@rules_rust//rust/platform:armv7-linux-androideabi\": [],\n        \"@rules_rust//rust/platform:armv7-unknown-linux-gnueabi\": [],\n        \"@rules_rust//rust/platform:i686-apple-darwin\": [],\n        \"@rules_rust//rust/platform:i686-linux-android\": [],\n        \"@rules_rust//rust/platform:i686-pc-windows-msvc\": [],\n        \"@rules_rust//rust/platform:i686-unknown-freebsd\": [],\n        \"@rules_rust//rust/platform:i686-unknown-linux-gnu\": [],\n        \"@rules_rust//rust/platform:powerpc-unknown-linux-gnu\": [],\n        \"@rules_rust//rust/platform:riscv32imc-unknown-none-elf\": [],\n        \"@rules_rust//rust/platform:riscv64gc-unknown-none-elf\": [],\n        \"@rules_rust//rust/platform:s390x-unknown-linux-gnu\": [],\n        \"@rules_rust//rust/platform:thumbv7em-none-eabi\": [],\n        \"@rules_rust//rust/platform:thumbv8m.main-none-eabi\": [],\n        \"@rules_rust//rust/platform:wasm32-unknown-unknown\": [],\n        \"@rules_rust//rust/platform:wasm32-wasi\": [],\n        \"@rules_rust//rust/platform:x86_64-apple-darwin\": [],\n        \"@rules_rust//rust/platform:x86_64-apple-ios\": [],\n        \"@rules_rust//rust/platform:x86_64-fuchsia\": [],\n        \"@rules_rust//rust/platform:x86_64-linux-android\": [],\n        \"@rules_rust//rust/platform:x86_64-pc-windows-msvc\": [],\n        \"@rules_rust//rust/platform:x86_64-unknown-freebsd\": [],\n        \"@rules_rust//rust/platform:x86_64-unknown-linux-gnu\": [],\n        \"@rules_rust//rust/platform:x86_64-unknown-nixos-gnu\": [],\n        \"@rules_rust//rust/platform:x86_64-unknown-none\": [],\n        \"//conditions:default\": [\"@platforms//:incompatible\"],\n    }),\n    version = \"0.28.0\",\n)\n"
+              "build_file_content": "###############################################################################\n# @generated\n# DO NOT MODIFY: This file is auto-generated by a crate_universe tool. To \n# regenerate this file, run the following:\n#\n#     Run 'cargo update [--workspace]'\n###############################################################################\n\nload(\"@rules_rust//rust:defs.bzl\", \"rust_library\")\n\n# buildifier: disable=bzl-visibility\nload(\"@rules_rust//crate_universe/private:selects.bzl\", \"selects\")\n\npackage(default_visibility = [\"//visibility:public\"])\n\nrust_library(\n    name = \"rusqlite\",\n    deps = [\n        \"@crate_index__bitflags-1.3.2//:bitflags\",\n        \"@crate_index__fallible-iterator-0.2.0//:fallible_iterator\",\n        \"@crate_index__fallible-streaming-iterator-0.1.9//:fallible_streaming_iterator\",\n        \"@crate_index__hashlink-0.8.1//:hashlink\",\n        \"@crate_index__libsqlite3-sys-0.25.2//:libsqlite3_sys\",\n        \"@crate_index__smallvec-1.8.0//:smallvec\",\n    ],\n    compile_data = glob(\n        allow_empty = True,\n        include = [\"**\"],\n        exclude = [\n            \"**/* *\",\n            \".tmp_git_root/**/*\",\n            \"BUILD\",\n            \"BUILD.bazel\",\n            \"WORKSPACE\",\n            \"WORKSPACE.bazel\",\n        ],\n    ),\n    crate_features = [\n        \"blob\",\n        \"bundled\",\n        \"modern_sqlite\",\n    ],\n    crate_root = \"src/lib.rs\",\n    edition = \"2018\",\n    rustc_flags = [\n        \"--cap-lints=allow\",\n    ],\n    srcs = glob(\n        allow_empty = False,\n        include = [\"**/*.rs\"],\n    ),\n    tags = [\n        \"cargo-bazel\",\n        \"crate-name=rusqlite\",\n        \"manual\",\n        \"noclippy\",\n        \"norustfmt\",\n    ],\n    target_compatible_with = select({\n        \"@rules_rust//rust/platform:aarch64-apple-darwin\": [],\n        \"@rules_rust//rust/platform:aarch64-apple-ios\": [],\n        \"@rules_rust//rust/platform:aarch64-apple-ios-sim\": [],\n        \"@rules_rust//rust/platform:aarch64-fuchsia\": [],\n        \"@rules_rust//rust/platform:aarch64-linux-android\": [],\n        \"@rules_rust//rust/platform:aarch64-pc-windows-msvc\": [],\n        \"@rules_rust//rust/platform:aarch64-unknown-linux-gnu\": [],\n        \"@rules_rust//rust/platform:aarch64-unknown-nixos-gnu\": [],\n        \"@rules_rust//rust/platform:aarch64-unknown-nto-qnx710\": [],\n        \"@rules_rust//rust/platform:arm-unknown-linux-gnueabi\": [],\n        \"@rules_rust//rust/platform:armv7-linux-androideabi\": [],\n        \"@rules_rust//rust/platform:armv7-unknown-linux-gnueabi\": [],\n        \"@rules_rust//rust/platform:i686-apple-darwin\": [],\n        \"@rules_rust//rust/platform:i686-linux-android\": [],\n        \"@rules_rust//rust/platform:i686-pc-windows-msvc\": [],\n        \"@rules_rust//rust/platform:i686-unknown-freebsd\": [],\n        \"@rules_rust//rust/platform:i686-unknown-linux-gnu\": [],\n        \"@rules_rust//rust/platform:powerpc-unknown-linux-gnu\": [],\n        \"@rules_rust//rust/platform:riscv32imc-unknown-none-elf\": [],\n        \"@rules_rust//rust/platform:riscv64gc-unknown-none-elf\": [],\n        \"@rules_rust//rust/platform:s390x-unknown-linux-gnu\": [],\n        \"@rules_rust//rust/platform:thumbv7em-none-eabi\": [],\n        \"@rules_rust//rust/platform:thumbv8m.main-none-eabi\": [],\n        \"@rules_rust//rust/platform:wasm32-unknown-unknown\": [],\n        \"@rules_rust//rust/platform:wasm32-wasi\": [],\n        \"@rules_rust//rust/platform:x86_64-apple-darwin\": [],\n        \"@rules_rust//rust/platform:x86_64-apple-ios\": [],\n        \"@rules_rust//rust/platform:x86_64-fuchsia\": [],\n        \"@rules_rust//rust/platform:x86_64-linux-android\": [],\n        \"@rules_rust//rust/platform:x86_64-pc-windows-msvc\": [],\n        \"@rules_rust//rust/platform:x86_64-unknown-freebsd\": [],\n        \"@rules_rust//rust/platform:x86_64-unknown-linux-gnu\": [],\n        \"@rules_rust//rust/platform:x86_64-unknown-nixos-gnu\": [],\n        \"@rules_rust//rust/platform:x86_64-unknown-none\": [],\n        \"//conditions:default\": [\"@platforms//:incompatible\"],\n    }),\n    version = \"0.28.0\",\n)\n"
             }
           },
           "crate_index__tinyvec_macros-0.1.0": {
@@ -8644,7 +8550,7 @@
                 "https://crates.io/api/v1/crates/libsqlite3-sys/0.25.2/download"
               ],
               "strip_prefix": "libsqlite3-sys-0.25.2",
-              "build_file_content": "###############################################################################\n# @generated\n# DO NOT MODIFY: This file is auto-generated by a crate_universe tool. To \n# regenerate this file, run the following:\n#\n#     Run 'cargo update [--workspace]'\n###############################################################################\n\nload(\"@rules_rust//cargo:defs.bzl\", \"cargo_build_script\")\n\nload(\"@rules_rust//rust:defs.bzl\", \"rust_library\")\n\n# buildifier: disable=bzl-visibility\nload(\"@rules_rust//crate_universe/private:selects.bzl\", \"selects\")\n\npackage(default_visibility = [\"//visibility:public\"])\n\nrust_library(\n    name = \"libsqlite3_sys\",\n    deps = [\n        \"@crate_index__libsqlite3-sys-0.25.2//:build_script_build\",\n    ],\n    compile_data = glob(\n        allow_empty = True,\n        include = [\"**\"],\n        exclude = [\n            \"**/* *\",\n            \".tmp_git_root/**/*\",\n            \"BUILD\",\n            \"BUILD.bazel\",\n            \"WORKSPACE\",\n            \"WORKSPACE.bazel\",\n        ],\n    ),\n    crate_features = [\n        \"bundled\",\n        \"bundled_bindings\",\n        \"cc\",\n        \"default\",\n        \"min_sqlite_version_3_6_8\",\n        \"pkg-config\",\n        \"vcpkg\",\n    ],\n    crate_root = \"src/lib.rs\",\n    edition = \"2018\",\n    rustc_flags = [\n        \"--cap-lints=allow\",\n    ],\n    srcs = glob(\n        allow_empty = False,\n        include = [\"**/*.rs\"],\n    ),\n    tags = [\n        \"cargo-bazel\",\n        \"crate-name=libsqlite3-sys\",\n        \"manual\",\n        \"noclippy\",\n        \"norustfmt\",\n    ],\n    target_compatible_with = select({\n        \"@rules_rust//rust/platform:aarch64-apple-darwin\": [],\n        \"@rules_rust//rust/platform:aarch64-apple-ios\": [],\n        \"@rules_rust//rust/platform:aarch64-apple-ios-sim\": [],\n        \"@rules_rust//rust/platform:aarch64-fuchsia\": [],\n        \"@rules_rust//rust/platform:aarch64-linux-android\": [],\n        \"@rules_rust//rust/platform:aarch64-pc-windows-msvc\": [],\n        \"@rules_rust//rust/platform:aarch64-unknown-linux-gnu\": [],\n        \"@rules_rust//rust/platform:aarch64-unknown-nixos-gnu\": [],\n        \"@rules_rust//rust/platform:aarch64-unknown-nto-qnx710\": [],\n        \"@rules_rust//rust/platform:arm-unknown-linux-gnueabi\": [],\n        \"@rules_rust//rust/platform:armv7-linux-androideabi\": [],\n        \"@rules_rust//rust/platform:armv7-unknown-linux-gnueabi\": [],\n        \"@rules_rust//rust/platform:i686-apple-darwin\": [],\n        \"@rules_rust//rust/platform:i686-linux-android\": [],\n        \"@rules_rust//rust/platform:i686-pc-windows-msvc\": [],\n        \"@rules_rust//rust/platform:i686-unknown-freebsd\": [],\n        \"@rules_rust//rust/platform:i686-unknown-linux-gnu\": [],\n        \"@rules_rust//rust/platform:powerpc-unknown-linux-gnu\": [],\n        \"@rules_rust//rust/platform:riscv32imc-unknown-none-elf\": [],\n        \"@rules_rust//rust/platform:riscv64gc-unknown-none-elf\": [],\n        \"@rules_rust//rust/platform:s390x-unknown-linux-gnu\": [],\n        \"@rules_rust//rust/platform:thumbv7em-none-eabi\": [],\n        \"@rules_rust//rust/platform:thumbv8m.main-none-eabi\": [],\n        \"@rules_rust//rust/platform:wasm32-unknown-unknown\": [],\n        \"@rules_rust//rust/platform:wasm32-wasi\": [],\n        \"@rules_rust//rust/platform:x86_64-apple-darwin\": [],\n        \"@rules_rust//rust/platform:x86_64-apple-ios\": [],\n        \"@rules_rust//rust/platform:x86_64-fuchsia\": [],\n        \"@rules_rust//rust/platform:x86_64-linux-android\": [],\n        \"@rules_rust//rust/platform:x86_64-pc-windows-msvc\": [],\n        \"@rules_rust//rust/platform:x86_64-unknown-freebsd\": [],\n        \"@rules_rust//rust/platform:x86_64-unknown-linux-gnu\": [],\n        \"@rules_rust//rust/platform:x86_64-unknown-nixos-gnu\": [],\n        \"@rules_rust//rust/platform:x86_64-unknown-none\": [],\n        \"//conditions:default\": [\"@platforms//:incompatible\"],\n    }),\n    version = \"0.25.2\",\n)\n\ncargo_build_script(\n    name = \"libsqlite3-sys_bs\",\n    crate_features = [\n        \"bundled\",\n        \"bundled_bindings\",\n        \"cc\",\n        \"default\",\n        \"min_sqlite_version_3_6_8\",\n        \"pkg-config\",\n        \"vcpkg\",\n    ],\n    crate_name = \"build_script_build\",\n    crate_root = \"build.rs\",\n    data = glob(\n        allow_empty = True,\n        include = [\"**\"],\n        exclude = [\n            \"**/* *\",\n            \".tmp_git_root/**/*\",\n            \"BUILD\",\n            \"BUILD.bazel\",\n            \"WORKSPACE\",\n            \"WORKSPACE.bazel\",\n        ],\n    ),\n    deps = [\n        \"@crate_index__cc-1.0.73//:cc\",\n        \"@crate_index__pkg-config-0.3.27//:pkg_config\",\n        \"@crate_index__vcpkg-0.2.15//:vcpkg\",\n    ],\n    edition = \"2018\",\n    links = \"sqlite3\",\n    rustc_flags = [\n        \"--cap-lints=allow\",\n    ],\n    srcs = glob(\n        allow_empty = False,\n        include = [\"**/*.rs\"],\n    ),\n    tags = [\n        \"cargo-bazel\",\n        \"crate-name=libsqlite3-sys\",\n        \"manual\",\n        \"noclippy\",\n        \"norustfmt\",\n    ],\n    version = \"0.25.2\",\n    visibility = [\"//visibility:private\"],\n)\n\nalias(\n    name = \"build_script_build\",\n    actual = \":libsqlite3-sys_bs\",\n    tags = [\"manual\"],\n)\n"
+              "build_file_content": "###############################################################################\n# @generated\n# DO NOT MODIFY: This file is auto-generated by a crate_universe tool. To \n# regenerate this file, run the following:\n#\n#     Run 'cargo update [--workspace]'\n###############################################################################\n\nload(\"@rules_rust//cargo:defs.bzl\", \"cargo_build_script\")\n\nload(\"@rules_rust//rust:defs.bzl\", \"rust_library\")\n\n# buildifier: disable=bzl-visibility\nload(\"@rules_rust//crate_universe/private:selects.bzl\", \"selects\")\n\npackage(default_visibility = [\"//visibility:public\"])\n\nrust_library(\n    name = \"libsqlite3_sys\",\n    deps = [\n        \"@crate_index__libsqlite3-sys-0.25.2//:build_script_build\",\n    ],\n    compile_data = glob(\n        allow_empty = True,\n        include = [\"**\"],\n        exclude = [\n            \"**/* *\",\n            \".tmp_git_root/**/*\",\n            \"BUILD\",\n            \"BUILD.bazel\",\n            \"WORKSPACE\",\n            \"WORKSPACE.bazel\",\n        ],\n    ),\n    crate_features = [\n        \"bundled\",\n        \"bundled_bindings\",\n        \"cc\",\n        \"default\",\n        \"min_sqlite_version_3_6_8\",\n        \"min_sqlite_version_3_7_7\",\n        \"pkg-config\",\n        \"vcpkg\",\n    ],\n    crate_root = \"src/lib.rs\",\n    edition = \"2018\",\n    rustc_flags = [\n        \"--cap-lints=allow\",\n    ],\n    srcs = glob(\n        allow_empty = False,\n        include = [\"**/*.rs\"],\n    ),\n    tags = [\n        \"cargo-bazel\",\n        \"crate-name=libsqlite3-sys\",\n        \"manual\",\n        \"noclippy\",\n        \"norustfmt\",\n    ],\n    target_compatible_with = select({\n        \"@rules_rust//rust/platform:aarch64-apple-darwin\": [],\n        \"@rules_rust//rust/platform:aarch64-apple-ios\": [],\n        \"@rules_rust//rust/platform:aarch64-apple-ios-sim\": [],\n        \"@rules_rust//rust/platform:aarch64-fuchsia\": [],\n        \"@rules_rust//rust/platform:aarch64-linux-android\": [],\n        \"@rules_rust//rust/platform:aarch64-pc-windows-msvc\": [],\n        \"@rules_rust//rust/platform:aarch64-unknown-linux-gnu\": [],\n        \"@rules_rust//rust/platform:aarch64-unknown-nixos-gnu\": [],\n        \"@rules_rust//rust/platform:aarch64-unknown-nto-qnx710\": [],\n        \"@rules_rust//rust/platform:arm-unknown-linux-gnueabi\": [],\n        \"@rules_rust//rust/platform:armv7-linux-androideabi\": [],\n        \"@rules_rust//rust/platform:armv7-unknown-linux-gnueabi\": [],\n        \"@rules_rust//rust/platform:i686-apple-darwin\": [],\n        \"@rules_rust//rust/platform:i686-linux-android\": [],\n        \"@rules_rust//rust/platform:i686-pc-windows-msvc\": [],\n        \"@rules_rust//rust/platform:i686-unknown-freebsd\": [],\n        \"@rules_rust//rust/platform:i686-unknown-linux-gnu\": [],\n        \"@rules_rust//rust/platform:powerpc-unknown-linux-gnu\": [],\n        \"@rules_rust//rust/platform:riscv32imc-unknown-none-elf\": [],\n        \"@rules_rust//rust/platform:riscv64gc-unknown-none-elf\": [],\n        \"@rules_rust//rust/platform:s390x-unknown-linux-gnu\": [],\n        \"@rules_rust//rust/platform:thumbv7em-none-eabi\": [],\n        \"@rules_rust//rust/platform:thumbv8m.main-none-eabi\": [],\n        \"@rules_rust//rust/platform:wasm32-unknown-unknown\": [],\n        \"@rules_rust//rust/platform:wasm32-wasi\": [],\n        \"@rules_rust//rust/platform:x86_64-apple-darwin\": [],\n        \"@rules_rust//rust/platform:x86_64-apple-ios\": [],\n        \"@rules_rust//rust/platform:x86_64-fuchsia\": [],\n        \"@rules_rust//rust/platform:x86_64-linux-android\": [],\n        \"@rules_rust//rust/platform:x86_64-pc-windows-msvc\": [],\n        \"@rules_rust//rust/platform:x86_64-unknown-freebsd\": [],\n        \"@rules_rust//rust/platform:x86_64-unknown-linux-gnu\": [],\n        \"@rules_rust//rust/platform:x86_64-unknown-nixos-gnu\": [],\n        \"@rules_rust//rust/platform:x86_64-unknown-none\": [],\n        \"//conditions:default\": [\"@platforms//:incompatible\"],\n    }),\n    version = \"0.25.2\",\n)\n\ncargo_build_script(\n    name = \"libsqlite3-sys_bs\",\n    crate_features = [\n        \"bundled\",\n        \"bundled_bindings\",\n        \"cc\",\n        \"default\",\n        \"min_sqlite_version_3_6_8\",\n        \"min_sqlite_version_3_7_7\",\n        \"pkg-config\",\n        \"vcpkg\",\n    ],\n    crate_name = \"build_script_build\",\n    crate_root = \"build.rs\",\n    data = glob(\n        allow_empty = True,\n        include = [\"**\"],\n        exclude = [\n            \"**/* *\",\n            \".tmp_git_root/**/*\",\n            \"BUILD\",\n            \"BUILD.bazel\",\n            \"WORKSPACE\",\n            \"WORKSPACE.bazel\",\n        ],\n    ),\n    deps = [\n        \"@crate_index__cc-1.0.73//:cc\",\n        \"@crate_index__pkg-config-0.3.27//:pkg_config\",\n        \"@crate_index__vcpkg-0.2.15//:vcpkg\",\n    ],\n    edition = \"2018\",\n    links = \"sqlite3\",\n    rustc_flags = [\n        \"--cap-lints=allow\",\n    ],\n    srcs = glob(\n        allow_empty = False,\n        include = [\"**/*.rs\"],\n    ),\n    tags = [\n        \"cargo-bazel\",\n        \"crate-name=libsqlite3-sys\",\n        \"manual\",\n        \"noclippy\",\n        \"norustfmt\",\n    ],\n    version = \"0.25.2\",\n    visibility = [\"//visibility:private\"],\n)\n\nalias(\n    name = \"build_script_build\",\n    actual = \":libsqlite3-sys_bs\",\n    tags = [\"manual\"],\n)\n"
             }
           },
           "crate_index__walkdir-2.3.2": {
@@ -12409,8 +12315,8 @@
             "ruleClassName": "rust_toolchain_tools_repository",
             "attributes": {
               "name": "rules_rust~0.40.0~rust~rust_host_tools",
-              "exec_triple": "x86_64-apple-darwin",
-              "target_triple": "x86_64-apple-darwin",
+              "exec_triple": "x86_64-unknown-linux-gnu",
+              "target_triple": "x86_64-unknown-linux-gnu",
               "allocator_library": "@rules_rust//ffi/cc/allocator_library",
               "dev_components": false,
               "edition": "2021",

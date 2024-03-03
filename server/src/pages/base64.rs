@@ -1,12 +1,11 @@
-use actix_web::{get, web, HttpRequest, Responder};
-use log::info;
-use serde_json::json;
-use std::time::Duration;
+use actix_web::http::StatusCode;
+use actix_web::web::Redirect;
+use actix_web::{get, post, web, Result, HttpRequest, Responder};
 use base64::{decode, encode};
 use serde::{Deserialize, Serialize};
 use tera::Context;
-use awc::Client;
-use std::option_env;
+use crate::db::{query_promts, delete_promt, insert_promt};
+use crate::app::AppCtx;
 
 use super::utils;
 
@@ -23,62 +22,83 @@ struct Base64Params {
     action: Option<Actions>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Debug)]
 #[serde(rename_all = "lowercase")]
 enum ImageActions {
     Generate,
 }
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Debug)]
 struct ImageParams {
-    result: Option<String>,
-    query: Option<String>,
-    action: Option<ImageActions>,
+    id: Option<String>,
+    status: Option<String>,
+    error: Option<String>,
+    promt: Option<String>,
+    delete: Option<i32>,
+    data: Option<Vec<u8>>,
+    token: Option<String>
 }
 
-static TOKEN: Option<&'static str> = option_env!("API_TOKEN");
+#[derive(Deserialize, Serialize, Debug)]
+struct Task {
+    id: i32,
+    state: i32,
+    prompt: String,
+    image: Option<String>
+}
+
+#[derive(Deserialize, Serialize, Debug)]
+struct JSONError {
+    error: String
+}
+
+// static TOKEN: Option<&'static str> = option_env!("API_TOKEN");
+
+#[post("/image")]
+async fn post_image_page_handler(
+    app_ctx: web::Data<AppCtx>,
+    info: web::Form<ImageParams>
+) -> Result<impl Responder> {
+    let ref mut query_params = info.into_inner();
+    if let Some(id) = &query_params.delete {
+        let query_result = delete_promt(&app_ctx, id).await?;
+        log::info!("{:#?}", query_result);
+    }
+
+    match query_params.promt.as_deref() {
+        Some("") => (),
+        None => (),
+        Some(promt) => {
+            let query_result = insert_promt(&app_ctx, &String::from(promt)).await?;
+            log::info!("{:#?}", query_result);
+        }
+    }
+
+    Result::Ok(
+        Redirect::to("/image")
+        .using_status_code(StatusCode::FOUND)
+    )
+}
+
 
 #[get("/image")]
-async fn image_page_handler(req: HttpRequest, info: web::Query<ImageParams>) -> impl Responder {
-    let ref mut query_params = info.into_inner();
+async fn image_page_handler(
+    app_ctx: web::Data<AppCtx>,
+    req: HttpRequest,
+) -> impl Responder {
     let mut ctx = Context::new();
-    ctx.insert("query", &query_params.query);
-    let client = Client::default();
-    let token: Result<&str, &str> = match TOKEN {
-        Some("") => Err("No token"),
-        None => Err("No token"),
-        Some(val) => Ok(val)
-    };
-    if token.is_err() {
-        info!("No token");
-        return utils::render(req, "image.html", &ctx).await;
-    }
-
-    let request = client
-        .post("https://api-inference.huggingface.co/models/cagliostrolab/animagine-xl-3.0")
-        .append_header(("Authorization", format!("Bearer {}", token.unwrap())));
-
-    match &query_params.query {
-        Some(user_query) => {
-            let response = request
-                .timeout(Duration::new(60, 0))
-                .send_json(&json!({
-                    "inputs": user_query.clone()
-                })).await;
-            info!("Response: {:#?}", response);
-            match response {
-                Ok(mut resp) => {
-                    let body = resp.body().await?;
-                    let encoded_string = encode(body);
-                    ctx.insert("result", &encoded_string);
-                }
-                Err(_) => {
-                    ()
-                }
+    let query_result = query_promts(app_ctx).await?;
+    let tasks = query_result.into_iter().map(|row| {
+        Task {
+            id: row.id,
+            prompt: row.prompt,
+            state: row.state,
+            image: match row.data {
+                Some(bytes) => Some(format!("data:image/jpg;base64,{}", encode(bytes))),
+                _ => None
             }
         }
-        None => ()
-    }
-
+    }).collect::<Vec<_>>();
+    ctx.insert("prompts", &tasks);
     return utils::render(req, "image.html", &ctx).await;
 }
 
