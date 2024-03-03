@@ -53,12 +53,7 @@ use_repo(rules_ts_ext, "npm_typescript")
 bazel_dep(name = "aspect_rules_esbuild", version = "0.18.0")
 
 # Rust
-bazel_dep(name = "rules_rust", version = "0.39.0")
-git_override(
-  module_name = "rules_rust",
-  remote = "https://github.com/bazelbuild/rules_rust.git",
-  commit = "777f3e5c5d280b14d37bb7574a88f1cbfb3f8d46"
-)
+bazel_dep(name = "rules_rust", version = "0.40.0")
 rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
 rust.toolchain(edition = "2021")
 use_repo(rust, "rust_toolchains")
