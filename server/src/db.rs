@@ -39,13 +39,17 @@ fn init_pool(base_dir: &mut PathBuf) -> Result<Pool, r2d2::Error> {
 
 pub async fn init_db(base_dir: &mut PathBuf) -> Result<Pool, rusqlite::Error> {
     log::info!("Init db");
-    let drop_query = format!("DROP TABLE IF EXISTS {TABLE_NAME}");
     let pool = init_pool(base_dir).map_err(|e| {
         let error_text = format!("Pool error {e:?}");
         rusqlite::Error::InvalidParameterName(error_text)
     })?;
     let conn = pool.get().unwrap();
+
+    let drop_query = format!("DROP TABLE IF EXISTS {TABLE_NAME}");
     conn.execute(&drop_query, ())?;
+    let drop_query = format!("DROP TABLE IF EXISTS token");
+    conn.execute(&drop_query, ())?;
+
     let create_query = format!(
         "\
             CREATE TABLE IF NOT EXISTS {TABLE_NAME} (
@@ -85,12 +89,13 @@ pub async fn check_token(app_ctx: &web::Data<AppCtx>, token: &str) -> actix_web:
     let conn = web::block(move || pool.get())
         .await?
         .map_err(error::ErrorInternalServerError)?;
-    let q = format!("SELECT count(*) as c from token where token=?1");
+    let q = format!("SELECT id as c from token where token=?1");
     let mut stmt = conn.prepare(&q).map_err(error::ErrorInternalServerError)?;
     let r = stmt
         .query_map((token,), |row| Ok(CountResult { c: row.get("c")? }))
         .and_then(Iterator::collect::<Result<Vec<_>, _>>)
         .map_err(error::ErrorInternalServerError)?;
+
     Ok(r.len() != 0)
 }
 
