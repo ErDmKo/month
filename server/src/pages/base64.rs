@@ -1,11 +1,14 @@
 use actix_web::http::StatusCode;
 use actix_web::web::Redirect;
-use actix_web::{get, post, web, Result, HttpRequest, Responder};
+use actix_web::{get, post, web, Result, HttpRequest, Responder, HttpResponse};
+use actix_web_grants::protect;
 use base64::{decode, encode};
 use serde::{Deserialize, Serialize};
+use actix_multipart::Multipart;
 use tera::Context;
-use crate::db::{query_promts, delete_promt, insert_promt};
+use crate::db::{query_promts, delete_promt, insert_promt, insert_status_promt, insert_data_promt};
 use crate::app::AppCtx;
+use futures_util::StreamExt as _;
 
 use super::utils;
 
@@ -27,7 +30,7 @@ struct Base64Params {
 enum ImageActions {
     Generate,
 }
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Default)]
 struct ImageParams {
     id: Option<String>,
     status: Option<String>,
@@ -53,8 +56,94 @@ struct JSONError {
 
 // static TOKEN: Option<&'static str> = option_env!("API_TOKEN");
 
-#[post("/image")]
-async fn post_image_page_handler(
+#[post("/upload_image")]
+#[protect("ROLE_ADMIN")]
+async fn post_image_upload_handler(
+    app_ctx: web::Data<AppCtx>,
+    mut payload: Multipart
+) -> Result <impl Responder> {
+    let mut file_data = Vec::<u8>::new();
+    let mut task_id: Option<String> = None;
+    while let Some(item) = payload.next().await {
+        let mut field = item?;
+        let content_disposition = field.content_disposition();
+        let field_name = content_disposition.get_name().unwrap();
+        match field_name {
+            "file" => {
+                while let Some(res_chunk) = field.next().await {
+                    let chunk = res_chunk?;
+                    file_data.extend_from_slice(&chunk);
+                }
+            }
+            "task" => {
+                let mut bytes = Vec::<u8>::new();
+                while let Some(res_bytes) = field.next().await {
+                    let new_bytes = res_bytes?;
+                    bytes.extend_from_slice(&new_bytes)
+                }
+                task_id = String::from_utf8(bytes).ok();
+            }
+            _ => {}
+        }
+    }
+    if file_data.len() == 0 {
+        return Ok(HttpResponse::BadRequest().json(ImageParams {
+            status: Some("Field \"file\" is empty".to_string()),
+            ..ImageParams::default()
+        }))
+    }
+    if let Some(tid) = task_id {
+        log::info!("Task id '{:?}'", tid);
+        log::info!("Image len '{:?}'", file_data.len());
+        insert_data_promt(&app_ctx, &tid, file_data).await?;
+    } else {
+        return Ok(HttpResponse::Ok().json(ImageParams {
+            status: Some("Task id is missing".to_string()),
+            ..ImageParams::default()
+        }))
+    }
+    Ok(HttpResponse::Ok().json(ImageParams {
+        status: Some("Image uploaded".to_string()),
+        ..ImageParams::default()
+    }))
+}
+
+#[post("/task/status")]
+#[protect("ROLE_ADMIN")]
+async fn post_task_status_handler(
+    app_ctx: web::Data<AppCtx>,
+    info: web::Json<ImageParams>
+) -> Result<impl Responder> {
+    let params = info.into_inner();
+    if let ImageParams { id: Some(task_id), status: Some(task_status), .. } = params {
+        insert_status_promt(&app_ctx, &task_id, &task_status).await?;
+    } else {
+        return Ok(
+            HttpResponse::BadRequest()
+            .json(ImageParams {
+                status: Some("Wrong request".to_string()),
+                ..ImageParams::default()
+            })
+        )
+    }
+
+    Ok(HttpResponse::Ok().json(ImageParams {
+        status: Some("Status updated".to_string()),
+        ..ImageParams::default()
+    }))
+}
+
+#[get("/task")]
+#[protect("ROLE_ADMIN")]
+async fn get_task_page_handler(
+    app_ctx: web::Data<AppCtx>,
+)-> Result<impl Responder> {
+    let query_result = query_promts(app_ctx, Some(0)).await?;
+    Ok(HttpResponse::Ok().json(query_result))
+}
+
+#[post("/task")]
+async fn post_task_page_handler(
     app_ctx: web::Data<AppCtx>,
     info: web::Form<ImageParams>
 ) -> Result<impl Responder> {
@@ -86,7 +175,7 @@ async fn image_page_handler(
     req: HttpRequest,
 ) -> impl Responder {
     let mut ctx = Context::new();
-    let query_result = query_promts(app_ctx).await?;
+    let query_result = query_promts(app_ctx, None).await?;
     let tasks = query_result.into_iter().map(|row| {
         Task {
             id: row.id,

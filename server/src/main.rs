@@ -1,7 +1,12 @@
 use actix_files;
-use actix_web::{middleware, web, App, HttpServer, Result};
+use actix_web::dev::ServiceRequest;
+use actix_web::http::header;
+use actix_web::{middleware, web, App, HttpServer};
+use actix_web_grants::GrantsMiddleware;
+use db::check_token;
 use env_logger;
 use log::info;
+use std::collections::HashSet;
 use std::io::{Error, ErrorKind};
 use std::path::PathBuf;
 use std::sync::{Arc, RwLock};
@@ -21,7 +26,7 @@ static PORT_RUN: Option<&'static str> = option_env!("PORT");
 async fn get_static_from_root(
     ctx: web::Data<app::AppCtx>,
     req: actix_web::HttpRequest,
-) -> Result<actix_files::NamedFile> {
+) -> actix_web::Result<actix_files::NamedFile> {
     match req.match_pattern() {
         Some(pattern) => {
             let mut full_path = ctx.static_path.clone();
@@ -31,6 +36,23 @@ async fn get_static_from_root(
             Ok(actix_files::NamedFile::open(full_path)?)
         }
         None => Err(actix_web::error::ErrorBadRequest("Wrong match")),
+    }
+}
+const ROLE_ADMIN: &str = "ROLE_ADMIN";
+
+async fn extract(req: &ServiceRequest) -> Result<HashSet<String>, actix_web::Error> {
+    let headers = req.headers();
+    let auth_header = headers.get(header::AUTHORIZATION);
+    if let Some(token_header) = auth_header {
+        let app_data: &web::Data<app::AppCtx> = req.app_data().expect("app broken");
+        let token_str = token_header.to_str().expect("token is not str");
+        let token_check_result = check_token(app_data, token_str).await?;
+        if !token_check_result {
+            return Ok(HashSet::default())
+        }
+        Ok(HashSet::from([ROLE_ADMIN.to_string()]))
+    } else {
+        Ok(HashSet::default())
     }
 }
 
@@ -69,6 +91,7 @@ async fn main() -> std::io::Result<()> {
     })?;
     info!("DB pool is ready");
     HttpServer::new(move || {
+        let auth = GrantsMiddleware::with_extractor(extract);
         App::new()
             .app_data(web::Data::new(app::AppCtx {
                 static_path: static_path.clone(),
@@ -77,12 +100,16 @@ async fn main() -> std::io::Result<()> {
             .wrap(middleware::NormalizePath::trim())
             .wrap(middleware::Compress::default())
             .wrap(middleware::Logger::default())
+            .wrap(auth)
             .app_data(templates.clone())
             .service(pages::main_page_handler)
             .service(pages::random_page_handler)
             .service(pages::base64_page_handler)
             .service(pages::image_page_handler)
-            .service(pages::post_image_page_handler)
+            .service(pages::post_task_page_handler)
+            .service(pages::post_task_status_handler)
+            .service(pages::get_task_page_handler)
+            .service(pages::post_image_upload_handler)
             .service(pages::tetris_page_handler)
             .service(pages::tennis_page_handler)
             .service(pages::ws_page_handler)
