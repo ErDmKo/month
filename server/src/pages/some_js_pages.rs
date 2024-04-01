@@ -6,9 +6,7 @@ use tera::Context;
 use super::utils;
 
 #[get("/tetris")]
-pub async fn tetris_page_handler(
-    req: HttpRequest,
-) -> Result<HttpResponse> {
+pub async fn tetris_page_handler(req: HttpRequest) -> Result<HttpResponse> {
     let mut ctx = Context::new();
     ctx.insert("game_name", "Tetris");
     ctx.insert("bundle_name", "tetris");

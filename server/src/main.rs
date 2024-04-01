@@ -48,7 +48,7 @@ async fn extract(req: &ServiceRequest) -> Result<HashSet<String>, actix_web::Err
         let token_str = token_header.to_str().expect("token is not str");
         let token_check_result = check_token(app_data, token_str).await?;
         if !token_check_result {
-            return Ok(HashSet::default())
+            return Ok(HashSet::default());
         }
         Ok(HashSet::from([ROLE_ADMIN.to_string()]))
     } else {

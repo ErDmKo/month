@@ -1,14 +1,14 @@
+use crate::app::AppCtx;
+use crate::db::{delete_promt, insert_data_promt, insert_promt, insert_status_promt, query_promts};
+use actix_multipart::Multipart;
 use actix_web::http::StatusCode;
 use actix_web::web::Redirect;
-use actix_web::{get, post, web, Result, HttpRequest, Responder, HttpResponse};
+use actix_web::{get, post, web, HttpRequest, HttpResponse, Responder, Result};
 use actix_web_grants::protect;
 use base64::{decode, encode};
-use serde::{Deserialize, Serialize};
-use actix_multipart::Multipart;
-use tera::Context;
-use crate::db::{query_promts, delete_promt, insert_promt, insert_status_promt, insert_data_promt};
-use crate::app::AppCtx;
 use futures_util::StreamExt as _;
+use serde::{Deserialize, Serialize};
+use tera::Context;
 
 use super::utils;
 
@@ -38,7 +38,7 @@ struct ImageParams {
     promt: Option<String>,
     delete: Option<i32>,
     data: Option<Vec<u8>>,
-    token: Option<String>
+    token: Option<String>,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
@@ -46,12 +46,12 @@ struct Task {
     id: i32,
     state: i32,
     prompt: String,
-    image: Option<String>
+    image: Option<String>,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
 struct JSONError {
-    error: String
+    error: String,
 }
 
 // static TOKEN: Option<&'static str> = option_env!("API_TOKEN");
@@ -60,8 +60,8 @@ struct JSONError {
 #[protect("ROLE_ADMIN")]
 async fn post_image_upload_handler(
     app_ctx: web::Data<AppCtx>,
-    mut payload: Multipart
-) -> Result <impl Responder> {
+    mut payload: Multipart,
+) -> Result<impl Responder> {
     let mut file_data = Vec::<u8>::new();
     let mut task_id: Option<String> = None;
     while let Some(item) = payload.next().await {
@@ -90,7 +90,7 @@ async fn post_image_upload_handler(
         return Ok(HttpResponse::BadRequest().json(ImageParams {
             status: Some("Field \"file\" is empty".to_string()),
             ..ImageParams::default()
-        }))
+        }));
     }
     if let Some(tid) = task_id {
         log::info!("Task id '{:?}'", tid);
@@ -100,7 +100,7 @@ async fn post_image_upload_handler(
         return Ok(HttpResponse::Ok().json(ImageParams {
             status: Some("Task id is missing".to_string()),
             ..ImageParams::default()
-        }))
+        }));
     }
     Ok(HttpResponse::Ok().json(ImageParams {
         status: Some("Image uploaded".to_string()),
@@ -112,19 +112,21 @@ async fn post_image_upload_handler(
 #[protect("ROLE_ADMIN")]
 async fn post_task_status_handler(
     app_ctx: web::Data<AppCtx>,
-    info: web::Json<ImageParams>
+    info: web::Json<ImageParams>,
 ) -> Result<impl Responder> {
     let params = info.into_inner();
-    if let ImageParams { id: Some(task_id), status: Some(task_status), .. } = params {
+    if let ImageParams {
+        id: Some(task_id),
+        status: Some(task_status),
+        ..
+    } = params
+    {
         insert_status_promt(&app_ctx, &task_id, &task_status).await?;
     } else {
-        return Ok(
-            HttpResponse::BadRequest()
-            .json(ImageParams {
-                status: Some("Wrong request".to_string()),
-                ..ImageParams::default()
-            })
-        )
+        return Ok(HttpResponse::BadRequest().json(ImageParams {
+            status: Some("Wrong request".to_string()),
+            ..ImageParams::default()
+        }));
     }
 
     Ok(HttpResponse::Ok().json(ImageParams {
@@ -135,9 +137,7 @@ async fn post_task_status_handler(
 
 #[get("/task")]
 #[protect("ROLE_ADMIN")]
-async fn get_task_page_handler(
-    app_ctx: web::Data<AppCtx>,
-)-> Result<impl Responder> {
+async fn get_task_page_handler(app_ctx: web::Data<AppCtx>) -> Result<impl Responder> {
     let query_result = query_promts(app_ctx, Some(0)).await?;
     Ok(HttpResponse::Ok().json(query_result))
 }
@@ -145,7 +145,7 @@ async fn get_task_page_handler(
 #[post("/task")]
 async fn post_task_page_handler(
     app_ctx: web::Data<AppCtx>,
-    info: web::Form<ImageParams>
+    info: web::Form<ImageParams>,
 ) -> Result<impl Responder> {
     let ref mut query_params = info.into_inner();
     if let Some(id) = &query_params.delete {
@@ -162,31 +162,25 @@ async fn post_task_page_handler(
         }
     }
 
-    Result::Ok(
-        Redirect::to("/image")
-        .using_status_code(StatusCode::FOUND)
-    )
+    Result::Ok(Redirect::to("/image").using_status_code(StatusCode::FOUND))
 }
 
-
 #[get("/image")]
-async fn image_page_handler(
-    app_ctx: web::Data<AppCtx>,
-    req: HttpRequest,
-) -> impl Responder {
+async fn image_page_handler(app_ctx: web::Data<AppCtx>, req: HttpRequest) -> impl Responder {
     let mut ctx = Context::new();
     let query_result = query_promts(app_ctx, None).await?;
-    let tasks = query_result.into_iter().map(|row| {
-        Task {
+    let tasks = query_result
+        .into_iter()
+        .map(|row| Task {
             id: row.id,
             prompt: row.prompt,
             state: row.state,
             image: match row.data {
                 Some(bytes) => Some(format!("data:image/jpg;base64,{}", encode(bytes))),
-                _ => None
-            }
-        }
-    }).collect::<Vec<_>>();
+                _ => None,
+            },
+        })
+        .collect::<Vec<_>>();
     ctx.insert("prompts", &tasks);
     return utils::render(req, "image.html", &ctx).await;
 }
