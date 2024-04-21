@@ -29,7 +29,6 @@ bazel run //assets/js:prettier
 ### Build static
 
 ```bash
-bazel build //assets/js:closure
 bazel build //assets/css
 ```
 
@@ -59,12 +58,6 @@ bazel run //assets/js:prettier
 
 ```bash
  bazel run @nodejs_host//:npm -- version
-```
-
-### Run cargo-raze
-
-```bash
-bazel run @cargo_raze//:raze -- --manifest-path=$(realpath /Cargo.toml)
 ```
 
 ### Build docker container
