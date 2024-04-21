@@ -219,3 +219,9 @@ a:hover {
         grid-template-columns: auto auto auto;
     }
 }
+
+.image_background {
+  box-shadow: inset 0px 0px 400px 240px #fff;
+  background-repeat: no-repeat;
+  background-size: cover;
+}

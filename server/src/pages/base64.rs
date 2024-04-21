@@ -176,7 +176,7 @@ async fn image_page_handler(app_ctx: web::Data<AppCtx>, req: HttpRequest) -> imp
             prompt: row.prompt,
             state: row.state,
             image: match row.data {
-                Some(bytes) => Some(format!("data:image/jpg;base64,{}", encode(bytes))),
+                Some(bytes) => Some(format!("data:image/png;base64,{}", encode(bytes))),
                 _ => None,
             },
         })
