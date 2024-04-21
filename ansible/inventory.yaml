@@ -3,3 +3,4 @@ all:
         web:
             hosts:
                 root@erdmko.dev:
+                root@188.68.223.217:
