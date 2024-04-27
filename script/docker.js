@@ -1,4 +1,5 @@
 import { exec } from 'node:child_process';
+import { stat } from 'node:fs/promises';
 
 const execAsync = async (fn) => {
     console.log(`Exceuting '${fn}'`);
@@ -49,7 +50,9 @@ const main = async () => {
       Docker only can use files inside the the project folder,
       but bazel save files to /private/tmp/... just copy them
     */
-    await execAsync(`cp -r ${staticDir} ./${TMP_DIR}`);
+    const statInfo = await stat(staticDir);
+    console.log('Static dir', staticDir);
+    await execAsync(`cp -rL ${staticDir} ./${TMP_DIR}`);
     await execAsync(
         [
             'docker',
