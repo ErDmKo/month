@@ -121,6 +121,11 @@ fn get_page_ctx() -> MainPageContext {
                 href: "/slugify",
                 text: "Slugify",
             },
+            MainPageLink {
+                name: "Catalog of items",
+                href: "/catalog",
+                text: "Catalog",
+            },
         ],
         games: vec![
             MainPageLink {
