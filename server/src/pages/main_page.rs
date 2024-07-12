@@ -95,9 +95,14 @@ fn get_page_ctx() -> MainPageContext {
                 text: "//www.linkedin.com/in/erdmko/",
             },
             MainPageLink {
-                name: "Twitter",
-                href: "https://twitter.com/ErDmKo",
-                text: "//twitter.com/ErDmKo",
+                name: "X",
+                href: "https://x.com/ErDmKo",
+                text: "//x.com/ErDmKo",
+            },
+            MainPageLink {
+                name: "Twitch",
+                href: "https://www.twitch.tv/erdmko",
+                text: "//twitch.tv/erdmko",
             },
         ],
         tools: vec![
