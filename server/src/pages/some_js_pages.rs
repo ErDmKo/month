@@ -13,6 +13,17 @@ pub async fn tetris_page_handler(req: HttpRequest) -> Result<HttpResponse> {
     return utils::render(req, "js_bundle_page.html", &ctx).await;
 }
 
+
+#[get("/tennis")]
+pub async fn tennis_page_handler(req: HttpRequest) -> Result<HttpResponse> {
+    let mut ctx = Context::new();
+    ctx.insert("game_name", "Tennis");
+    ctx.insert("bundle_name", "tennis");
+    return utils::render(req, "js_bundle_page.html", &ctx).await;
+}
+
+// TODO - implement the server side of the websocket
+
 struct AppWs;
 
 impl Actor for AppWs {
@@ -38,12 +49,4 @@ pub async fn ws_page_handler(
     let resp = ws::start(AppWs {}, &req, stream);
     println!("{:?}", resp);
     resp
-}
-
-#[get("/tennis")]
-pub async fn tennis_page_handler(req: HttpRequest) -> Result<HttpResponse> {
-    let mut ctx = Context::new();
-    ctx.insert("game_name", "Tennis");
-    ctx.insert("bundle_name", "tennis");
-    return utils::render(req, "js_bundle_page.html", &ctx).await;
 }

@@ -23,8 +23,32 @@ ts_project(
 )
 
 esbuild(
-    name = "bundle",
-    entry_point = "app.js",
+    name = "tennis",
+    entry_point = "tennis.ts",
+    metafile = False,
+    minify = True,
+    target = "esnext",
+    sourcemap = False,
+    deps = [
+        ":lib",
+    ],
+)
+
+esbuild(
+    name = "snowflake",
+    entry_point = "snowflake.ts",
+    metafile = False,
+    minify = True,
+    target = "esnext",
+    sourcemap = False,
+    deps = [
+        ":lib",
+    ],
+)
+
+esbuild(
+    name = "tetris",
+    entry_point = "tetris.ts",
     metafile = False,
     minify = True,
     target = "esnext",

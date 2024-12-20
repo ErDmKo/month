@@ -6,27 +6,18 @@ use tera::Context;
 use super::utils;
 
 #[derive(Serialize)]
+struct MainPageContext<T> {
+    addreses: Vec<T>,
+    tools: Vec<T>,
+    games: Vec<T>,
+    is_snow: bool,
+}
+
+#[derive(Serialize)]
 struct MainPageLink {
     name: &'static str,
     href: &'static str,
     text: &'static str,
-}
-
-impl MainPageLink {
-    fn to_string_link(&self) -> MainPageLinkString {
-        MainPageLinkString {
-            name: self.name.to_string(),
-            href: self.href.to_string(),
-            text: self.text.to_string(),
-        }
-    }
-}
-
-#[derive(Serialize)]
-struct MainPageContext {
-    addreses: Vec<MainPageLink>,
-    tools: Vec<MainPageLink>,
-    games: Vec<MainPageLink>,
 }
 
 #[derive(Serialize)]
@@ -36,43 +27,30 @@ struct MainPageLinkString {
     text: String,
 }
 
-#[derive(Serialize)]
-struct MainPageContextString {
-    // domain: String, analytics
-    addreses: Vec<MainPageLinkString>,
-    tools: Vec<MainPageLinkString>,
-    games: Vec<MainPageLinkString>,
-}
-
-fn str_to_string_ctx(ctx: MainPageContext) -> MainPageContextString {
-    let mut addreses = Vec::new();
-    let mut tools = Vec::new();
-    let mut games = Vec::new();
-    for entry in ctx.addreses {
-        addreses.push(entry.to_string_link());
-    }
-    let domain = String::from(option_env!("DOMAIN").unwrap_or("erdmko.de"));
-    addreses.push(MainPageLinkString {
-        name: String::from("Blog"),
-        href: format!("https://{}/blog", domain),
-        text: format!("//{}/blog", domain),
-    });
-    for entry in ctx.tools {
-        tools.push(entry.to_string_link());
-    }
-    for entry in ctx.games {
-        games.push(entry.to_string_link());
-    }
-    MainPageContextString {
-        // domain,
-        addreses,
-        tools,
-        games,
+impl From<MainPageLink> for MainPageLinkString {
+    fn from(link: MainPageLink) -> Self {
+        Self {
+            name: link.name.to_string(),
+            href: link.href.to_string(),
+            text: link.text.to_string(),
+        }
     }
 }
 
-fn get_page_ctx() -> MainPageContext {
-    let page_info: MainPageContext = MainPageContext {
+impl From<MainPageContext<MainPageLink>> for MainPageContext<MainPageLinkString> {
+    fn from(context: MainPageContext<MainPageLink>) -> Self {
+        Self {
+            addreses: context.addreses.into_iter().map(Into::into).collect(),
+            tools: context.tools.into_iter().map(Into::into).collect(),
+            games: context.games.into_iter().map(Into::into).collect(),
+            is_snow: context.is_snow,
+        }
+    }
+}
+
+fn get_page_ctx() -> MainPageContext<MainPageLinkString> {
+    let page_info = MainPageContext {
+        is_snow: true,
         addreses: vec![
             MainPageLink {
                 name: "Email",
@@ -145,12 +123,13 @@ fn get_page_ctx() -> MainPageContext {
             },
         ],
     };
-    page_info
+    let string_context: MainPageContext<MainPageLinkString> = page_info.into();
+    return string_context;
 }
 
 #[get("/")]
 pub async fn main_page_handler(req: HttpRequest) -> impl Responder {
     let page_ctx = get_page_ctx();
-    let ctx = Context::from_serialize(str_to_string_ctx(page_ctx)).unwrap();
+    let ctx = Context::from_serialize(page_ctx).unwrap();
     return utils::render(req, "main.html", &ctx).await;
 }
