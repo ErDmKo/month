@@ -640,8 +640,8 @@
         "bzlTransitiveDigest": "MbBacsnCQpEZ1GhNne97uHV2U+ZrlAakAcV/VGLSKD8=",
         "usagesDigest": "CVOc4qwrw4IvgfKb0ADMGgIBcwonV959yK2In4s2Ou0=",
         "recordedFileInputs": {
-          "@@//pnpm-lock.yaml": "eb42b24d80327f163a8f3a09be5c1de98934b3d66c14e33757c295af69a525ea",
-          "@@aspect_bazel_lib~~toolchains~yq_darwin_arm64//yq": "db8c11ca4c1dda8fe7c211e82e28191d48bd9ae83471b952003e819de79bcb51"
+          "@@aspect_bazel_lib~~toolchains~yq_darwin_amd64//yq": "0fe604d3332cd1a0667b22b41bf404052da451cab35b502f17cb5023d2b8a98d",
+          "@@//pnpm-lock.yaml": "eb42b24d80327f163a8f3a09be5c1de98934b3d66c14e33757c295af69a525ea"
         },
         "recordedDirentsInputs": {},
         "envVariables": {},
@@ -2900,8 +2900,8 @@
           ],
           [
             "aspect_rules_js~",
-            "yq_darwin_arm64",
-            "aspect_bazel_lib~~toolchains~yq_darwin_arm64"
+            "yq_darwin_amd64",
+            "aspect_bazel_lib~~toolchains~yq_darwin_amd64"
           ],
           [
             "bazel_features~",
@@ -3308,10 +3308,10 @@
         "bzlTransitiveDigest": "bamm8yNv2tkzA/U1QfttT6temAimWz3R7SaqGj6Jr4c=",
         "usagesDigest": "Ck6XAQFcJ9g53s2f7eW1862gTqdQuzHEOpgrqo1/H2c=",
         "recordedFileInputs": {
-          "@@rules_rust~~rust~rust_host_tools//bin/cargo": "bdb93a31345287f3dc0841af1e0a59de07cf840a764740d9c739a29c6a89baeb",
-          "@@rules_rust~~cargo_bazel_bootstrap~cargo_bazel_bootstrap//cargo-bazel": "a7bff9d28ab7b8a74a5cbd90a2e7638806890973b81160fc3004a41b27deef01",
+          "@@rules_rust~~rust~rust_host_tools//bin/cargo": "10100b70f5a0fa34c662e9cbdc1e461bc9b14f9eaffbda0594a7b411b125e62c",
+          "@@rules_rust~~cargo_bazel_bootstrap~cargo_bazel_bootstrap//cargo-bazel": "0def2d14e7a37c13db4c04886c85f2aa8d12ee4bf61b7d2843a38593af06cb40",
           "@@//server/Cargo.lock": "04d2a9c8b40b310b260a296a9ac3200ac1b668a19e0d4a8f9595b023bca6b3ae",
-          "@@rules_rust~~rust~rust_host_tools//bin/rustc": "e586e78466e2baca360fdc6f29007d2215a40a39dda99935dda887b850010153",
+          "@@rules_rust~~rust~rust_host_tools//bin/rustc": "8ae6dd7e0e4dba0fdf7f3114e32067fdc8cee3cdd7b86ed45812cd31435d7b3e",
           "@@//server/Cargo.toml": "2ca56c1ceab9213b33867430a724e1a85a5a699bf27ea2fbdf23426194d2be01"
         },
         "recordedDirentsInputs": {},
@@ -9465,8 +9465,8 @@
             "bzlFile": "@@rules_rust~//rust:repositories.bzl",
             "ruleClassName": "rust_toolchain_tools_repository",
             "attributes": {
-              "exec_triple": "aarch64-apple-darwin",
-              "target_triple": "aarch64-apple-darwin",
+              "exec_triple": "x86_64-apple-darwin",
+              "target_triple": "x86_64-apple-darwin",
               "allocator_library": "@rules_rust//ffi/cc/allocator_library",
               "dev_components": false,
               "edition": "2021",
