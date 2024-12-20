@@ -2,6 +2,7 @@ use actix_web::HttpRequest;
 use actix_web::{get, Responder};
 use serde::Serialize;
 use tera::Context;
+use chrono::{Local, Datelike};
 
 use super::utils;
 
@@ -43,14 +44,17 @@ impl From<MainPageContext<MainPageLink>> for MainPageContext<MainPageLinkString>
             addreses: context.addreses.into_iter().map(Into::into).collect(),
             tools: context.tools.into_iter().map(Into::into).collect(),
             games: context.games.into_iter().map(Into::into).collect(),
-            is_snow: context.is_snow,
+            is_snow: context.is_snow
         }
     }
 }
 
 fn get_page_ctx() -> MainPageContext<MainPageLinkString> {
     let page_info = MainPageContext {
-        is_snow: true,
+        is_snow: match Local::now().month() {
+            12 | 1 | 2 => true,
+            _ => false,
+        },
         addreses: vec![
             MainPageLink {
                 name: "Email",

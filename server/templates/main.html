@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% block desc %}ErDmKo Home page{% endblock desc %}
 {% block content %}
+{% if is_snow %}
+  <script src="/static/js/snowflake.js"></script>
+{% endif %}
 <article class="page">
     <header class="page__header js-header">
         <h1 class="page__headline">Eroshenko Dmitry</h1>
