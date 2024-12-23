@@ -1,11 +1,15 @@
 import {
     bindArg,
     bindArgs,
+    combineLatestWith,
     domCreator,
     fillElemWidhCanvas,
+    genClass,
+    genProp,
+    genRef,
+    genTagDiv,
+    genTagName,
     on,
-    PROP,
-    REF,
 } from '@month/utils';
 import {
     FieldInstance,
@@ -19,6 +23,7 @@ import {
     GAME_STATE_END,
     rotateFieldFigureLeft,
     rotateFieldFigureRight,
+    GameObserverState,
 } from './field';
 
 const draw = (
@@ -63,7 +68,8 @@ const phoneControlsMap: [string, string][] = [
     ['KeyD', 'Right (D)'],
 ];
 const smallButton = 's';
-const phoneStyleMap = (ctx: Window): Record<string, string[]> => ({
+
+const phoneStyleMap = (): Record<string, string[]> => ({
     Space: ['start', smallButton],
     KeyE: ['rotateR', smallButton],
     KeyQ: ['rotateL', smallButton],
@@ -77,22 +83,21 @@ const addPhoneControls = (
     element: HTMLDivElement,
     keyHandlers: KeyHandlers
 ) => {
-    const styles = phoneStyleMap(ctx);
-    domCreator(ctx, element, [
-        'div',
-        [['class', 'c']],
+    const styles = phoneStyleMap();
+    domCreator(ctx, element, genTagDiv(
+        [genClass('c')],
         phoneControlsMap.map(([key, name]) => {
             const classes = styles[key];
-            return [
+            return genTagName(
                 'button',
                 [
-                    ['innerText', name, PROP],
-                    ['class', (classes || []).join(' ')],
-                    ['onclick', keyHandlers[key], PROP],
+                    genClass((classes || []).join(' ')),
+                    genProp('innerText', name),
+                    genProp('onclick', keyHandlers[key]),
                 ],
-            ];
+            );
         }),
-    ]);
+    ));
 };
 
 const initCanvas = (ctx: Window, element: Element) => {
@@ -100,11 +105,15 @@ const initCanvas = (ctx: Window, element: Element) => {
     htmlElement.innerHTML = '';
     htmlElement.classList.add('tetris');
     const boardSize: Vector2D = [10, 20];
-    const [wrapper, info] = domCreator(ctx, htmlElement, [
-        'div',
-        [['class', 'wrapper'], [REF]],
-        [['div', [['class', 'info'], ['innerText', START_TEXT], [REF]]]],
+    const infoTemplate = genTagDiv([
+      genClass('info'),
+      genProp('innerText', START_TEXT),
+      genRef()
     ]);
+    const [wrapper, info] = domCreator(ctx, htmlElement, genTagDiv(
+        [genClass('wrapper'), genRef()],
+        [infoTemplate],
+    ));
     const [rect, canvas] = fillElemWidhCanvas(ctx, wrapper);
     var canvasCtx = canvas.getContext('2d');
     if (!canvasCtx) {
@@ -123,19 +132,17 @@ const initCanvas = (ctx: Window, element: Element) => {
         }
     });
     const [gameState, score] = fieldInstance(getObservers);
-    gameState(
-        bindArg((state: number) => {
-            if (state === GAME_STATE_PLAY && info.innerText == START_TEXT) {
-                info.innerText = '';
-                info.style.top = '-30px';
-            } else if (state === GAME_STATE_END) {
-                info.innerText = 'Game Over';
+    const gameCombineObserver = combineLatestWith(gameState, score);
+    gameCombineObserver(
+        bindArg(([state, no]: [GameObserverState, number]) => {
+            let score = no || 0;
+            let gameState = '';
+            if (state === GAME_STATE_END) {
+                gameState = `Game Over. Your score ${score}`;
+            } else if (state === GAME_STATE_PLAY) {
+                gameState = `Score: ${score}`;
             }
-        }, on)
-    );
-    score(
-        bindArg((no: number) => {
-            info.innerText = `Your score ${no}`;
+            info.innerText = `${gameState}`;
         }, on)
     );
     draw(ctx, fieldInstance, canvasCtx);

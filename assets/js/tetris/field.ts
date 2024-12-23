@@ -25,13 +25,16 @@ export type Vector2D = [width: number, height: number];
 export const WIDTH_INDEX = 0;
 export const HEIGHT_INDEX = 1;
 
+
+export const GAME_STATE_PLAY = 0 as const;
+export const GAME_STATE_END = 1 as const;
+
+export type GameObserverState = typeof GAME_STATE_PLAY | typeof GAME_STATE_END;
+
 export type GameObservers = [
-    gameState: ObserverInstance<number>,
+    gameState: ObserverInstance<GameObserverState>,
     score: ObserverInstance<number>
 ];
-
-export const GAME_STATE_PLAY = 0;
-export const GAME_STATE_END = 1;
 
 export type FieldState = [
     field: FieldType, // 0
@@ -47,7 +50,7 @@ const SCORE_INDEX = 5;
 
 export type FieldInstance = <R>(a: (s: FieldState) => R) => R;
 
-export const getObservers = (state: FieldState) => {
+export const getObservers = (state: FieldState): GameObservers => {
     return state[OBSERVERS_INDEX];
 };
 
@@ -93,6 +96,7 @@ const chekLines = (ctx: Window, state: FieldState) => {
         if (!i && lineSum) {
             gameState(bindArg(GAME_STATE_END, trigger));
             ctx.clearTimeout(state[LOOP_INDEX]);
+            state[LOOP_INDEX] = 0;
             return 0;
         }
     }
@@ -155,7 +159,11 @@ export const initField = (
 export const addFigureRandomFigure = (ctx: Window, state: FieldState) => {
     const [field, , figures] = state;
     const [gameState] = getObservers(state);
-    gameState(bindArg(GAME_STATE_PLAY, trigger));
+    if (state[LOOP_INDEX]) {
+      // TODO optimistions needed in case if 
+      // it was previosly GAME_STATE_PLAY no need to update it again
+      gameState(bindArg(GAME_STATE_PLAY, trigger));
+    }
     if (figures.length) {
         return;
     }

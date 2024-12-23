@@ -1,7 +1,11 @@
-import { bindArg } from "../utils";
+import { bindArg } from "@month/utils";
+import { template } from "./template";
 
-const initTemplate = () => {
-    console.log('initTemplate');  
+const initTemplate = (
+  ctx: Window,
+  root: HTMLElement
+) => {
+  template(ctx, root);
 }
 
 export const initEffect = (ctx: Window) => {

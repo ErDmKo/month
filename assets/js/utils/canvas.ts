@@ -1,4 +1,4 @@
-import { domCreator, PROP, REF, Ref } from './dom';
+import { domCreator, genProp, genRef, genTagName } from './dom';
 
 declare global {
     interface Window {
@@ -9,15 +9,12 @@ declare global {
 }
 export const fillElemWidhCanvas = (
     ctx: Window,
-    element: HTMLDivElement
+    element: HTMLElement
 ): [DOMRect, HTMLCanvasElement] => {
-    const [canvas] = domCreator(ctx, element, [
-        'canvas',
-        [
-            [REF],
-            [
-                'style',
-                {
+    const [canvas] = domCreator(ctx, element, genTagName(
+        'canvas', [
+            genRef(),
+            genProp('style', {
                     position: 'absolute',
                     top: '0px',
                     left: '0px',
@@ -25,10 +22,9 @@ export const fillElemWidhCanvas = (
                     width: '100%',
                     height: '100%',
                 },
-                PROP,
-            ],
+            ),
         ],
-    ]);
+    ));
     ctx.Object.assign(element.style, {
         position: 'relative',
     });

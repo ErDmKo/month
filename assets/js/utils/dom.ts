@@ -8,11 +8,42 @@ type Props =
     | readonly [key: string, value: any, isProp: typeof PROP]
     | readonly [key: typeof REF, ref?: Ref];
 
-export type DOMStruct<K extends keyof HTMLElementTagNameMap> = readonly [
+type TagName = keyof HTMLElementTagNameMap;
+
+export type DOMStruct<K extends TagName> = readonly [
     tag: K,
     attributes: readonly Props[],
     children?: readonly DOMStruct<K>[]
 ];
+
+export const genProp = (name: string, value: string | Function | Object): Props => {
+  return [name, value, PROP] as const;
+};
+
+export const genAttr = (name: string, value: string): Props => {
+  return [name, value] as const;
+};
+
+export const genRef = () => [REF] as const;
+
+export const genClass = (className: string): Props => {
+  return ['class', className] as const
+}
+
+export const genTagDiv = <T extends TagName>(
+  props: Props[],
+  children: DOMStruct<T>[] = [],
+): DOMStruct<T> => {
+  return ['div' as T, props, children] as const;
+};
+
+export const genTagName = <T extends TagName>(
+  tagName: T,
+  props: Props[],
+  children: DOMStruct<T>[] = []
+): DOMStruct<T> => { 
+  return [tagName, props, children] as const;
+};
 
 // No recusion
 export const domCreator = <K extends keyof HTMLElementTagNameMap>(

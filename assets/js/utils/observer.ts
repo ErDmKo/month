@@ -30,9 +30,11 @@ export const trigger = <EventType>(
 export const delayOperator = <T>(delay: number, state: ObserverState<T>) => {
     const oldObserver = observer(state);
     const newObserver = observer<T>();
+    let timeOut = null;
     oldObserver(
         bindArg((newVal: T) => {
-            setTimeout(() => {
+            clearTimeout(timeOut);
+            timeOut = setTimeout(() => {
                 newObserver(bindArg(newVal, trigger));
             }, delay);
         }, on)
@@ -50,4 +52,28 @@ export const sumOperator = (state: ObserverState<number>) => {
         }, on)
     );
     return newObserver;
+};
+
+export const combineLatestWith = <First, Second>(
+  firstObserver: ObserverInstance<First>,
+  secondObserver: ObserverInstance<Second>
+) => {
+  const newObserver = observer<[First, Second]>();
+  let firstValue: First;
+  let secondValue: Second;
+  firstObserver(
+    bindArg((newVal: First) => {
+      firstValue = newVal;
+      console.log([firstValue, secondValue]);
+      newObserver(bindArg([firstValue, secondValue], trigger));
+    }, on)
+  );
+  secondObserver(
+    bindArg((newVal: Second) => {
+      secondValue = newVal;
+      console.log([firstValue, secondValue]);
+      newObserver(bindArg([firstValue, secondValue], trigger));
+    }, on)
+  );
+  return newObserver;
 };
