@@ -1,4 +1,11 @@
-import { domCreator, genAttr, genClass, genProp, genRef, genTagDiv, genTagName } from '@month/utils';
+import { 
+  domCreator,
+  genClass,
+  genRef,
+  genTagDiv,
+  genTagName,
+  genText
+} from '@month/utils';
 import {
     GameState,
     SERVE,
@@ -31,10 +38,10 @@ export const gameStateRender = (
             [],
             [
                 genTagDiv([
-                        genAttr('class', 'time'),
-                        genProp('innerText', time),
+                        genClass('time'),
+                        genText(time),
                 ]),
-                genTagDiv([genProp('innerText', stateString)]),
+                genTagDiv([genText(stateString)]),
             ],
         )
     });
@@ -53,23 +60,23 @@ export const template = (ctx: Window, root: HTMLElement) => {
         [
             genTagName('button', [
                     genClass('pOneL'),
-                    genProp('innerText', `+1 ${TEAM_LEFT_NAME}`),
+                    genText(`+1 ${TEAM_LEFT_NAME}`),
                     genRef(),
             ]),
             genTagName('span', [genClass('score'), genRef()]),
             genTagName('button', [
                     genClass('pOneR'),
-                    genProp('innerText', `+1 ${TEAM_RIGHT_NAME}`),
+                    genText(`+1 ${TEAM_RIGHT_NAME}`),
                     genRef(),
             ]),
             genTagName('button', [
                     genClass('voice'),
-                    genProp('innerText', 'Voice control disabled'),
+                    genText('Voice control disabled'),
                     genRef(),
             ]),
             genTagName('button', [
               genClass('voice'),
-              genProp('innerText', 'Back'),
+              genText('Back'),
               genRef()
             ]),
             genTagDiv([genClass('log'), genRef()]),

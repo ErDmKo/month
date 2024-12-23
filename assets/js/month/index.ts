@@ -1,11 +1,11 @@
 import { bindArg } from "@month/utils";
-import { template } from "./template";
+import { init } from "./app";
 
 const initTemplate = (
   ctx: Window,
   root: HTMLElement
 ) => {
-  template(ctx, root);
+  init(ctx, root);
 }
 
 export const initEffect = (ctx: Window) => {

@@ -41,6 +41,7 @@ export const delayOperator = <T>(delay: number, state: ObserverState<T>) => {
     );
     return newObserver;
 };
+
 export const sumOperator = (state: ObserverState<number>) => {
     const oldObserver = observer(state);
     const newObserver = observer<number>();

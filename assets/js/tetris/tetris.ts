@@ -9,6 +9,7 @@ import {
     genRef,
     genTagDiv,
     genTagName,
+    genText,
     on,
 } from '@month/utils';
 import {
@@ -92,7 +93,7 @@ const addPhoneControls = (
                 'button',
                 [
                     genClass((classes || []).join(' ')),
-                    genProp('innerText', name),
+                    genText(name),
                     genProp('onclick', keyHandlers[key]),
                 ],
             );
@@ -107,7 +108,7 @@ const initCanvas = (ctx: Window, element: Element) => {
     const boardSize: Vector2D = [10, 20];
     const infoTemplate = genTagDiv([
       genClass('info'),
-      genProp('innerText', START_TEXT),
+      genText(START_TEXT),
       genRef()
     ]);
     const [wrapper, info] = domCreator(ctx, htmlElement, genTagDiv(
