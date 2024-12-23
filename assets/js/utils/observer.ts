@@ -64,14 +64,12 @@ export const combineLatestWith = <First, Second>(
   firstObserver(
     bindArg((newVal: First) => {
       firstValue = newVal;
-      console.log([firstValue, secondValue]);
       newObserver(bindArg([firstValue, secondValue], trigger));
     }, on)
   );
   secondObserver(
     bindArg((newVal: Second) => {
       secondValue = newVal;
-      console.log([firstValue, secondValue]);
       newObserver(bindArg([firstValue, secondValue], trigger));
     }, on)
   );
