@@ -17,9 +17,10 @@ rust_binary(
     data = [
         '//server/db',
         '//server/templates',
-        '//assets/js:tennis',
-        '//assets/js:tetris',
-        '//assets/js:snowflake',
+        '//assets/js:tennis-bundle',
+        '//assets/js:tetris-bundle',
+        '//assets/js:snowflake-bundle',
+        '//assets/js:month-bundle',
         '//assets/js:metrika',
         '//assets/css',
         '//assets/img',

@@ -12,49 +12,97 @@ ts_config(
 )
 
 ts_project(
-    name = "lib",
-    srcs = ["app.ts"],
+    name = "utils",
+    srcs = glob(["utils/**/*.ts"]),
+    declaration = True
+)
+
+ts_project(
+    name = "tetris",
+    srcs = glob(["tetris-effect.ts", "tetris/**/*.ts"]),
     declaration = True,
     deps = [
-        "//:node_modules/@month/snowflake",
-        "//:node_modules/@month/tetris",
-        "//:node_modules/@month/tennis",
-    ],
+      ":utils"
+    ]
 )
 
 esbuild(
-    name = "tennis",
-    entry_point = "tennis.ts",
+    name = "tetris-bundle",
+    entry_point = "tetris-effect.ts",
     metafile = False,
     minify = True,
     target = "esnext",
+    tsconfig = ":tsconfig",
     sourcemap = False,
     deps = [
-        ":lib",
+        ":tetris",
     ],
 )
 
-esbuild(
+ts_project(
     name = "snowflake",
-    entry_point = "snowflake.ts",
-    metafile = False,
-    minify = True,
-    target = "esnext",
-    sourcemap = False,
+    srcs = glob(["snowflake-effect.ts", "snowflake/**/*.ts"]),
+    declaration = True,
     deps = [
-        ":lib",
-    ],
+      ":utils"
+    ]
 )
 
 esbuild(
-    name = "tetris",
-    entry_point = "tetris.ts",
+    name = "snowflake-bundle",
+    entry_point = "snowflake-effect.ts",
     metafile = False,
     minify = True,
     target = "esnext",
     sourcemap = False,
+    tsconfig = ":tsconfig",
     deps = [
-        ":lib",
+        ":snowflake",
+    ],
+)
+
+ts_project(
+    name = "tennis",
+    srcs = glob(["tennis-effect.ts", "tennis/**/*.ts"]),
+    declaration = True,
+    deps = [
+      ":utils"
+    ]
+)
+
+esbuild(
+    name = "tennis-bundle",
+    entry_point = "tennis-effect.ts",
+    bundle = True,
+    metafile = False,
+    minify = True,
+    target = "esnext",
+    sourcemap = False,
+    tsconfig = ":tsconfig",
+    deps = [
+        ":tennis",
+    ],
+)
+
+ts_project(
+    name = "month",
+    srcs = glob(["month-effect.ts", "month/**/*.ts"]),
+    declaration = True,
+    deps = [
+      ":utils"
+    ]
+)
+
+esbuild(
+    name = "month-bundle",
+    entry_point = "month-effect.ts",
+    metafile = False,
+    minify = True,
+    target = "esnext",
+    sourcemap = False,
+    tsconfig = ":tsconfig",
+    deps = [
+        ":month",
     ],
 )
 
