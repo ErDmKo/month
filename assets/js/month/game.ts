@@ -23,7 +23,6 @@ type GameState = [
   answer?: number
 ];
 
-
 type ScoreLog = 
   | [isError: false, monthNo: number] 
   | [isError: true, userAnswer: number, monthNo: number];

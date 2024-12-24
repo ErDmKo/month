@@ -86,6 +86,11 @@ fn get_page_ctx() -> MainPageContext<MainPageLinkString> {
                 href: "https://www.twitch.tv/erdmko",
                 text: "//twitch.tv/erdmko",
             },
+            MainPageLink {
+                name: "My personal blog",
+                href: "/blog",
+                text: "/blog",
+            },
         ],
         tools: vec![
             MainPageLink {
