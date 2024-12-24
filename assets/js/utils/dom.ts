@@ -101,3 +101,8 @@ export const domCreator = <K extends keyof HTMLElementTagNameMap>(
     return refs;
 };
 
+export const cleanHtml = (root: HTMLElement) => {
+    while (root.firstChild) {
+        root.removeChild(root.firstChild);
+    }
+}

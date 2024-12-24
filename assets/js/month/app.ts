@@ -1,82 +1,15 @@
 import { 
-  DOMStruct,
+  cleanHtml,
   domCreator,
-  genAttr,
   genClass,
   genProp,
   genRef,
   genTagDiv,
   genTagName,
   genText,
-  randomRange 
 } from "@month/utils";
-
-const DATA_ATTRIBUTE = 'data-month';
-
-const cleanHtml = (root: HTMLElement) => {
-    while (root.firstChild) {
-        root.removeChild(root.firstChild);
-    }
-}
-const CONTROL_BUTTON: Partial<CSSStyleDeclaration> = {
-  margin: '20px 0',
-  padding: '10px 20px',
-  fontSize: '16px',
-  cursor: 'pointer',
-}
-
-const render = (ctx: Window, monthNames: Record<string, string>, root: HTMLElement) => {
-  const answer = Math.round(randomRange(ctx, 1, 12));
-  let headerRefer: HTMLElement | undefined;
-
-  const next = (e: MouseEvent) => {
-    const target = e.currentTarget;
-    if (!(target instanceof HTMLElement)) {
-      return;
-    }
-    if (target.getAttribute(DATA_ATTRIBUTE) === String(answer)) {
-      target.style.backgroundColor = 'green';
-      if (headerRefer) {
-        headerRefer.innerHTML = `Правильно!`;
-      }
-      ctx.setTimeout(() => {
-        cleanHtml(root);
-        render(ctx, monthNames, root);
-      }, 500);
-    } else {
-      target.style.backgroundColor = 'red';
-    }
-    target.removeEventListener('click', next);
-  }
-
-  const out = [
-    genTagDiv([
-      genRef(),
-      genProp('style', {
-        fontSize: '30px',
-        margin: '20px 0',
-      }),
-      genText(monthNames[answer])
-    ]),
-    genTagDiv([
-      genClass('options')
-    ], Array.from({length: 12}).map((_,i) => {
-      const monthNo = i + 1;
-      return genTagName(
-        'button', [
-          genText(monthNo),
-          genProp('style', {
-            width: '20%',
-            height: '50px',
-            margin: '5%',
-          }),
-          genAttr(DATA_ATTRIBUTE, monthNo),
-          genProp('onclick', next)
-      ]);
-    })),
-  ];
-  ([headerRefer] = domCreator(ctx, root, out));
-}
+import { CONTROL_BUTTON } from "./const";
+import { render } from "./game";
 
 export const init = (ctx: Window, root: HTMLElement) => {
   const baseHTML: HTMLElement[] = Array.from(root.children) as HTMLElement[];

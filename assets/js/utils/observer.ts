@@ -19,6 +19,7 @@ export const on = <EventType>(
     state.push(callback);
 };
 
+
 export const trigger = <EventType>(
     event: EventType,
     state: ObserverState<EventType>
@@ -27,6 +28,17 @@ export const trigger = <EventType>(
         callback(event);
     }
 };
+
+// Typescript alias for bindArg(..., trigger);
+export const next = <EventType>(e: EventType) => {
+  return (state: ObserverState<EventType>) => trigger(e, state);
+}
+
+// Typescript alias for bindArg(..., on);
+export const subscribe = <EventType>(callback: (e: EventType) => void) => {
+  return (state: ObserverState<EventType>) => on(callback, state);
+}
+
 export const delayOperator = <T>(delay: number, state: ObserverState<T>) => {
     const oldObserver = observer(state);
     const newObserver = observer<T>();
